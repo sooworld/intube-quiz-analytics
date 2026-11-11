@@ -1,0 +1,40 @@
+{
+  "name": "quiz-analytics-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LearnLens — Moodle 5.3 Boost 스타일을 참고한 교수용 퀴즈 분석 비공식 데모 (가상 데이터)",
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:pages": "cross-env NEXT_PUBLIC_BASE_PATH=/intube-quiz-analytics next build",
+    "gen:data": "tsx scripts/generate-data.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "gen:essays": "tsx scripts/generate-essays.ts",
+    "ai:smoke": "tsx --env-file=.env scripts/ai-smoke.ts",
+    "ai:proxy": "tsx --env-file=.env scripts/ai-proxy.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.3.0",
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "cross-env": "10.1.0",
+    "eslint": "10.14.0",
+    "eslint-config-next": "16.4.5",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "uuid": "^14.0.3",
+    "vitest": "5.1.0",
+    "xapi-validation": "^2.1.4"
+  }
+}

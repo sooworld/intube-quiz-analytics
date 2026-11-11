@@ -1,0 +1,192 @@
+{
+  "task": "analysis-summary",
+  "provider": "gemini",
+  "requestedModel": "gemini-3.5-flash",
+  "responseModel": "gemini-3.6-flash",
+  "promptVersion": "analysis-summary-v1",
+  "schemaVersion": "1",
+  "validatorVersion": "1",
+  "date": "2026-11-10",
+  "durationMs": 12863,
+  "status": "valid",
+  "problems": [],
+  "input": {
+    "facts": [
+      {
+        "kind": "attempts",
+        "text": "응시 완료 25명(전체 26명 중, 미응시 1명)",
+        "numerator": 25,
+        "denominator": 26,
+        "id": "F01"
+      },
+      {
+        "kind": "concept-wrong",
+        "text": "가설검정 학급 관찰 오답률 49%(37/75)",
+        "numerator": 37,
+        "denominator": 75,
+        "id": "F02"
+      },
+      {
+        "kind": "concept-wrong",
+        "text": "회귀분석 학급 관찰 오답률 43%(32/75)",
+        "numerator": 32,
+        "denominator": 75,
+        "id": "F03"
+      },
+      {
+        "kind": "concept-wrong",
+        "text": "군집분석 학급 관찰 오답률 39%(29/75)",
+        "numerator": 29,
+        "denominator": 75,
+        "id": "F04"
+      },
+      {
+        "kind": "concept-wrong",
+        "text": "거리 측도 학급 관찰 오답률 36%(27/75)",
+        "numerator": 27,
+        "denominator": 75,
+        "id": "F05"
+      },
+      {
+        "kind": "concept-extreme",
+        "text": "학급 관찰 오답률이 가장 높은 개념: 가설검정 49%(37/75)",
+        "numerator": null,
+        "denominator": null,
+        "id": "F06"
+      },
+      {
+        "kind": "concept-extreme",
+        "text": "학급 관찰 오답률이 가장 낮은 개념: 거리 측도 36%(27/75)",
+        "numerator": null,
+        "denominator": null,
+        "id": "F07"
+      },
+      {
+        "kind": "item-facility",
+        "text": "Q5 정답률 36%(9/25)",
+        "numerator": 9,
+        "denominator": 25,
+        "id": "F08"
+      },
+      {
+        "kind": "item-facility",
+        "text": "Q3 정답률 52%(13/25)",
+        "numerator": 13,
+        "denominator": 25,
+        "id": "F09"
+      },
+      {
+        "kind": "item-facility",
+        "text": "Q8 정답률 56%(14/25)",
+        "numerator": 14,
+        "denominator": 25,
+        "id": "F10"
+      },
+      {
+        "kind": "misconception",
+        "text": "Q5 오답 선택지 B(오개념 후보: 상관을 인과로 해석) 8명(응시 25명 중 32%)",
+        "numerator": 8,
+        "denominator": 25,
+        "id": "F11"
+      },
+      {
+        "kind": "misconception",
+        "text": "Q4 오답 선택지 C(오개념 후보: 상관계수와 회귀 기울기 혼동) 5명(응시 25명 중 20%)",
+        "numerator": 5,
+        "denominator": 25,
+        "id": "F12"
+      },
+      {
+        "kind": "misconception",
+        "text": "Q6 오답 선택지 A(오개념 후보: 밀도 기반 군집도 k가 필요하다고 오해) 5명(응시 25명 중 20%)",
+        "numerator": 5,
+        "denominator": 25,
+        "id": "F13"
+      },
+      {
+        "kind": "unanswered",
+        "text": "무응답 5건(응답 칸 250개 중)",
+        "numerator": 5,
+        "denominator": 250,
+        "id": "F14"
+      },
+      {
+        "kind": "concept-group",
+        "text": "가설검정 보충 대상(계산 그룹, 관찰 오답률 50% 이상) 12명(응시 25명 중)",
+        "numerator": 12,
+        "denominator": 25,
+        "id": "F15"
+      },
+      {
+        "kind": "concept-group",
+        "text": "회귀분석 보충 대상(계산 그룹, 관찰 오답률 50% 이상) 12명(응시 25명 중)",
+        "numerator": 12,
+        "denominator": 25,
+        "id": "F16"
+      },
+      {
+        "kind": "concept-group",
+        "text": "군집분석 보충 대상(계산 그룹, 관찰 오답률 50% 이상) 10명(응시 25명 중)",
+        "numerator": 10,
+        "denominator": 25,
+        "id": "F17"
+      },
+      {
+        "kind": "concept-group",
+        "text": "거리 측도 보충 대상(계산 그룹, 관찰 오답률 50% 이상) 8명(응시 25명 중)",
+        "numerator": 8,
+        "denominator": 25,
+        "id": "F18"
+      },
+      {
+        "kind": "group-sensitivity",
+        "text": "문항 하나를 빼면 개념 보충 그룹 소속이 바뀌는 학생: 최대 10명(Q9 제외 시)",
+        "numerator": 10,
+        "denominator": 25,
+        "id": "F19"
+      }
+    ]
+  },
+  "raw": {
+    "sections": [
+      {
+        "heading": "전체 요약",
+        "sentences": [
+          "이번 퀴즈의 응시 현황은 {F01}입니다.",
+          "전체 응답 중 {F14}이 확인되었습니다."
+        ]
+      },
+      {
+        "heading": "눈여겨볼 개념",
+        "sentences": [
+          "개념별 관찰 오답률을 파악해 보면 {F06}입니다.",
+          "반면에 {F07}입니다.",
+          "세부적으로는 {F02} 및 {F03}로 나타났습니다."
+        ]
+      },
+      {
+        "heading": "문항 점검",
+        "sentences": [
+          "주요 근거 문항인 {F08}를 점검할 필요가 있습니다.",
+          "해당 문항에서는 {F11}가 관찰된 오답으로 나타났습니다.",
+          "또한 {F12}와 {F13}도 검토 제안 대상입니다."
+        ]
+      },
+      {
+        "heading": "보충 그룹",
+        "sentences": [
+          "개념별 보충 필요성을 보면 {F15}와 {F16}로 집계되었습니다.",
+          "아울러 {F17} 및 {F18}도 확인되었습니다.",
+          "특이 사항으로 {F19}에 유의할 필요가 있습니다."
+        ]
+      },
+      {
+        "heading": "다음 수업 제안",
+        "sentences": [
+          "상관관계와 인과관계의 차이를 명확히 구분하는 토의 실습을 진행하는 것을 검토 제안합니다.",
+          "가설검정의 기본 개념 및 회귀 기울기의 해석을 다루는 소그룹 문제 풀이 활동을 구성합니다."
+        ]
+      }
+    ]
+  }
+}

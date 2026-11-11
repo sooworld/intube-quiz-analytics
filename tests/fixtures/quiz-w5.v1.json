@@ -1,0 +1,2358 @@
+{
+  "dataVersion": "2026-11-11.1",
+  "quiz": {
+    "id": "quiz-w5",
+    "courseId": "algo101",
+    "sectionNumber": 5,
+    "name": "5주차 퀴즈: 복잡도와 그래프 탐색 기초",
+    "intro": "시간복잡도, 정렬, 그래프 탐색, 최단 경로에 관한 10문항(객관식 8, 단답 2)입니다.",
+    "closeDate": "2026-11-06T23:59:00+09:00",
+    "concepts": [
+      {
+        "id": "c-hyp",
+        "name": "시간복잡도",
+        "description": "Big-O 표기, 최선·평균·최악의 경우, 증가율의 의미"
+      },
+      {
+        "id": "c-reg",
+        "name": "정렬·탐색",
+        "description": "퀵·병합 정렬의 동작과 안정성, 해시·이진 탐색"
+      },
+      {
+        "id": "c-clu",
+        "name": "그래프 탐색",
+        "description": "DFS·BFS의 자료구조와 방문 표시"
+      },
+      {
+        "id": "c-dist",
+        "name": "최단 경로",
+        "description": "BFS·다익스트라의 적용 조건, 경로 비용 계산"
+      }
+    ],
+    "items": [
+      {
+        "id": "q1",
+        "number": 1,
+        "type": "mcq",
+        "conceptIds": [
+          "c-hyp"
+        ],
+        "stem": "알고리즘의 시간복잡도가 O(n²)이라는 표기의 의미로 가장 적절한 것은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "입력 크기 n이 2배가 되면 실행 시간이 정확히 4배가 된다",
+            "misconception": "Big-O를 정확한 실행 시간 공식으로 해석"
+          },
+          {
+            "id": "B",
+            "text": "n이 충분히 클 때 연산 횟수의 증가율이 n²을 넘지 않는다(점근적 상한)"
+          },
+          {
+            "id": "C",
+            "text": "실행 시간이 항상 n²밀리초이다",
+            "misconception": "Big-O를 실제 시간 단위로 해석"
+          },
+          {
+            "id": "D",
+            "text": "최선의 경우에도 n²번의 연산이 필요하다",
+            "misconception": "Big-O(상한)와 최선 경우·하한 혼동"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q2",
+        "number": 2,
+        "type": "mcq",
+        "conceptIds": [
+          "c-reg"
+        ],
+        "stem": "같은 키를 가진 원소들의 원래 순서가 정렬 후에도 유지되는 안정 정렬(stable sort)은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "퀵 정렬",
+            "misconception": "평균 속도가 빠르면 안정적이라고 오해"
+          },
+          {
+            "id": "B",
+            "text": "병합 정렬"
+          },
+          {
+            "id": "C",
+            "text": "선택 정렬",
+            "misconception": "단순한 정렬은 안정적이라고 오해"
+          },
+          {
+            "id": "D",
+            "text": "힙 정렬",
+            "misconception": "O(n log n) 정렬은 모두 안정적이라고 오해"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q3",
+        "number": 3,
+        "type": "mcq",
+        "conceptIds": [
+          "c-hyp"
+        ],
+        "stem": "해시 테이블에서 키로 값을 찾는 연산의 평균 시간복잡도는?",
+        "options": [
+          {
+            "id": "A",
+            "text": "O(n)",
+            "misconception": "모든 키가 충돌한다고 가정(평균과 최악 혼동)"
+          },
+          {
+            "id": "B",
+            "text": "O(1)"
+          },
+          {
+            "id": "C",
+            "text": "O(log n)",
+            "misconception": "이진 탐색과 혼동"
+          },
+          {
+            "id": "D",
+            "text": "O(n log n)",
+            "misconception": "정렬 비용과 혼동"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q4",
+        "number": 4,
+        "type": "mcq",
+        "conceptIds": [
+          "c-reg"
+        ],
+        "stem": "퀵 정렬에서 pivot(피벗)의 역할로 옳은 것은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "pivot보다 작은 원소는 왼쪽, 큰 원소는 오른쪽으로 나누는 기준값이다"
+          },
+          {
+            "id": "B",
+            "text": "pivot은 항상 배열의 중앙값이어야 한다",
+            "misconception": "pivot을 중앙값으로 오해"
+          },
+          {
+            "id": "C",
+            "text": "pivot은 정렬이 끝난 뒤 마지막에 고르는 값이다",
+            "misconception": "pivot의 선택 시점을 오해"
+          },
+          {
+            "id": "D",
+            "text": "pivot은 정렬 결과를 저장하는 보조 배열이다",
+            "misconception": "pivot과 병합 정렬의 보조 배열 혼동"
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      {
+        "id": "q5",
+        "number": 5,
+        "type": "mcq",
+        "conceptIds": [
+          "c-reg",
+          "c-hyp"
+        ],
+        "stem": "병합 정렬의 최악 시간복잡도로 옳은 것은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "O(n log n)"
+          },
+          {
+            "id": "B",
+            "text": "O(n²)",
+            "misconception": "버블·삽입 정렬과 혼동"
+          },
+          {
+            "id": "C",
+            "text": "O(n)",
+            "misconception": "한 번 순회로 정렬된다고 오해"
+          },
+          {
+            "id": "D",
+            "text": "O(log n)",
+            "misconception": "이진 탐색과 혼동"
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      {
+        "id": "q6",
+        "number": 6,
+        "type": "mcq",
+        "conceptIds": [
+          "c-clu"
+        ],
+        "stem": "그래프를 DFS(깊이 우선 탐색)로 순회할 때 일반적으로 사용하는 자료구조는?",
+        "options": [
+          {
+            "id": "A",
+            "text": "큐(queue)",
+            "misconception": "BFS의 자료구조와 혼동"
+          },
+          {
+            "id": "B",
+            "text": "스택(stack) 또는 재귀 호출"
+          },
+          {
+            "id": "C",
+            "text": "우선순위 큐(priority queue)",
+            "misconception": "다익스트라의 자료구조와 혼동"
+          },
+          {
+            "id": "D",
+            "text": "해시 테이블",
+            "misconception": "방문 표시용 집합과 탐색 자료구조 혼동"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q7",
+        "number": 7,
+        "type": "mcq",
+        "conceptIds": [
+          "c-clu"
+        ],
+        "stem": "그래프 탐색에서 무한 루프를 막으려면 이미 방문한 정점을 기록해 두어야 한다. 이 기록을 가리키는 용어는?",
+        "options": [
+          {
+            "id": "A",
+            "text": "피벗(pivot)",
+            "misconception": "퀵 정렬 개념과 혼동"
+          },
+          {
+            "id": "B",
+            "text": "스택 프레임",
+            "misconception": "재귀 호출 개념과 혼동"
+          },
+          {
+            "id": "C",
+            "text": "방문 표시(visited 집합)"
+          },
+          {
+            "id": "D",
+            "text": "힙(heap)",
+            "misconception": "우선순위 큐 개념과 혼동"
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      {
+        "id": "q8",
+        "number": 8,
+        "type": "mcq",
+        "conceptIds": [
+          "c-dist"
+        ],
+        "stem": "간선 가중치가 모두 양수인 그래프에서 한 정점으로부터 다른 모든 정점까지의 최단 거리를 구하는 알고리즘은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "DFS(깊이 우선 탐색)",
+            "misconception": "경로 탐색과 최단 경로 혼동"
+          },
+          {
+            "id": "B",
+            "text": "다익스트라(Dijkstra) 알고리즘"
+          },
+          {
+            "id": "C",
+            "text": "프림(Prim) 알고리즘",
+            "misconception": "최소 신장 트리와 최단 경로 혼동"
+          },
+          {
+            "id": "D",
+            "text": "위상 정렬",
+            "misconception": "DAG 순서화와 최단 경로 혼동"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q9",
+        "number": 9,
+        "type": "short",
+        "conceptIds": [
+          "c-dist"
+        ],
+        "stem": "간선이 A→B(2), B→C(3), A→C(6), C→D(1)인 가중치 그래프에서 A에서 D까지의 최단 경로 비용을 숫자로 쓰시오.",
+        "shortAnswer": {
+          "policy": "numeric",
+          "accepted": [
+            "6"
+          ],
+          "tolerance": 0.01,
+          "misconceptionRules": [
+            {
+              "equals": [
+                "7"
+              ],
+              "label": "간선 수가 적은 경로(A→C→D)를 고름"
+            },
+            {
+              "equals": [
+                "12"
+              ],
+              "label": "모든 간선 가중치를 합산"
+            }
+          ]
+        }
+      },
+      {
+        "id": "q10",
+        "number": 10,
+        "type": "short",
+        "conceptIds": [
+          "c-dist",
+          "c-clu"
+        ],
+        "stem": "모든 간선 비용이 같은 그래프에서, 시작 정점과 가까운 정점부터 큐(queue)로 차례대로 방문해 최단 경로를 구하는 탐색 알고리즘의 이름은?",
+        "shortAnswer": {
+          "policy": "text",
+          "accepted": [
+            "bfs",
+            "너비 우선 탐색",
+            "너비우선탐색",
+            "bfs 탐색",
+            "breadth-first search",
+            "breadth first search",
+            "너비 우선 검색"
+          ],
+          "misconceptionRules": [
+            {
+              "includesAll": [
+                "dfs"
+              ],
+              "label": "DFS와 혼동(스택 사용)"
+            },
+            {
+              "includesAll": [
+                "깊이"
+              ],
+              "label": "DFS와 혼동(스택 사용)"
+            },
+            {
+              "includesAll": [
+                "다익스트라"
+              ],
+              "label": "다익스트라와 혼동(우선순위 큐)"
+            },
+            {
+              "includesAll": [
+                "dijkstra"
+              ],
+              "label": "다익스트라와 혼동(우선순위 큐)"
+            },
+            {
+              "includesAll": [
+                "이진"
+              ],
+              "label": "이진 탐색과 혼동"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "students": [
+    {
+      "id": "s01",
+      "name": "김하늘"
+    },
+    {
+      "id": "s02",
+      "name": "이서준"
+    },
+    {
+      "id": "s03",
+      "name": "박지민"
+    },
+    {
+      "id": "s04",
+      "name": "최윤서"
+    },
+    {
+      "id": "s05",
+      "name": "정도윤"
+    },
+    {
+      "id": "s06",
+      "name": "강하린"
+    },
+    {
+      "id": "s07",
+      "name": "조민재"
+    },
+    {
+      "id": "s08",
+      "name": "윤채원"
+    },
+    {
+      "id": "s09",
+      "name": "장시우"
+    },
+    {
+      "id": "s10",
+      "name": "임서연"
+    },
+    {
+      "id": "s11",
+      "name": "한지호"
+    },
+    {
+      "id": "s12",
+      "name": "오예린"
+    },
+    {
+      "id": "s13",
+      "name": "서건우"
+    },
+    {
+      "id": "s14",
+      "name": "신다은"
+    },
+    {
+      "id": "s15",
+      "name": "권태민"
+    },
+    {
+      "id": "s16",
+      "name": "황수아"
+    },
+    {
+      "id": "s17",
+      "name": "안준혁"
+    },
+    {
+      "id": "s18",
+      "name": "송나윤"
+    },
+    {
+      "id": "s19",
+      "name": "전우진"
+    },
+    {
+      "id": "s20",
+      "name": "홍지유"
+    },
+    {
+      "id": "s21",
+      "name": "고은찬"
+    },
+    {
+      "id": "s22",
+      "name": "문가온"
+    },
+    {
+      "id": "s23",
+      "name": "양태윤"
+    },
+    {
+      "id": "s24",
+      "name": "배소율"
+    },
+    {
+      "id": "s25",
+      "name": "백승현"
+    },
+    {
+      "id": "s26",
+      "name": "남유나"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "a-s01",
+      "studentId": "s01",
+      "status": "finished"
+    },
+    {
+      "id": "a-s02",
+      "studentId": "s02",
+      "status": "finished"
+    },
+    {
+      "id": "a-s03",
+      "studentId": "s03",
+      "status": "finished"
+    },
+    {
+      "id": "a-s04",
+      "studentId": "s04",
+      "status": "finished"
+    },
+    {
+      "id": "a-s05",
+      "studentId": "s05",
+      "status": "finished"
+    },
+    {
+      "id": "a-s06",
+      "studentId": "s06",
+      "status": "finished"
+    },
+    {
+      "id": "a-s07",
+      "studentId": "s07",
+      "status": "finished"
+    },
+    {
+      "id": "a-s08",
+      "studentId": "s08",
+      "status": "finished"
+    },
+    {
+      "id": "a-s09",
+      "studentId": "s09",
+      "status": "finished"
+    },
+    {
+      "id": "a-s10",
+      "studentId": "s10",
+      "status": "finished"
+    },
+    {
+      "id": "a-s11",
+      "studentId": "s11",
+      "status": "finished"
+    },
+    {
+      "id": "a-s12",
+      "studentId": "s12",
+      "status": "finished"
+    },
+    {
+      "id": "a-s13",
+      "studentId": "s13",
+      "status": "finished"
+    },
+    {
+      "id": "a-s14",
+      "studentId": "s14",
+      "status": "finished"
+    },
+    {
+      "id": "a-s15",
+      "studentId": "s15",
+      "status": "finished"
+    },
+    {
+      "id": "a-s16",
+      "studentId": "s16",
+      "status": "finished"
+    },
+    {
+      "id": "a-s17",
+      "studentId": "s17",
+      "status": "finished"
+    },
+    {
+      "id": "a-s18",
+      "studentId": "s18",
+      "status": "finished"
+    },
+    {
+      "id": "a-s19",
+      "studentId": "s19",
+      "status": "finished"
+    },
+    {
+      "id": "a-s20",
+      "studentId": "s20",
+      "status": "finished"
+    },
+    {
+      "id": "a-s21",
+      "studentId": "s21",
+      "status": "finished"
+    },
+    {
+      "id": "a-s22",
+      "studentId": "s22",
+      "status": "finished"
+    },
+    {
+      "id": "a-s23",
+      "studentId": "s23",
+      "status": "finished"
+    },
+    {
+      "id": "a-s24",
+      "studentId": "s24",
+      "status": "finished"
+    },
+    {
+      "id": "a-s25",
+      "studentId": "s25",
+      "status": "finished"
+    },
+    {
+      "id": "a-s26",
+      "studentId": "s26",
+      "status": "notattempted"
+    }
+  ],
+  "responses": [
+    {
+      "attemptId": "a-s01",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q6",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q9",
+      "rawAnswer": "7",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s01",
+      "itemId": "q10",
+      "rawAnswer": "A*",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q5",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q9",
+      "rawAnswer": "6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s02",
+      "itemId": "q10",
+      "rawAnswer": "dijkstra",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q4",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q5",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q8",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q9",
+      "rawAnswer": "6.0",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s03",
+      "itemId": "q10",
+      "rawAnswer": "bfs",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q4",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q6",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q8",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q9",
+      "rawAnswer": " 6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s04",
+      "itemId": "q10",
+      "rawAnswer": "너비우선탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q3",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q4",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q6",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q7",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q9",
+      "rawAnswer": " 6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s05",
+      "itemId": "q10",
+      "rawAnswer": "너비우선탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q6",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q7",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q8",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q9",
+      "rawAnswer": "7",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s06",
+      "itemId": "q10",
+      "rawAnswer": "깊이 우선 탐색",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q9",
+      "rawAnswer": "6.00",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s07",
+      "itemId": "q10",
+      "rawAnswer": "bfs",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q1",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q2",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q3",
+      "rawAnswer": null,
+      "gradedState": "unanswered",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q6",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q8",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q9",
+      "rawAnswer": "6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s08",
+      "itemId": "q10",
+      "rawAnswer": "bfs",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q1",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q3",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q5",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q7",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q9",
+      "rawAnswer": "6.00",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s09",
+      "itemId": "q10",
+      "rawAnswer": "DFS",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q2",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q7",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q9",
+      "rawAnswer": "６",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s10",
+      "itemId": "q10",
+      "rawAnswer": "너비우선탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q3",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q4",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q5",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q6",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q8",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q9",
+      "rawAnswer": " 6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s11",
+      "itemId": "q10",
+      "rawAnswer": "너비우선탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q1",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q2",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q3",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q5",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q6",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q7",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q8",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q9",
+      "rawAnswer": "6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s12",
+      "itemId": "q10",
+      "rawAnswer": "breadth-first search",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q9",
+      "rawAnswer": "6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s13",
+      "itemId": "q10",
+      "rawAnswer": "너비우선탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q3",
+      "rawAnswer": null,
+      "gradedState": "unanswered",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q9",
+      "rawAnswer": "６",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s14",
+      "itemId": "q10",
+      "rawAnswer": "다익스트라",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q1",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q5",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q8",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q9",
+      "rawAnswer": "7",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s15",
+      "itemId": "q10",
+      "rawAnswer": "BFS 탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q1",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q3",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q5",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q7",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q9",
+      "rawAnswer": " 6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s16",
+      "itemId": "q10",
+      "rawAnswer": "너비 우선 탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q1",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q3",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q5",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q6",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q8",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q9",
+      "rawAnswer": "６",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s17",
+      "itemId": "q10",
+      "rawAnswer": "DFS",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q3",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q4",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q6",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q9",
+      "rawAnswer": "6.00",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s18",
+      "itemId": "q10",
+      "rawAnswer": "깊이 우선 탐색",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q1",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q2",
+      "rawAnswer": null,
+      "gradedState": "unanswered",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q6",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q7",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q8",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q9",
+      "rawAnswer": " 6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s19",
+      "itemId": "q10",
+      "rawAnswer": "breadth-first search",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q2",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q3",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q4",
+      "rawAnswer": "D",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q9",
+      "rawAnswer": "6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s20",
+      "itemId": "q10",
+      "rawAnswer": "너비우선탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q1",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q3",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q7",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q8",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q9",
+      "rawAnswer": "6",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s21",
+      "itemId": "q10",
+      "rawAnswer": "DFS",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q2",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q7",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q9",
+      "rawAnswer": "3.5",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s22",
+      "itemId": "q10",
+      "rawAnswer": "다익스트라",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q2",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q4",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q9",
+      "rawAnswer": "6.0",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s23",
+      "itemId": "q10",
+      "rawAnswer": "BFS 탐색",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q1",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q2",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q3",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q4",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q5",
+      "rawAnswer": "B",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q8",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q9",
+      "rawAnswer": "7",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s24",
+      "itemId": "q10",
+      "rawAnswer": "BFS",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q1",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q2",
+      "rawAnswer": "A",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q3",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q4",
+      "rawAnswer": "C",
+      "gradedState": "incorrect",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q5",
+      "rawAnswer": "A",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q6",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q7",
+      "rawAnswer": "C",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q8",
+      "rawAnswer": "B",
+      "gradedState": "correct",
+      "score": 1
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q9",
+      "rawAnswer": null,
+      "gradedState": "unanswered",
+      "score": 0
+    },
+    {
+      "attemptId": "a-s25",
+      "itemId": "q10",
+      "rawAnswer": null,
+      "gradedState": "unanswered",
+      "score": 0
+    }
+  ]
+}

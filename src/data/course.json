@@ -1,0 +1,143 @@
+{
+  "dataVersion": "2026-11-11.1",
+  "course": {
+    "id": "algo101",
+    "shortName": "ALGO101",
+    "fullName": "알고리즘과 자료구조 기초 (2026-2학기)",
+    "teacher": "김교수",
+    "sections": [
+      {
+        "number": 0,
+        "title": "General",
+        "activities": [
+          {
+            "id": "news",
+            "type": "forum",
+            "name": "Announcements"
+          }
+        ]
+      },
+      {
+        "number": 1,
+        "title": "1주차: 알고리즘과 문제 해결",
+        "activities": [
+          {
+            "id": "p1",
+            "type": "page",
+            "name": "강의 자료: 알고리즘의 표현"
+          },
+          {
+            "id": "f1",
+            "type": "forum",
+            "name": "질문 게시판"
+          }
+        ]
+      },
+      {
+        "number": 2,
+        "title": "2주차: 자료구조 기초",
+        "activities": [
+          {
+            "id": "p2",
+            "type": "page",
+            "name": "강의 자료: 배열·연결 리스트·스택·큐"
+          },
+          {
+            "id": "as2",
+            "type": "assign",
+            "name": "과제 1: 스택·큐 구현"
+          }
+        ]
+      },
+      {
+        "number": 3,
+        "title": "3주차: 재귀와 분할 정복",
+        "activities": [
+          {
+            "id": "p3",
+            "type": "page",
+            "name": "강의 자료: 재귀 호출과 점화식"
+          }
+        ]
+      },
+      {
+        "number": 4,
+        "title": "4주차: 정렬과 탐색",
+        "activities": [
+          {
+            "id": "p4",
+            "type": "page",
+            "name": "강의 자료: 정렬 알고리즘"
+          },
+          {
+            "id": "u4",
+            "type": "url",
+            "name": "참고 영상"
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "title": "5주차: 복잡도와 그래프 탐색",
+        "summary": "시간복잡도·정렬·그래프 탐색·최단 경로를 점검하는 차시 퀴즈입니다.",
+        "activities": [
+          {
+            "id": "p5",
+            "type": "page",
+            "name": "강의 자료: 그래프 탐색과 최단 경로"
+          },
+          {
+            "id": "quiz-w5",
+            "type": "quiz",
+            "name": "5주차 퀴즈: 복잡도와 그래프 탐색 기초",
+            "href": "/quiz/quiz-w5/"
+          },
+          {
+            "id": "quiz-w5e",
+            "type": "quiz",
+            "name": "5주차 서술형 퀴즈: 알고리즘 분석과 설계",
+            "href": "/essay/quiz-w5e/"
+          },
+          {
+            "id": "f5",
+            "type": "forum",
+            "name": "5주차 토론"
+          }
+        ]
+      },
+      {
+        "number": 6,
+        "title": "6주차: 해시와 트리",
+        "activities": [
+          {
+            "id": "p6",
+            "type": "page",
+            "name": "강의 자료: 해시 테이블"
+          }
+        ]
+      },
+      {
+        "number": 7,
+        "title": "7주차: 동적 계획법과 탐욕",
+        "activities": [
+          {
+            "id": "p7",
+            "type": "page",
+            "name": "강의 자료: 동적 계획법"
+          }
+        ]
+      },
+      {
+        "number": 8,
+        "title": "8주차: 중간 정리",
+        "activities": [
+          {
+            "id": "as8",
+            "type": "assign",
+            "name": "중간 프로젝트"
+          }
+        ]
+      }
+    ]
+  }
+}

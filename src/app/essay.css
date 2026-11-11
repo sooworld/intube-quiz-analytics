@@ -1,0 +1,123 @@
+/* 서술형 채점·AI 설정 화면 (Moodle Boost 톤에 맞춘 최소 스타일) */
+.badge-warn { background: #fff3cd; color: var(--warning-text); }
+.text-ok { color: var(--success-text); }
+.text-danger { color: var(--danger-text); }
+.btn-danger { background: var(--danger-text); color: #fff; border-color: var(--danger-text); }
+.btn-danger:hover { filter: brightness(0.92); }
+
+.field { display: flex; flex-direction: column; gap: 0.25rem; margin: 0.5rem 0; font-size: var(--fs-md); }
+.field > span { font-weight: 600; }
+.field input, .field textarea { font: inherit; padding: 0.4rem 0.6rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: #fff; color: var(--text); width: 100%; }
+.field textarea { resize: vertical; }
+.field input:disabled, .field textarea:disabled { background: var(--surface-2); color: var(--text-secondary); }
+.inline-form { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end; }
+.inline-form .grow { flex: 1 1 18rem; margin: 0; }
+.radio-row { border: 0; padding: 0; margin: 0.75rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-size: var(--fs-md); }
+.radio-row legend { font-weight: 600; margin-bottom: 0.25rem; }
+
+.choice-list { display: grid; gap: 0.375rem; margin: 0.5rem 0 0.75rem; }
+.choice { display: flex; gap: 0.5rem; align-items: center; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
+.choice.is-selected { border-color: var(--primary); background: var(--primary-subtle); }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 0.75rem; margin: 0.5rem 0; }
+.kv dt { font-weight: 600; color: var(--text-secondary); }
+.kv dd { margin: 0; }
+.model-list { columns: 2; padding-left: 1.25rem; }
+.tech-details { margin-top: 0.75rem; color: var(--text-secondary); }
+.tech-details > summary { cursor: pointer; color: var(--text-muted); }
+.tech-details ul { margin: 0.25rem 0 0; padding-left: 1.25rem; }
+
+table.data.compact th, table.data.compact td { padding: 0.375rem 0.5rem; }
+.essay-box { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-2); padding: 0.75rem 1rem; margin: 0.5rem 0; }
+.essay-text { margin: 0; white-space: pre-wrap; line-height: 1.75; }
+.hl { border-radius: 2px; padding: 0 1px; color: inherit; }
+.hl-0 { background: #cfe2ff; box-shadow: inset 0 -2px #0f6cbf; }
+.hl-1 { background: #ffe5d0; box-shadow: inset 0 -2px #d4572a; }
+.hl-2 { background: #d1e7dd; box-shadow: inset 0 -2px #146c2e; }
+.suggestion-meta { border-left: 4px solid var(--primary); padding: 0.25rem 0.75rem; margin: 0.75rem 0; background: var(--primary-subtle); }
+.suggestion-meta.status-needs-review { border-left-color: #f5d27a; background: var(--warning-bg); }
+.suggestion-meta.status-invalid { border-left-color: var(--danger-text); background: #f8d7da; }
+.suggestion-meta p, .suggestion-meta ul { margin: 0.25rem 0; }
+.rationale { font-weight: 400; margin-top: 0.25rem; }
+.ai-tag { display: inline-block; margin-left: 0.25rem; font-size: var(--fs-xs); font-weight: 700; color: #fff; background: var(--primary); border-radius: 3px; padding: 0 0.25rem; }
+.final-box { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background: #d1e7dd33; border: 1px solid #a3cfbb; border-radius: var(--radius-sm); }
+.final-box p { margin: 0; }
+table.rubric td { min-width: 9rem; }
+.rubric-details > summary { cursor: pointer; color: var(--primary); }
+.rubric-details[open] > summary { margin-bottom: 0.5rem; }
+progress { width: 100%; height: 0.75rem; }
+
+@media (max-width: 1000px) {
+  .model-list { columns: 1; }
+}
+
+/* ── 서술형 채점: AI 우선 배치 (2026-11-11) ──
+   단 수는 화면 폭이 아니라 내용 폭(과정 서랍을 열고 닫으면 바뀜)으로 정한다: container query */
+.gw { container-type: inline-size; }
+.gw-progress-head { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; align-items: baseline; justify-content: space-between; }
+.gw-progress-head p { margin: 0; }
+.gw-progress-body { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; justify-content: space-between; margin-top: 0.25rem; }
+.gw-progress-stats { flex: 1 1 18rem; min-width: 0; }
+.gw-progress-stats p { margin: 0 0 0.375rem; }
+.gw-attention { margin-left: 0.5rem; }
+.gw-tab-count { margin-left: 0.375rem; font-size: var(--fs-xs); font-weight: 400; color: var(--text-secondary); }
+/* 상태 막대: 확정(초록) · 제안 있음(파랑) · 검토 필요(노랑), 빈 곳은 미제안. 대기열의 점·배지와 같은 색 */
+.gw-statusbar { display: flex; height: 0.5rem; border-radius: 999px; background: var(--chart-grid); overflow: hidden; }
+.gw-seg { flex: none; height: 100%; }
+.seg-final, .dot-final { background: var(--success-text); }
+.seg-suggested, .dot-suggested { background: var(--primary); }
+.seg-attention { background: #e0a800; }
+.gw-dot { display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%; vertical-align: middle; }
+
+.gw-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; }
+.gw-queue { min-width: 0; margin: 0; }
+.gw-queue .table-wrap { max-height: 26rem; overflow: auto; }
+.gw-queue th, .gw-queue td { white-space: nowrap; }
+/* .btn 없이 쓴 .btn-link는 브라우저 기본 버튼 모양이 남으므로 이 화면 안에서만 글자 링크처럼 보이게 한다 */
+.gw button.btn-link:not(.btn) { border: 0; padding: 0; font: inherit; text-align: left; cursor: pointer; }
+.gw button.btn-link:not(.btn):hover { text-decoration: underline; }
+.gw-filters { display: flex; flex-wrap: wrap; gap: 0.375rem; margin: 0.25rem 0 0.5rem; }
+.gw-chip { font: inherit; font-size: var(--fs-sm); padding: 0.2rem 0.6rem; border: 1px solid var(--border-strong); border-radius: 999px; background: #fff; color: var(--text); cursor: pointer; }
+.gw-chip[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+.gw-chip:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.gw-hidden-row { margin: 0 0 0.5rem; padding: 0.375rem 0.5rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-sm); background: var(--surface-2); }
+
+.gw-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; min-width: 0; }
+.gw-essay, .gw-ai { min-width: 0; margin: 0; }
+.gw-essay details { margin: 0.25rem 0; }
+.gw-essay details p { margin: 0.25rem 0 0; }
+.gw-ai > .btn-row { margin-bottom: 0.5rem; }
+.gw-history { display: block; margin: 0.25rem 0; }
+.gw-ai-score-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 0.75rem; margin: 0.5rem 0 0.25rem; }
+.gw-ai-score { font-size: var(--fs-xl); font-weight: 700; margin: 0; }
+.gw-criteria { list-style: none; padding: 0; margin: 0.5rem 0; display: grid; gap: 0.5rem; }
+.gw-criterion { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.5rem 0.625rem; }
+.gw-criterion-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 0.5rem; align-items: baseline; font-weight: 600; font-size: var(--fs-md); padding: 0; }
+.gw-criterion .rationale { margin: 0.25rem 0 0; }
+/* 근거 문장은 2줄로 접어 두고 "근거 펼치기"로 모두 연다 */
+.gw-criteria.is-clamped .rationale { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+/* 기준에 마우스를 올리면 그 기준의 근거 구간만 색을 남긴다 */
+.essay-text.has-active mark:not(.is-active) { background: transparent; }
+.gw-level-chip { font-size: var(--fs-sm); font-weight: 600; padding: 0 0.4rem; border-radius: 3px; background: var(--primary-subtle); color: var(--primary); white-space: nowrap; }
+.gw-swatch { display: inline-block; width: 0.625rem; height: 0.625rem; padding: 0; margin-right: 0.375rem; vertical-align: baseline; }
+.gw-quote { margin: 0.25rem 0 0; padding-left: 0.5rem; border-left: 3px solid var(--border-strong); color: var(--text-secondary); font-size: var(--fs-sm); }
+.gw-levels { border: 0; padding: 0; margin: 0; display: grid; gap: 0.25rem; min-width: 0; }
+.gw-level { display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.25rem 0.375rem; border-radius: var(--radius-sm); cursor: pointer; font-size: var(--fs-md); }
+.gw-level input { margin-top: 0.2rem; }
+.gw-level.ai-pick { background: #eef5fc; }
+.gw-level:has(input:checked) { outline: 2px solid var(--primary); outline-offset: -2px; font-weight: 600; }
+.gw-level-desc { display: block; font-weight: 400; color: var(--text-secondary); font-size: var(--fs-sm); }
+.gw-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.75rem 0 0.25rem; }
+.gw-reset > summary { cursor: pointer; font-weight: 600; }
+.gw-reset[open] > summary { margin-bottom: 0.5rem; }
+
+/* 대기열 | 패널 */
+@container (min-width: 760px) {
+  .gw-layout { grid-template-columns: minmax(15rem, 17rem) minmax(0, 1fr); }
+  .gw-queue { position: sticky; top: calc(var(--navbar-h) + 0.5rem); max-height: calc(100vh - var(--navbar-h) - 1rem); overflow: auto; }
+  .gw-queue .table-wrap { max-height: none; }
+}
+/* 대기열 | 답안 | AI 제안 (AI 열은 고정하고 안에서 스크롤) */
+@container (min-width: 1100px) {
+  .gw-panel { grid-template-columns: minmax(0, 1fr) minmax(24rem, 27rem); }
+  .gw-ai { position: sticky; top: calc(var(--navbar-h) + 0.5rem); max-height: calc(100vh - var(--navbar-h) - 1rem); overflow: auto; }
+}

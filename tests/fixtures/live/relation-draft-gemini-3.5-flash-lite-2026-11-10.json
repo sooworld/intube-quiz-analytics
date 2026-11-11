@@ -1,0 +1,155 @@
+{
+  "task": "relation-draft",
+  "provider": "gemini",
+  "requestedModel": "gemini-3.5-flash-lite",
+  "responseModel": "gemini-3.5-flash-lite",
+  "promptVersion": "relation-draft-v1",
+  "schemaVersion": "1",
+  "validatorVersion": "1",
+  "date": "2026-11-10",
+  "durationMs": 1512,
+  "status": "valid",
+  "problems": [],
+  "input": {
+    "concepts": [
+      {
+        "id": "c-hyp",
+        "name": "가설검정",
+        "description": "p값, 유의수준, 1종·2종 오류의 의미"
+      },
+      {
+        "id": "c-reg",
+        "name": "회귀분석",
+        "description": "상관과 회귀계수의 해석, 상관과 인과의 구분"
+      },
+      {
+        "id": "c-clu",
+        "name": "군집분석",
+        "description": "k-means, 계층 군집, DBSCAN의 차이"
+      },
+      {
+        "id": "c-dist",
+        "name": "거리 측도",
+        "description": "유클리드·맨해튼 거리, Jaccard 유사도"
+      }
+    ],
+    "items": [
+      {
+        "id": "q1",
+        "number": 1,
+        "stem": "가설검정에서 p값 0.03의 의미로 가장 적절한 것은?"
+      },
+      {
+        "id": "q2",
+        "number": 2,
+        "stem": "공부 시간과 시험 점수의 상관계수가 0.85로 나왔다. 가장 적절한 결론은?"
+      },
+      {
+        "id": "q3",
+        "number": 3,
+        "stem": "1종 오류(Type I error)에 해당하는 것은?"
+      },
+      {
+        "id": "q4",
+        "number": 4,
+        "stem": "단순회귀식 ŷ = 10 + 2.3x 에서 기울기 2.3의 해석으로 옳은 것은?"
+      },
+      {
+        "id": "q5",
+        "number": 5,
+        "stem": "회귀계수의 p값이 0.03이고 유의수준이 0.05일 때 옳은 판단은?"
+      },
+      {
+        "id": "q6",
+        "number": 6,
+        "stem": "군집 수 k를 분석 전에 정해야 하는 알고리즘은?"
+      },
+      {
+        "id": "q7",
+        "number": 7,
+        "stem": "DBSCAN에서 어느 군집에도 속하지 않은 점은 무엇이라 부르는가?"
+      },
+      {
+        "id": "q8",
+        "number": 8,
+        "stem": "두 점 (1, 2)와 (4, 6) 사이의 맨해튼 거리는?"
+      },
+      {
+        "id": "q9",
+        "number": 9,
+        "stem": "두 점 (0, 0)과 (3, 4) 사이의 유클리드 거리를 숫자로 쓰시오."
+      },
+      {
+        "id": "q10",
+        "number": 10,
+        "stem": "두 이진 벡터에서 '둘 다 1인 위치 수 ÷ 하나라도 1인 위치 수'로 계산하는 유사도 지표의 이름은?"
+      }
+    ],
+    "qmatrix": {
+      "q1": [
+        "c-hyp"
+      ],
+      "q10": [
+        "c-clu",
+        "c-dist"
+      ],
+      "q2": [
+        "c-reg"
+      ],
+      "q3": [
+        "c-hyp"
+      ],
+      "q4": [
+        "c-reg"
+      ],
+      "q5": [
+        "c-hyp",
+        "c-reg"
+      ],
+      "q6": [
+        "c-clu"
+      ],
+      "q7": [
+        "c-clu"
+      ],
+      "q8": [
+        "c-dist"
+      ],
+      "q9": [
+        "c-dist"
+      ]
+    }
+  },
+  "raw": {
+    "relations": [
+      {
+        "from": "c-hyp",
+        "to": "c-reg",
+        "type": "prerequisite",
+        "fromItemIds": [
+          "q1",
+          "q5"
+        ],
+        "toItemIds": [
+          "q5"
+        ],
+        "rationale": "회귀계수의 유의성을 판단하려면 가설검정과 p값의 개념을 먼저 이해해야 합니다."
+      },
+      {
+        "from": "c-dist",
+        "to": "c-clu",
+        "type": "prerequisite",
+        "fromItemIds": [
+          "q10"
+        ],
+        "toItemIds": [
+          "q6",
+          "q7",
+          "q10"
+        ],
+        "rationale": "군집분석 알고리즘들은 데이터 간의 거리나 유사도 측도를 기반으로 작동하므로 거리 측도에 대한 이해가 선수되어야 합니다."
+      }
+    ],
+    "flags": []
+  }
+}

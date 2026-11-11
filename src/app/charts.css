@@ -1,0 +1,75 @@
+/* 차트 공통 스타일 — 순차 팔레트는 globals.css의 --seq-* 토큰 사용 */
+
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; font-size: var(--fs-sm); color: var(--text-secondary); margin: 0.5rem 0; }
+.legend-scale { display: flex; align-items: stretch; }
+.legend-scale span { display: grid; place-items: center; min-width: 42px; height: 24px; font-size: var(--fs-xs); border: 1px solid #fff; }
+.legend-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 0.25rem; }
+.hatch {
+  background-color: #f1f3f5;
+  background-image: repeating-linear-gradient(45deg, transparent 0 4px, #c7cdd3 4px 5px);
+}
+
+/* Heatmap (표 기반: 키보드·스크린리더에서 그대로 표 보기 역할) */
+table.heatmap { border-collapse: separate; border-spacing: 2px; font-size: var(--fs-md); }
+table.heatmap th { font-weight: 600; text-align: left; padding: 0.25rem 0.5rem; white-space: nowrap; }
+table.heatmap thead th { text-align: center; vertical-align: bottom; }
+table.heatmap td { padding: 0; }
+table.heatmap tr.class-row th, table.heatmap tr.class-row td { border-bottom: 2px solid var(--text-secondary); padding-bottom: 2px; }
+.hm-cell {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; min-width: 84px; height: 44px; border: 0; border-radius: 4px; cursor: pointer;
+  font: inherit; font-variant-numeric: tabular-nums; line-height: 1.15;
+}
+.hm-cell.single { height: 32px; }
+.hm-cell .v { font-weight: 700; }
+.hm-cell .f { font-size: var(--fs-xs); opacity: 0.9; }
+.hm-cell:hover { outline: 2px solid var(--text); outline-offset: 1px; }
+.hm-cell[aria-pressed="true"] { outline: 3px solid var(--text); outline-offset: 1px; }
+.hm-cell.zero { box-shadow: inset 0 0 0 1px var(--border); }
+.hm-row-head a { color: var(--text); }
+
+/* Horizontal bars */
+.hbar-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.625rem; }
+.hbar-row { display: grid; grid-template-columns: minmax(110px, 180px) 1fr auto; gap: 0.75rem; align-items: center; }
+.hbar-label { font-size: var(--fs-md); }
+.hbar-track { position: relative; height: 22px; background: var(--chart-grid); border-radius: 0 4px 4px 0; }
+.hbar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; min-width: 2px; }
+.hbar-value { font-size: var(--fs-sm); font-variant-numeric: tabular-nums; min-width: 92px; text-align: right; }
+.hbar-pair { display: grid; gap: 3px; }
+.hbar-pair .hbar-track { height: 14px; }
+.class-marker { position: absolute; top: -3px; bottom: -3px; width: 0; border-left: 2px dashed var(--text); }
+
+/* Matrix */
+table.matrix { border-collapse: separate; border-spacing: 2px; font-size: var(--fs-sm); }
+table.matrix th { padding: 0.25rem 0.375rem; font-weight: 600; text-align: center; white-space: nowrap; }
+table.matrix td button, table.matrix td .diag {
+  width: 56px; height: 40px; border: 0; border-radius: 4px; font: inherit; font-variant-numeric: tabular-nums;
+  display: grid; place-items: center; line-height: 1.1; cursor: pointer;
+}
+table.matrix td .diag { background: #fff; box-shadow: inset 0 0 0 1px var(--border); color: var(--text-muted); cursor: default; }
+table.matrix td button[aria-pressed="true"] { outline: 3px solid var(--text); outline-offset: 1px; }
+
+/* Evidence panel */
+.evidence { border: 1px solid var(--info-border); background: #fbfdff; border-radius: var(--radius); padding: 1rem 1.25rem; }
+.evidence h3 { margin-bottom: 0.25rem; }
+.answer-chip { display: inline-block; font-size: var(--fs-sm); padding: 0.0625rem 0.375rem; border-radius: var(--radius-sm); background: #f1f3f5; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+.state-correct { color: var(--success-text); font-weight: 600; }
+.state-incorrect { color: var(--danger-text); font-weight: 600; }
+.state-unanswered { color: var(--warning-text); font-weight: 600; }
+.split { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+@media (max-width: 1100px) { .split { grid-template-columns: 1fr; } }
+
+.chip-toggle { display: inline-flex; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); overflow: hidden; }
+.chip-toggle button { border: 0; background: #fff; padding: 0.3125rem 0.75rem; font: inherit; cursor: pointer; color: var(--text-secondary); }
+.chip-toggle button + button { border-left: 1px solid var(--border-strong); }
+.chip-toggle button[aria-pressed="true"] { background: var(--primary); color: #fff; }
+
+.qm-check { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+td.qm-changed { background: #fff8e1; }
+.member-list { display: flex; flex-wrap: wrap; gap: 0.375rem; list-style: none; margin: 0.5rem 0 0; padding: 0; }
+.member-list li { display: inline-flex; align-items: center; gap: 0.25rem; border: 1px solid var(--border); border-radius: 999px; padding: 0.125rem 0.25rem 0.125rem 0.625rem; font-size: var(--fs-sm); background: #fff; }
+.member-list li select { font-size: var(--fs-xs); padding: 0.0625rem 0.25rem; }
+
+/* Q-matrix 점검 탐색 카드 (D7) */
+.tagfit > summary, .tagfit details > summary { cursor: pointer; }
+.tagfit > summary:focus-visible, .tagfit details > summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }

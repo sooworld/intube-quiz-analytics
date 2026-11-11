@@ -1,0 +1,467 @@
+{
+  "task": "tag-draft",
+  "provider": "gemini",
+  "requestedModel": "gemini-3.5-flash-lite",
+  "responseModel": "gemini-3.5-flash-lite",
+  "promptVersion": "tag-draft-v1",
+  "schemaVersion": "1",
+  "validatorVersion": "1",
+  "date": "2026-11-10",
+  "durationMs": 3980,
+  "status": "valid",
+  "problems": [],
+  "input": {
+    "concepts": [
+      {
+        "id": "c-hyp",
+        "name": "가설검정",
+        "description": "p값, 유의수준, 1종·2종 오류의 의미"
+      },
+      {
+        "id": "c-reg",
+        "name": "회귀분석",
+        "description": "상관과 회귀계수의 해석, 상관과 인과의 구분"
+      },
+      {
+        "id": "c-clu",
+        "name": "군집분석",
+        "description": "k-means, 계층 군집, DBSCAN의 차이"
+      },
+      {
+        "id": "c-dist",
+        "name": "거리 측도",
+        "description": "유클리드·맨해튼 거리, Jaccard 유사도"
+      }
+    ],
+    "items": [
+      {
+        "id": "q1",
+        "number": 1,
+        "type": "mcq",
+        "stem": "가설검정에서 p값 0.03의 의미로 가장 적절한 것은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "귀무가설이 참일 확률이 3%이다",
+            "misconception": "p값을 귀무가설이 참일 확률로 해석"
+          },
+          {
+            "id": "B",
+            "text": "귀무가설이 참이라고 가정할 때, 관측한 결과 이상으로 극단적인 결과가 나올 확률이 3%이다"
+          },
+          {
+            "id": "C",
+            "text": "대립가설이 참일 확률이 97%이다",
+            "misconception": "p값을 대립가설의 확률로 해석"
+          },
+          {
+            "id": "D",
+            "text": "효과의 크기가 3%이다",
+            "misconception": "p값과 효과 크기 혼동"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q2",
+        "number": 2,
+        "type": "mcq",
+        "stem": "공부 시간과 시험 점수의 상관계수가 0.85로 나왔다. 가장 적절한 결론은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "공부 시간이 시험 점수를 올리는 원인이다",
+            "misconception": "상관을 인과로 해석"
+          },
+          {
+            "id": "B",
+            "text": "두 변수 사이에 강한 양의 선형 관련성이 있다. 인과 여부는 별도 설계로 확인해야 한다"
+          },
+          {
+            "id": "C",
+            "text": "공부 시간이 1시간 늘면 점수가 0.85점 오른다",
+            "misconception": "상관계수와 회귀 기울기 혼동"
+          },
+          {
+            "id": "D",
+            "text": "두 변수는 85%의 확률로 관련되어 있다",
+            "misconception": "상관계수를 확률로 해석"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q3",
+        "number": 3,
+        "type": "mcq",
+        "stem": "1종 오류(Type I error)에 해당하는 것은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "실제로 효과가 있는데 없다고 결론 내리는 것",
+            "misconception": "1종·2종 오류 뒤바꿈"
+          },
+          {
+            "id": "B",
+            "text": "실제로 효과가 없는데 있다고 결론 내리는 것"
+          },
+          {
+            "id": "C",
+            "text": "표본 크기가 너무 작아 검정을 못 하는 것",
+            "misconception": "오류 유형과 검정력 부족 혼동"
+          },
+          {
+            "id": "D",
+            "text": "유의수준을 0.05보다 크게 정하는 것",
+            "misconception": "오류와 유의수준 설정 혼동"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q4",
+        "number": 4,
+        "type": "mcq",
+        "stem": "단순회귀식 ŷ = 10 + 2.3x 에서 기울기 2.3의 해석으로 옳은 것은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "x가 1 늘 때 y의 예측 평균이 2.3 늘어난다"
+          },
+          {
+            "id": "B",
+            "text": "x가 y를 2.3배로 만든다",
+            "misconception": "기울기를 배수로 해석"
+          },
+          {
+            "id": "C",
+            "text": "x와 y의 상관계수가 2.3이다",
+            "misconception": "상관계수와 회귀 기울기 혼동"
+          },
+          {
+            "id": "D",
+            "text": "x가 1 늘면 y가 반드시 2.3 늘어난다",
+            "misconception": "예측값을 개별 관측의 확정값으로 해석"
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      {
+        "id": "q5",
+        "number": 5,
+        "type": "mcq",
+        "stem": "회귀계수의 p값이 0.03이고 유의수준이 0.05일 때 옳은 판단은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "기울기가 0이라는 귀무가설을 기각한다"
+          },
+          {
+            "id": "B",
+            "text": "x가 y의 원인임이 증명되었다",
+            "misconception": "상관을 인과로 해석"
+          },
+          {
+            "id": "C",
+            "text": "모형의 설명력(R²)이 97%이다",
+            "misconception": "p값과 설명력 혼동"
+          },
+          {
+            "id": "D",
+            "text": "귀무가설이 참일 확률이 3%이므로 기각한다",
+            "misconception": "p값을 귀무가설이 참일 확률로 해석"
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      {
+        "id": "q6",
+        "number": 6,
+        "type": "mcq",
+        "stem": "군집 수 k를 분석 전에 정해야 하는 알고리즘은?",
+        "options": [
+          {
+            "id": "A",
+            "text": "DBSCAN",
+            "misconception": "밀도 기반 군집도 k가 필요하다고 오해"
+          },
+          {
+            "id": "B",
+            "text": "k-means"
+          },
+          {
+            "id": "C",
+            "text": "병합형 계층 군집",
+            "misconception": "계층 군집도 k를 먼저 정한다고 오해"
+          },
+          {
+            "id": "D",
+            "text": "세 알고리즘 모두",
+            "misconception": "알고리즘별 입력 조건 구분 부족"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q7",
+        "number": 7,
+        "type": "mcq",
+        "stem": "DBSCAN에서 어느 군집에도 속하지 않은 점은 무엇이라 부르는가?",
+        "options": [
+          {
+            "id": "A",
+            "text": "중심점(centroid)",
+            "misconception": "k-means 개념과 혼동"
+          },
+          {
+            "id": "B",
+            "text": "핵심점(core point)",
+            "misconception": "DBSCAN 점 유형 혼동"
+          },
+          {
+            "id": "C",
+            "text": "노이즈(noise)"
+          },
+          {
+            "id": "D",
+            "text": "덴드로그램의 잎(leaf)",
+            "misconception": "계층 군집 개념과 혼동"
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      {
+        "id": "q8",
+        "number": 8,
+        "type": "mcq",
+        "stem": "두 점 (1, 2)와 (4, 6) 사이의 맨해튼 거리는?",
+        "options": [
+          {
+            "id": "A",
+            "text": "5",
+            "misconception": "유클리드 거리와 혼동"
+          },
+          {
+            "id": "B",
+            "text": "7"
+          },
+          {
+            "id": "C",
+            "text": "12",
+            "misconception": "좌표 합으로 계산"
+          },
+          {
+            "id": "D",
+            "text": "25",
+            "misconception": "제곱합을 거리로 사용"
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      {
+        "id": "q9",
+        "number": 9,
+        "type": "short",
+        "stem": "두 점 (0, 0)과 (3, 4) 사이의 유클리드 거리를 숫자로 쓰시오.",
+        "shortAnswer": {
+          "policy": "numeric",
+          "accepted": [
+            "5"
+          ],
+          "tolerance": 0.01,
+          "misconceptionRules": [
+            {
+              "equals": [
+                "7"
+              ],
+              "label": "맨해튼 거리와 혼동"
+            },
+            {
+              "equals": [
+                "25"
+              ],
+              "label": "제곱근 누락"
+            }
+          ]
+        }
+      },
+      {
+        "id": "q10",
+        "number": 10,
+        "type": "short",
+        "stem": "두 이진 벡터에서 '둘 다 1인 위치 수 ÷ 하나라도 1인 위치 수'로 계산하는 유사도 지표의 이름은?",
+        "shortAnswer": {
+          "policy": "text",
+          "accepted": [
+            "jaccard",
+            "자카드",
+            "jaccard 유사도",
+            "자카드 유사도",
+            "jaccard index",
+            "jaccard similarity",
+            "자카드 계수",
+            "jaccard 계수"
+          ],
+          "misconceptionRules": [
+            {
+              "includesAll": [
+                "코사인"
+              ],
+              "label": "코사인 유사도와 혼동"
+            },
+            {
+              "includesAll": [
+                "cosine"
+              ],
+              "label": "코사인 유사도와 혼동"
+            },
+            {
+              "includesAll": [
+                "해밍"
+              ],
+              "label": "해밍 거리와 혼동"
+            },
+            {
+              "includesAll": [
+                "hamming"
+              ],
+              "label": "해밍 거리와 혼동"
+            },
+            {
+              "includesAll": [
+                "유클리드"
+              ],
+              "label": "유클리드 거리와 혼동"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "raw": {
+    "items": [
+      {
+        "itemId": "q1",
+        "tags": [
+          {
+            "conceptId": "c-hyp",
+            "source": "stem",
+            "optionId": "",
+            "quote": "가설검정에서 p값 0.03의 의미로 가장 적절한 것은?",
+            "rationale": "p값의 정의와 의미를 이해하고 있어야 올바른 해석을 고를 수 있습니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q2",
+        "tags": [
+          {
+            "conceptId": "c-reg",
+            "source": "stem",
+            "optionId": "",
+            "quote": "공부 시간과 시험 점수의 상관계수가 0.85로 나왔다. 가장 적절한 결론은?",
+            "rationale": "상관계수의 의미를 파악하고 상관과 인과의 차이를 구분해야 합니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q3",
+        "tags": [
+          {
+            "conceptId": "c-hyp",
+            "source": "stem",
+            "optionId": "",
+            "quote": "1종 오류(Type I error)에 해당하는 것은?",
+            "rationale": "가설검정에서 1종 오류의 개념을 정확히 이해하고 있는지 묻고 있습니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q4",
+        "tags": [
+          {
+            "conceptId": "c-reg",
+            "source": "stem",
+            "optionId": "",
+            "quote": "단순회귀식 ŷ = 10 + 2.3x 에서 기울기 2.3의 해석으로 옳은 것은?",
+            "rationale": "회귀분석에서 회귀계수(기울기)의 의미를 해석하는 문제입니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q5",
+        "tags": [
+          {
+            "conceptId": "c-hyp",
+            "source": "stem",
+            "optionId": "",
+            "quote": "회귀계수의 p값이 0.03이고 유의수준이 0.05일 때 옳은 판단은?",
+            "rationale": "p값과 유의수준을 비교하여 귀무가설 기각 여부를 결정하는 가설검정의 원리를 다룹니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q6",
+        "tags": [
+          {
+            "conceptId": "c-clu",
+            "source": "stem",
+            "optionId": "",
+            "quote": "군집 수 k를 분석 전에 정해야 하는 알고리즘은?",
+            "rationale": "k-means 등 군집분석 알고리즘 간의 차이와 입력 파라미터를 묻고 있습니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q7",
+        "tags": [
+          {
+            "conceptId": "c-clu",
+            "source": "stem",
+            "optionId": "",
+            "quote": "DBSCAN에서 어느 군집에도 속하지 않은 점은 무엇이라 부르는가?",
+            "rationale": "밀도 기반 군집분석인 DBSCAN의 핵심 용어와 구조를 이해해야 합니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q8",
+        "tags": [
+          {
+            "conceptId": "c-dist",
+            "source": "stem",
+            "optionId": "",
+            "quote": "두 점 (1, 2)와 (4, 6) 사이의 맨해튼 거리는?",
+            "rationale": "맨해튼 거리 측도의 정의에 따라 두 점 사이의 거리를 계산할 수 있어야 합니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q9",
+        "tags": [
+          {
+            "conceptId": "c-dist",
+            "source": "stem",
+            "optionId": "",
+            "quote": "두 점 (0, 0)과 (3, 4) 사이의 유클리드 거리를 숫자로 쓰시오.",
+            "rationale": "유클리드 거리 측도를 사용하여 두 점 사이의 거리를 계산하는 능력을 평가합니다."
+          }
+        ]
+      },
+      {
+        "itemId": "q10",
+        "tags": [
+          {
+            "conceptId": "c-dist",
+            "source": "stem",
+            "optionId": "",
+            "quote": "두 이진 벡터에서 '둘 다 1인 위치 수 ÷ 하나라도 1인 위치 수'로 계산하는 유사도 지표의 이름은?",
+            "rationale": "Jaccard 유사도 등 다양한 거리 및 유사도 측도의 정의를 알고 있는지 확인합니다."
+          }
+        ]
+      }
+    ],
+    "conceptGaps": [],
+    "flags": []
+  }
+}

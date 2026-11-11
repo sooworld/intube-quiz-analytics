@@ -1,0 +1,13 @@
+{
+  "statementsFile": "quiz-w5.statements.json",
+  "statementDataVersion": "2026-11-11.1",
+  "validator": "xapi-validation@2.1.4",
+  "specBasis": "xAPI 1.0.3 (Learning Locker validator)",
+  "statementCount": 295,
+  "byVerb": {
+    "http://adlnet.gov/expapi/verbs/attempted": 25,
+    "http://adlnet.gov/expapi/verbs/answered": 245,
+    "http://adlnet.gov/expapi/verbs/completed": 25
+  },
+  "problemCount": 0
+}

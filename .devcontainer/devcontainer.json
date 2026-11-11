@@ -1,0 +1,10 @@
+{
+  "name": "LearnLens demo relay",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24",
+  "postCreateCommand": "npm ci",
+  "forwardPorts": [8787],
+  "portsAttributes": {
+    "8787": { "label": "AI 중계 (시연 때만 Public)", "onAutoForward": "silent" }
+  },
+  "remoteEnv": { "RELAY_HOST": "0.0.0.0" }
+}

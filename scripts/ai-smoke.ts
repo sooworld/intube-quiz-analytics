@@ -1,14 +1,12 @@
 // 실연 스크립트 (docs/decisions.md §8.1 U8, §8.7). 한 번 실행에 작업 1개, 생성 요청 정확히 1건(재시도 없음).
-// 사용: npm run ai:smoke -- <essay|tag|relation|summary> <gemini|lg> [모델 id]
-// 키는 .env의 GEMINI_API_KEY 또는 LG_API_KEY에서 읽고 화면·파일 어디에도 출력하지 않는다.
-// lg(기본 AI)는 중계 없이 제공자 서버를 직접 부른다(Node라 CORS와 무관).
+// 사용: npm run ai:smoke -- <essay|tag|relation|summary> [모델 id]
+// 키는 .env의 GEMINI_API_KEY에서 읽고 화면·파일 어디에도 출력하지 않는다.
 // 결과(검증 전 모델 출력 포함)는 tests/fixtures/live/에 저장해 재생 테스트로 다시 검증한다.
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { getDataset, getEssayDataset } from "../src/lib/data";
 import { runTask, type TaskRun } from "../src/lib/ai/client";
 import { geminiListModels } from "../src/lib/ai/providers/gemini";
-import { LG_DIRECT_BASE, LG_MODEL, lgListModels } from "../src/lib/ai/providers/lg";
 import { redact } from "../src/lib/ai/providers/http";
 import type { AiTask } from "../src/lib/ai/task";
 import { analysisSummaryTask } from "../src/lib/ai/tasks/analysisSummary";
@@ -21,9 +19,7 @@ import { buildMatrix, defaultQMatrix } from "../src/lib/analysis/matrix";
 import type { QuizDataset } from "../src/lib/types";
 
 const GEMINI_MODEL: Record<string, string> = { essay: "gemini-3.5-flash-lite", tag: "gemini-3.5-flash-lite", relation: "gemini-3.5-flash-lite", summary: "gemini-3.5-flash" };
-const PROVIDERS = ["gemini", "lg"] as const;
-type SmokeProvider = (typeof PROVIDERS)[number];
-const KEY_ENV: Record<SmokeProvider, string> = { gemini: "GEMINI_API_KEY", lg: "LG_API_KEY" };
+const KEY_ENV = "GEMINI_API_KEY";
 
 const data: QuizDataset = getDataset("quiz-w5")!;
 const q = defaultQMatrix(data.quiz.items);
@@ -44,18 +40,16 @@ function inputFor(kind: string): { task: AiTask<unknown, { status: SuggestionSta
 }
 
 async function main() {
-  const [kind = "", providerArg = "", modelArg] = process.argv.slice(2);
-  if (!PROVIDERS.includes(providerArg as SmokeProvider)) throw new Error(`제공자는 gemini | lg 중 하나입니다: ${providerArg}`);
-  const provider = providerArg as SmokeProvider;
+  const [kind = "", modelArg] = process.argv.slice(2);
   const { task, input } = inputFor(kind);
-  const model = modelArg ?? (provider === "lg" ? LG_MODEL : GEMINI_MODEL[kind]!);
-  const apiKey = process.env[KEY_ENV[provider]]?.trim() ?? "";
-  if (!apiKey) throw new Error(`${KEY_ENV[provider]}가 없습니다(.env 확인).`);
+  const model = modelArg ?? GEMINI_MODEL[kind]!;
+  const apiKey = process.env[KEY_ENV]?.trim() ?? "";
+  if (!apiKey) throw new Error(`${KEY_ENV}가 없습니다(.env 확인).`);
   const fetchImpl = (u: string, i?: RequestInit) => fetch(u, i);
-  const config: ProviderConfig = provider === "lg" ? { provider, model, apiKey, baseUrl: LG_DIRECT_BASE } : { provider, model, apiKey };
+  const config: ProviderConfig = { provider: "gemini", model, apiKey };
 
   // 1) 모델 목록으로 키와 모델 id 확인 (생성 호출 아님, 하루 한도에 들지 않음)
-  const models = provider === "lg" ? await lgListModels({ baseUrl: LG_DIRECT_BASE, apiKey, fetchImpl }) : await geminiListModels({ apiKey, fetchImpl });
+  const models = await geminiListModels({ apiKey, fetchImpl });
   if (!models.includes(model)) throw new Error(`이 키로 쓸 수 없는 모델입니다: ${model}`);
   console.log(`[확인] 키 인증 통과, 모델 ${model} 사용 가능 (생성 지원 모델 ${models.length}개)`);
 
@@ -103,8 +97,7 @@ async function main() {
 }
 
 main().catch((err) => {
-  let msg = err instanceof Error ? err.message : String(err);
-  for (const name of Object.values(KEY_ENV)) msg = redact(msg, process.env[name] ?? "");
+  const msg = redact(err instanceof Error ? err.message : String(err), process.env[KEY_ENV] ?? "");
   console.error(`[중단] ${msg}`);
   process.exitCode = 1;
 });

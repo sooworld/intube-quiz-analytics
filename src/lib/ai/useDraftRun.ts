@@ -1,16 +1,13 @@
 "use client";
 // AI 초안 실행 훅 (docs/decisions.md §8.7). 작업별 설정 → 앱 전체 동시 1건 → 실행 → 불변 초안 저장.
 // 설정이 바뀌거나 화면을 떠나면 요청을 취소하고, 늦은 응답은 버린다.
-// 기본 AI(중계)로 돌린 실행은 중계가 센 "호출 n회 · 소요 s초"와 오늘 예산을 runInfo로 알린다(저장하지 않는다).
 import { useEffect, useRef, useState } from "react";
-import { errorHint, providerModelLabel } from "./capabilities";
+import { providerModelLabel } from "./capabilities";
 import { acquireAiRun, createRequestGate, currentAiRun, newId, runTask } from "./client";
 import { browserAiSettingsStore } from "./keyStore";
-import { budgetLeft, fetchRunUsage, newRunId, relayUsageStore, runLabel, usageLabel } from "./relayUsage";
 import { AI_TASK_LABEL, type AiTask } from "./task";
-import { AI_ERROR_TEXT, aiErrorText, AiError, isRetryable, type ProviderConfig, type SuggestionStatus } from "./types";
+import { aiErrorText, AiError, isRetryable, type SuggestionStatus } from "./types";
 import { useAiSettings } from "./useAiSettings";
-import { useRelayUsage } from "./useRelayUsage";
 import { waitGuide } from "./wait";
 import type { AiDraft, DraftTaskId } from "../state/aiRecords";
 
@@ -21,8 +18,6 @@ export interface DraftRunState {
   retryable: boolean;
   /** 초안을 받았지만 브라우저 저장소에 쓰지 못했을 때 (반영을 막는다) */
   unsaved: boolean;
-  /** 마지막 실행의 호출 수·소요 시간·오늘 예산(기본 AI 중계일 때만) */
-  runInfo: string | null;
 }
 
 /** 초안을 어느 퀴즈의 저장소에 쌓을지 (객관식은 QuizContext, 서술형은 EssayContext) */
@@ -33,18 +28,10 @@ export interface DraftTarget {
   addDraft: (d: AiDraft) => boolean;
 }
 
-/** 실행이 끝난 뒤 중계에서 이 실행의 호출 수와 오늘 사용량을 읽어 한 줄로 만든다 */
-async function describeRun(config: ProviderConfig, runId: string, ms: number): Promise<string | null> {
-  if (config.provider !== "lg") return null;
-  const u = await fetchRunUsage(config, runId);
-  return [runLabel(u?.runCalls ?? null, ms), usageLabel(u)].filter(Boolean).join(" · ");
-}
-
 export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiTask<I, V> & { id: DraftTaskId }, target: DraftTarget) {
   const { quizId, dataVersion, addDraft } = target;
   const ai = useAiSettings();
-  useRelayUsage(); // 오늘 예산을 미리 읽어 두면 예산이 없을 때 호출하기 전에 막을 수 있다
-  const [state, setState] = useState<DraftRunState>({ busy: false, error: null, retryable: false, unsaved: false, runInfo: null });
+  const [state, setState] = useState<DraftRunState>({ busy: false, error: null, retryable: false, unsaved: false });
   const ctrl = useRef<AbortController | null>(null);
   const gate = useRef(createRequestGate());
   const taskSetting = JSON.stringify(ai.tasks[task.id] ?? null);
@@ -53,7 +40,7 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
   useEffect(() => {
     ctrl.current?.abort();
     gate.current.invalidate();
-  }, [ai.provider, ai.model, ai.baseUrl, ai.relayUrl, taskSetting]);
+  }, [ai.provider, ai.model, ai.baseUrl, taskSetting]);
   // 화면을 떠나면 취소한다
   useEffect(() => () => ctrl.current?.abort(), []);
 
@@ -62,29 +49,22 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
     try {
       config = browserAiSettingsStore().getConfigFor(task.id);
     } catch (e) {
-      setState({ busy: false, error: aiErrorText(e), retryable: false, unsaved: false, runInfo: null });
-      return null;
-    }
-    // 중계가 오늘 예산이 없다고 알려 주면 보내지 않는다(보내도 중계가 막지만 불필요한 대기를 없앤다)
-    if (config.provider === "lg" && budgetLeft(relayUsageStore.get()) === 0) {
-      setState({ busy: false, error: AI_ERROR_TEXT["relay-budget"], retryable: false, unsaved: false, runInfo: null });
+      setState({ busy: false, error: aiErrorText(e), retryable: false, unsaved: false });
       return null;
     }
     const release = acquireAiRun(task.id);
     if (!release) {
       const other = currentAiRun();
-      setState({ busy: false, error: `다른 AI 작업(${other && other in AI_TASK_LABEL ? AI_TASK_LABEL[other as keyof typeof AI_TASK_LABEL] : "진행 중"})이 끝난 뒤에 실행하세요.`, retryable: false, unsaved: false, runInfo: null });
+      setState({ busy: false, error: `다른 AI 작업(${other && other in AI_TASK_LABEL ? AI_TASK_LABEL[other as keyof typeof AI_TASK_LABEL] : "진행 중"})이 끝난 뒤에 실행하세요.`, retryable: false, unsaved: false });
       return null;
     }
     const c = new AbortController();
     ctrl.current = c;
     const id = gate.current.next();
-    const runId = newRunId();
-    const started = Date.now();
-    setState({ busy: true, error: null, retryable: false, unsaved: false, runInfo: null });
+    setState({ busy: true, error: null, retryable: false, unsaved: false });
     try {
       const pageProtocol = typeof window === "undefined" ? "https:" : window.location.protocol;
-      const r = await runTask(task, input, { config, signal: c.signal, pageProtocol, runId });
+      const r = await runTask(task, input, { config, signal: c.signal, pageProtocol });
       if (!gate.current.isCurrent(id)) return null;
       const now = new Date();
       const draft: AiDraft<I, V> = {
@@ -104,15 +84,12 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
         result: r.result,
       };
       const saved = addDraft(draft as unknown as AiDraft);
-      const runInfo = await describeRun(config, runId, Date.now() - started);
-      setState({ busy: false, error: null, retryable: false, unsaved: !saved, runInfo });
+      setState({ busy: false, error: null, retryable: false, unsaved: !saved });
       return draft;
     } catch (e) {
       if (!gate.current.isCurrent(id)) return null;
       const aborted = e instanceof AiError && e.kind === "aborted";
-      // 실패·시간 초과한 호출도 중계는 세므로 호출 수를 보여 준다. 취소는 보여 줄 결과가 없다
-      const runInfo = aborted ? null : await describeRun(config, runId, Date.now() - started);
-      setState({ busy: false, error: aborted ? null : aiErrorText(e) + errorHint(config.provider, e), retryable: isRetryable(e), unsaved: false, runInfo });
+      setState({ busy: false, error: aborted ? null : aiErrorText(e), retryable: isRetryable(e), unsaved: false });
       return null;
     } finally {
       release();
@@ -137,7 +114,7 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
         ? "설정 오류 (AI 설정의 작업별 모델 확인)"
         : providerModelLabel(t.provider, t.model);
 
-  const wait = waitGuide(t?.provider ?? ai.provider, task.id);
+  const wait = waitGuide(t?.provider ?? ai.provider);
 
   return { ...state, run, cancel, modelLabel, wait };
 }

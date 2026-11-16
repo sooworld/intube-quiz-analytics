@@ -307,4 +307,17 @@ describe("개인 키 보관", () => {
     s.setProvider("anthropic");
     expect(s.getSnapshot().model).toBe("claude-haiku-5-5");
   });
+
+  it("저장된 제공자가 지금 목록에 없으면(2026-11-11에 뺀 lg) Mock으로 시작하고, 작업별 lg 설정은 버린다", () => {
+    const local = mem();
+    local.setItem(SETTINGS_KEY, JSON.stringify({ provider: "lg", models: {}, baseUrl: "", relayUrl: "", tasks: {} }));
+    const a = createAiSettingsStore({ local, session: mem() });
+    a.hydrate();
+    expect(a.getSnapshot().provider).toBe("mock");
+    local.setItem(SETTINGS_KEY, JSON.stringify({ provider: "gemini", models: {}, baseUrl: "", tasks: { "tag-draft": { provider: "lg", model: "k-exaone_v2.5" } } }));
+    const b = createAiSettingsStore({ local, session: mem() });
+    b.hydrate();
+    expect(b.getSnapshot().provider).toBe("gemini");
+    expect(b.getSnapshot().tasks).toEqual({});
+  });
 });

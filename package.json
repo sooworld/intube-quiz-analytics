@@ -15,8 +15,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "gen:essays": "tsx scripts/generate-essays.ts",
-    "ai:smoke": "tsx --env-file=.env scripts/ai-smoke.ts",
-    "ai:proxy": "tsx --env-file=.env scripts/ai-proxy.ts"
+    "ai:smoke": "tsx --env-file=.env scripts/ai-smoke.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.3.0",

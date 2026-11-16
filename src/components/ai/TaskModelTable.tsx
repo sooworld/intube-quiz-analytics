@@ -27,7 +27,7 @@ export function TaskModelTable({ models }: { models: string[] | null }) {
   const setMode = (task: AiTaskId, mode: Mode) => {
     if (mode === "inherit") store().setTaskSetting(task, null);
     else if (mode === "mock") store().setTaskSetting(task, { provider: "mock" });
-    else if (s.provider !== "mock" && s.provider !== "lg") store().setTaskSetting(task, { provider: s.provider, model: GEMINI_SUGGESTED[task] && s.provider === "gemini" ? GEMINI_SUGGESTED[task]! : s.model });
+    else if (s.provider !== "mock") store().setTaskSetting(task, { provider: s.provider, model: GEMINI_SUGGESTED[task] && s.provider === "gemini" ? GEMINI_SUGGESTED[task]! : s.model });
   };
 
   return (
@@ -73,8 +73,7 @@ export function TaskModelTable({ models }: { models: string[] | null }) {
                     <select id={`mode-${task}`} value={mode} onChange={(e) => setMode(task, e.target.value as Mode)}>
                       <option value="inherit">공통 설정 따름</option>
                       <option value="mock">Mock (규칙 기반, AI 아님)</option>
-                      {/* 기본 AI는 모델이 하나뿐이라 다른 모델을 고를 수 없다 */}
-                      <option value="model" disabled={(s.provider === "mock" || s.provider === "lg") && mode !== "model"}>
+                      <option value="model" disabled={s.provider === "mock" && mode !== "model"}>
                         공통 제공자의 다른 모델
                       </option>
                     </select>

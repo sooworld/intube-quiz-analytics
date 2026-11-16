@@ -2,7 +2,6 @@
 // 결과 분석 요약 초안 카드 (docs/decisions.md §8.3–8.4). 숫자는 코드가 만든 사실 절로만 나온다.
 // AI 문장 → 교수 편집(다시 검사) → 확정 저장. 원본 초안은 바뀌지 않는다.
 import { useMemo, useState } from "react";
-import { modelLabel } from "@/lib/ai/capabilities";
 import { AiRunStatus } from "@/components/ai/AiRunStatus";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { CaveatNote } from "@/components/moodle/PageParts";
@@ -197,7 +196,7 @@ export function SummaryDraftPanel({ quizId, dataVersion, facts, factsLabel, draf
             >
               {[...sumDrafts].reverse().map((d) => (
                 <option key={d.draftId} value={d.draftId}>
-                  {formatDateTime(d.createdAt)} · {modelLabel(d.provider, d.requestedModel)} · {STATUS_TEXT[d.result.status]}
+                  {formatDateTime(d.createdAt)} · {d.requestedModel} · {STATUS_TEXT[d.result.status]}
                 </option>
               ))}
             </select>
@@ -205,7 +204,7 @@ export function SummaryDraftPanel({ quizId, dataVersion, facts, factsLabel, draf
         ) : null}
       </div>
       {blockedReason ? <p className="small muted">{blockedReason}</p> : null}
-      <AiRunStatus runInfo={runner.runInfo} busy={runner.busy} wait={runner.wait} error={runner.error} retryable={runner.retryable} idleMessage={message} onRetry={request} />
+      <AiRunStatus busy={runner.busy} wait={runner.wait} error={runner.error} retryable={runner.retryable} idleMessage={message} onRetry={request} />
       {runner.unsaved ? (
         <div className="alert alert-warning" role="alert">
           <p>초안을 브라우저에 저장하지 못해 확정할 수 없습니다. 저장 공간을 확인한 뒤 다시 받으세요.</p>
@@ -247,7 +246,7 @@ export function SummaryDraftPanel({ quizId, dataVersion, facts, factsLabel, draf
         <>
           <p
             className="small"
-            title={`요청 모델 ${modelLabel(draft.provider, draft.requestedModel)}${draft.responseModel && modelLabel(draft.provider, draft.responseModel) !== modelLabel(draft.provider, draft.requestedModel) ? ` (응답 모델 ${modelLabel(draft.provider, draft.responseModel)})` : ""}`}
+            title={`요청 모델 ${draft.requestedModel}${draft.responseModel && draft.responseModel !== draft.requestedModel ? ` (응답 모델 ${draft.responseModel})` : ""}`}
           >
             <span className={`badge ${view.status === "valid" ? "badge-ok" : view.status === "invalid" ? "badge-danger" : "badge-demo"}`}>{STATUS_TEXT[view.status]}</span>{" "}
             {formatDateTime(draft.createdAt)}

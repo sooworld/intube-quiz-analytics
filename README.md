@@ -23,7 +23,7 @@
 | `/essay/quiz-w5e/` | 서술형 퀴즈(2문항, 루브릭 기준 3개 × 0·1·2) 소개와 루브릭 |
 | `/essay/quiz-w5e/grading/` | **AI 우선 배치**(2026-11-11): 위에 AI 채점 진행 막대(상태별 건수·일괄 제안), 아래 대기열(상태 필터) | 답안(근거 하이라이트) | AI 제안·결정. 수락 / 수정 후 확정 / 직접 채점, 확정 뒤 "다음 답안 →" |
 | `/essay/quiz-w5e/analysis/` | 확정률, **AI 요약 초안**(확정 점수로 만든 사실만), 개념 점수율, 기준별 분포, AI 제안 vs 교수 확정, AI 제안 vs 기준 채점(생성/보류 분리) |
-| `/settings/ai/` | 제공자(**AI**·Mock·Gemini·Anthropic·OpenAI 호환), 모델, 현재 브라우저의 개인 키 또는 로컬 중계 연결 확인, **작업별 모델** |
+| `/settings/ai/` | 제공자(Mock·Gemini·Anthropic·OpenAI 호환), 모델, 현재 브라우저의 개인 키와 연결 확인, **작업별 모델** |
 
 ## 개발
 
@@ -36,15 +36,10 @@ npm run lint
 npm run gen:data     # 가상 데이터 재생성 (시드 고정, src/data/course.json·quiz-w5.json(정의)·roster.json, public/xapi/ Statement와 검증 보고서)
 npm run gen:essays   # 서술형 가상 답안 재생성 (src/data/quiz-w5e.json, docs/essay-review.md)
 npm run build:pages  # /intube-quiz-analytics/ 하위 경로로 정적 빌드 → out/
-npm run ai:smoke -- essay|tag|relation|summary gemini|lg [모델]  # 실연 1건 (.env의 GEMINI_API_KEY·LG_API_KEY, 재시도 없음)
-npm run ai:proxy     # 기본 AI 중계 http://127.0.0.1:8787 (로컬은 npm run dev와 함께, 시연은 Codespaces: docs/demo-relay.md)
+npm run ai:smoke -- essay|tag|relation|summary [모델]  # Gemini 실연 1건 (.env의 GEMINI_API_KEY, 재시도 없음)
 ```
 
-**기본 AI로 쓰려면** 터미널 두 개에서 `npm run ai:proxy`와 `npm run dev`를 띄우고 `http://localhost:3000`으로 접속합니다. 로컬 실행에서는 기본 AI가 기본 제공자이고, 공개 배포 사이트에서는 Mock이 기본입니다. 제공자 서버는 브라우저 CORS를 허용하지 않아(사전 요청에 401, 2026-11-11 측정) 브라우저가 직접 부를 수 없습니다. 중계가 `.env`(공개 중계는 Secret)의 `LG_API_KEY`를 붙여 대신 부르므로 키는 브라우저로 오지 않습니다. 중계는 기본이 `127.0.0.1`에만 열리고, 허용한 Origin(`http://localhost:3000`, `http://127.0.0.1:3000`, `.env`의 `AI_RELAY_ORIGINS`로 변경)에서 온 JSON 요청만 전달하며, 업스트림 호출은 한 번에 1건·1.1초 간격입니다(초당 1건 한도).
-
-**배포 사이트에서 기본 AI를 쓰려면(시연용, 2026-11-11 U16)** GitHub Codespaces에서 중계를 시연 때만 띄우고(`RELAY_HOST=0.0.0.0`, 접속 코드 `AI_RELAY_CODE`, 하루 예산 `AI_RELAY_BUDGET=20`, 허용 Origin `AI_RELAY_ORIGINS`가 모두 있어야 시작합니다), 사이트의 `/settings/ai/`에서 중계 주소(https)와 접속 코드를 입력합니다. 화면에 "호출 n회 · 소요 s초"와 "오늘 호출 n/20"이 보입니다. 절차와 한계는 [`docs/demo-relay.md`](docs/demo-relay.md).
-
-`.env`는 커밋하지 않습니다(`.gitignore`). 키를 `NEXT_PUBLIC_` 변수로 바꾸면 정적 번들에 들어가 공개되므로 쓰지 않습니다. 기본 AI 외의 제공자는 브라우저 화면의 `/settings/ai/`에 키를 직접 입력합니다.
+`.env`(`ai:smoke`용 `GEMINI_API_KEY`)는 커밋하지 않습니다(`.gitignore`). 키를 `NEXT_PUBLIC_` 변수로 바꾸면 정적 번들에 들어가 공개되므로 쓰지 않습니다. 화면에서 쓰는 키는 브라우저의 `/settings/ai/`에 직접 입력합니다.
 
 ## 지표와 한계
 
@@ -68,7 +63,7 @@ npm run ai:proxy     # 기본 AI 중계 http://127.0.0.1:8787 (로컬은 npm run
 - **예시 데이터를 만드는 방법:** quiz-w5와 같은 학생·프로필에서 루브릭 기준마다 "의도 수준"을 뽑고, 기준×수준 문장 뱅크로 답안을 조합합니다. 의도 수준이 기준 채점이 됩니다. 경계 사례(무응답, 짧은 답, 주제 이탈, 지시문 주입, 글자 수 초과, 거의 같은 답안)와 문장 뱅크를 쓰지 않은 **보류 답안 6편**을 섞었습니다. 사람 검토용 표는 [`docs/essay-review.md`](docs/essay-review.md)이고, 고친 값은 `scripts/essay-overrides.json`에 적습니다.
 - **AI는 제안만 합니다.** 기준별 수준·근거 문장·피드백 초안을 내고, 교수가 수락하거나 고쳐야 확정됩니다. 확정 전 점수는 분석에 넣지 않습니다.
 - **모델 출력은 검증합니다.** 총점은 코드가 계산하고, 근거 인용이 답안에 실제로 있는지 확인합니다. 구조가 틀린 제안은 수락할 수 없고(직접 채점만), 근거가 맞지 않거나 지시문 주입이 의심되면 "검토 필요"로 수정 후 확정만 됩니다.
-- **제공자:** 로컬 실행의 기본은 **기본 AI(화면 이름 "AI", 제공자·모델 id는 화면에 보이지 않고 기록에만 남음)**이고 로컬 중계를 거칩니다. 하루 100건·초당 1건 한도이고 작업마다 걸리는 시간이 길어(서술형 채점 약 1분, 태그·요약 초안 약 2분, 관계 초안 약 3분, 2026-11-11 실측) 화면에 경과 시간과 보통 걸리는 시간을 보여 주고, 5분 안에 답이 없으면 "다시 시도"를 안내합니다. Mock(키 없음, 규칙 기반, AI 아님)으로도 전체 흐름이 돌고, Gemini·Anthropic(공식 SDK)·OpenAI 호환 어댑터가 있습니다. 실제 키로 확인한 범위와 모의 fetch 계약 테스트만 한 범위는 `src/lib/ai/capabilities.ts`의 `verification`에 구분해 적습니다.
+- **제공자:** 처음 설정은 Mock(키 없음, 규칙 기반, AI 아님)이고 이것만으로 전체 흐름이 돕니다. Gemini·Anthropic(공식 SDK)·OpenAI 호환 어댑터는 `/settings/ai/`에 키를 넣어 씁니다. 대기 중에는 경과 시간을 보여 주고, 90초 안에 답이 없으면 "다시 시도"를 안내합니다. 로컬 중계를 거치던 기본 AI(LG)는 공개 사이트에서 쓸 수 없어 2026-11-11에 뺐습니다(decisions U17). 실제 키로 확인한 범위와 모의 fetch 계약 테스트만 한 범위는 `src/lib/ai/capabilities.ts`의 `verification`에 구분해 적습니다.
 - **키는 "현재 브라우저의 개인 키 시연"입니다.** 기본은 메모리(새로고침하면 사라짐), 선택하면 sessionStorage입니다. localStorage·채점 기록·오류 메시지에는 남기지 않습니다. 키는 브라우저에서 제공자로 직접 전송되므로 운영 환경의 교수별 키 관리는 Moodle 서버 쪽 설계를 따라야 합니다.
 - **Moodle 5.3 core에는 교수별 키 설정과 서술형 AI 채점 기능이 없습니다.** 관리자가 사이트 단위로 제공자와 키를 등록하고, 실패하면 다음 제공자로 자동으로 넘어갑니다. 설계 문서에 권장 단계와 샌드박스 확인 목록이 있습니다.
 - 무료 등급 키는 입력이 제공사의 제품 개선과 사람 검토에 쓰일 수 있습니다. 데모에는 답안 붙여넣기 기능이 없어 가상 답안만 전송됩니다.
@@ -101,12 +96,14 @@ npm run ai:proxy     # 기본 AI 중계 http://127.0.0.1:8787 (로컬은 npm run
 
 ### 기본 AI 실연 기록
 
+> 기본 AI(LG)는 2026-11-11에 AI 설정에서 뺐습니다(decisions U17). 아래는 그 전에 받은 기록입니다. 응답 원문(`tests/fixtures/live/essay-grade-k-exaone_v2.5-2026-11-11.json`)은 재생 테스트가 계속 검증합니다.
+
 | 날짜 | 경로 | 작업 | 요청·응답 모델 | 스키마 | 결과 |
 |---|---|---|---|---|---|
 | 2026-11-11 | `ai:smoke` (직접) | 서술형 채점 제안 | 기본 | essay-grade-v1 / 1 | 실연 확인 (valid). 58초, 완성 토큰 1444 중 추론 1036. 근거 인용 3개 모두 원문과 일치. 기준 채점 0·0·0 대비 제안 0·0·1 |
 | 2026-11-11 | 브라우저 → 로컬 중계 | 서술형 채점 제안 | 기본 | essay-grade-v1 / 1 | 실연 확인 (valid). 64초, 같은 답안에서 0·0·0. 첫 시도는 업스트림 HTTP 500(189ms)이었고 다시 눌러 성공 |
 
-`reasoning_effort: "low"`로 보냅니다(기본값 max는 느리고 잘리기 쉬움). low에서도 잘림 없이 근거 인용이 맞아 유지했습니다.
+`reasoning_effort: "low"`로 보냈습니다(기본값 max는 느리고 잘리기 쉬움). low에서도 잘림 없이 근거 인용이 맞았습니다.
 
 ## xAPI 원천 데이터
 

@@ -3,12 +3,10 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { InfoTip } from "@/components/moodle/InfoTip";
-import { blockReason, CAPABILITIES, errorHint } from "@/lib/ai/capabilities";
+import { blockReason, CAPABILITIES } from "@/lib/ai/capabilities";
 import { browserAiSettingsStore } from "@/lib/ai/keyStore";
 import { anthropicListModels } from "@/lib/ai/providers/anthropic";
 import { geminiListModels } from "@/lib/ai/providers/gemini";
-import { LG_RELAY_BASE, lgListModels } from "@/lib/ai/providers/lg";
-import { fetchRunUsage, usageLabel } from "@/lib/ai/relayUsage";
 import { OPENAI_DEFAULT_BASE, openaiListModels } from "@/lib/ai/providers/openai";
 import { AiError, aiErrorText, PROVIDER_IDS, type ProviderId } from "@/lib/ai/types";
 import { useAiSettings } from "@/lib/ai/useAiSettings";
@@ -57,20 +55,16 @@ export function AiSettingsForm() {
     setCheck(null);
     try {
       const list =
-        cfg.provider === "lg"
-          ? await lgListModels({ baseUrl: cfg.baseUrl, relayCode: cfg.relayCode, signal: c.signal, fetchImpl })
-          : cfg.provider === "gemini"
+        cfg.provider === "gemini"
           ? await geminiListModels({ apiKey, signal: c.signal, fetchImpl })
           : cfg.provider === "anthropic"
             ? await anthropicListModels({ apiKey, signal: c.signal })
             : await openaiListModels({ apiKey, baseUrl: cfg.baseUrl, signal: c.signal, fetchImpl });
       setModels(list);
-      // 중계는 오늘 호출 수(와 예산)도 알려 준다. 사용량 조회는 LG를 부르지 않는다
-      const used = cfg.provider === "lg" ? usageLabel(await fetchRunUsage(cfg, null)) : null;
-      setCheck({ ok: true, text: cfg.provider === "lg" ? `연결됨. 중계를 거쳐 AI를 쓸 수 있습니다.${used ? ` ${used}` : ""}` : `연결됨. 이 키로 쓸 수 있는 모델 ${list.length}개를 불러왔습니다.` });
+      setCheck({ ok: true, text: `연결됨. 이 키로 쓸 수 있는 모델 ${list.length}개를 불러왔습니다.` });
     } catch (err) {
       const e = err instanceof AiError ? err : new AiError("network", "알 수 없는 오류");
-      setCheck({ ok: false, text: aiErrorText(e) + errorHint(cfg.provider, e) });
+      setCheck({ ok: false, text: aiErrorText(e) });
     } finally {
       setBusy(false);
     }
@@ -79,23 +73,11 @@ export function AiSettingsForm() {
   return (
     <div className="stack">
       <div className="alert alert-warning">
-        {s.provider === "lg" ? (
-          <p>
-            <strong>AI의 키는 중계에만 있고 브라우저로 오지 않습니다.</strong>
-            <InfoTip label="중계">
-              <span>
-                키는 중계를 띄운 컴퓨터의 <code>.env</code>(공개 중계는 Secret)에만 있습니다. 중계가 키를 붙여 보내는 구조는 실제 운영에서 Moodle 서버가 키를 보관하는 방식과
-                같습니다(<code>docs/moodle-ai-integration.md</code>).
-              </span>
-            </InfoTip>
-          </p>
-        ) : (
-          <p>
-            <strong>현재 브라우저의 개인 키 시연입니다.</strong> 로그인이 없는 정적 데모라 교수별 키를 &ldquo;관리&rdquo;하지 않습니다. 키는 이 페이지에서
-            제공자로 직접 전송되며, 같은 페이지의 스크립트가 읽을 수 있습니다. 실제 운영에서는 Moodle 서버가 키를 보관해야 합니다
-            (<code>docs/moodle-ai-integration.md</code>).
-          </p>
-        )}
+        <p>
+          <strong>현재 브라우저의 개인 키 시연입니다.</strong> 로그인이 없는 정적 데모라 교수별 키를 &ldquo;관리&rdquo;하지 않습니다. 키는 이 페이지에서
+          제공자로 직접 전송되며, 같은 페이지의 스크립트가 읽을 수 있습니다. 실제 운영에서는 Moodle 서버가 키를 보관해야 합니다
+          (<code>docs/moodle-ai-integration.md</code>).
+        </p>
         <p>보낼 수 있는 것은 이 데모의 <strong>가상 답안</strong>뿐입니다. 실제 학생 답안은 기관 계약 키와 Moodle 서버 연동으로만 처리하세요.</p>
       </div>
       {s.storageWarning ? (
@@ -142,78 +124,6 @@ export function AiSettingsForm() {
         <section className="card">
           <h2 className="card-title">2. 키</h2>
           <p>Mock은 키가 필요 없습니다. 답안을 외부로 보내지 않고 브라우저 안에서 규칙으로 판정합니다.</p>
-        </section>
-      ) : s.provider === "lg" ? (
-        <section className="card" aria-labelledby="ai-relay">
-          <h2 className="card-title" id="ai-relay">
-            2. 중계와 연결 확인
-            <InfoTip label="중계">
-              <span>
-                AI는 브라우저에 키를 두지 않습니다. 중계가 <code>LG_API_KEY</code>로 대신 호출합니다. 주소를 비워 두면 이 컴퓨터의 로컬 중계를 씁니다.
-              </span>
-              <span>접속 코드는 시연용 공개 중계에만 필요하고, 입력한 주소로만 보냅니다. 주소를 바꾸면 지워집니다.</span>
-              <span>연결 확인은 모델 목록과 오늘 호출 수만 조회하므로 하루 한도를 쓰지 않습니다.</span>
-            </InfoTip>
-          </h2>
-          <label className="field">
-            <span>중계 주소 (비우면 로컬 {LG_RELAY_BASE.replace("/v1", "")})</span>
-            <input
-              type="url"
-              key={`relay-${s.relayUrl}`}
-              defaultValue={s.relayUrl}
-              placeholder="https://… (시연용 공개 중계)"
-              spellCheck={false}
-              onBlur={(e) => {
-                store().setRelayUrl(e.target.value);
-                setModels(null);
-                setCheck(null);
-              }}
-            />
-          </label>
-          <p className="small">
-            로컬: 터미널 하나에서 <code>npm run ai:proxy</code>, 다른 터미널에서 <code>npm run dev</code> 후 <code>http://localhost:3000</code>으로 접속
-          </p>
-          <p>
-            접속 코드: {s.hasKey ? <span className="badge badge-ok">입력됨</span> : <span className="badge">없음</span>}{" "}
-            <span className="small muted">({s.persist === "session" ? "이 탭을 닫으면 삭제" : "새로고침하면 삭제"})</span>
-          </p>
-          <form
-            className="inline-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              saveKey();
-            }}
-          >
-            <label className="field grow">
-              <span>접속 코드 (공개 중계만)</span>
-              <input type="password" autoComplete="off" spellCheck={false} value={keyDraft} onChange={(e) => setKeyDraft(e.target.value)} placeholder={s.hasKey ? "새 코드로 바꾸려면 입력" : "접속 코드 붙여넣기"} />
-            </label>
-            <button type="submit" className="btn btn-primary" disabled={!keyDraft.trim()}>
-              코드 적용
-            </button>
-            <button type="button" className="btn btn-outline" disabled={!s.hasKey} onClick={() => store().clearKey()}>
-              코드 지우기
-            </button>
-          </form>
-          <fieldset className="radio-row">
-            <legend className="small">접속 코드 보관 방식</legend>
-            <label>
-              <input type="radio" name="persist" checked={s.persist === "memory"} onChange={() => store().setPersist("memory")} /> 메모리만 (기본, 새로고침하면 사라짐)
-            </label>
-            <label>
-              <input type="radio" name="persist" checked={s.persist === "session"} onChange={() => store().setPersist("session")} /> 이 탭 동안 유지 (sessionStorage)
-            </label>
-          </fieldset>
-          <div className="btn-row">
-            <button type="button" className="btn btn-outline" onClick={testConnection} disabled={busy}>
-              {busy ? "확인 중…" : "연결 확인"}
-            </button>
-          </div>
-          {check ? (
-            <p role="status" className={check.ok ? "text-ok" : "text-danger"}>
-              {check.text}
-            </p>
-          ) : null}
         </section>
       ) : (
         <>

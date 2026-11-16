@@ -6,13 +6,12 @@ import { PROMPT_VERSION, SCHEMA_VERSION } from "./prompt";
 import { anthropicGenerate } from "./providers/anthropic";
 import { geminiGenerate } from "./providers/gemini";
 import type { FetchLike } from "./providers/http";
-import { lgGenerate } from "./providers/lg";
 import { openaiGenerate } from "./providers/openai";
 import { MOCK_MODEL, type AiTask, type GenerateRequest, type GenerateResult, type TokenUsage } from "./task";
 import { essayGradeTask } from "./tasks/essayGrade";
 import { AiError, type ProviderConfig, type ProviderId, type StoredSuggestion } from "./types";
 import { emptySuggestion, VALIDATOR_VERSION } from "./validate";
-import { timeoutMsFor } from "./wait";
+import { AI_TIMEOUT_MS } from "./wait";
 
 export interface RunOptions {
   config: ProviderConfig;
@@ -22,8 +21,6 @@ export interface RunOptions {
   pageProtocol?: string;
   /** 형식 오류(JSON 아님)일 때 한 번 더 부를지. 실연 스크립트는 끈다 */
   retryFormat?: boolean;
-  /** 실행 한 번을 가리키는 ID(기본 AI 중계의 호출 수 집계용) */
-  runId?: string;
 }
 
 export interface TaskRun<V> {
@@ -66,8 +63,6 @@ function generate(provider: Exclude<ProviderId, "mock">, req: GenerateRequest): 
       return anthropicGenerate(req);
     case "openai":
       return openaiGenerate(req);
-    case "lg":
-      return lgGenerate(req);
   }
 }
 
@@ -90,7 +85,7 @@ export async function runTask<I, V>(task: AiTask<I, V>, input: I, opts: RunOptio
   const maxCalls = opts.retryFormat === false ? 1 : 2;
   let calls = 0;
   for (;;) {
-    const t = withTimeout(opts.signal, opts.timeoutMs ?? timeoutMsFor(provider));
+    const t = withTimeout(opts.signal, opts.timeoutMs ?? AI_TIMEOUT_MS);
     calls++;
     try {
       const out = await generate(provider, {
@@ -101,8 +96,6 @@ export async function runTask<I, V>(task: AiTask<I, V>, input: I, opts: RunOptio
         model: config.model,
         apiKey: config.apiKey ?? "",
         baseUrl: config.baseUrl,
-        relayCode: config.relayCode,
-        runId: opts.runId,
         signal: t.signal,
         fetchImpl: opts.fetchImpl,
       });

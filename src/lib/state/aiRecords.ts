@@ -1,7 +1,7 @@
 // AI 초안·반영 기록의 저장 계약 (docs/decisions.md §8.2). 순수 함수만 둔다(복원 검증·테스트용).
 // 초안은 불변·누적이고, 확정 기록(태그 출처·관계·요약)은 근거 초안 id를 가리킨다.
 import type { AiTaskId } from "../ai/task";
-import { isProviderId, type ProviderId, type SuggestionStatus } from "../ai/types";
+import type { SuggestionStatus } from "../ai/types";
 import { detectCycle, type RelationType } from "../analysis/relations";
 import type { ConceptId, ItemId } from "../types";
 
@@ -12,7 +12,8 @@ export interface AiDraft<I = unknown, V extends { status: SuggestionStatus } = {
   task: DraftTaskId;
   quizId: string;
   dataVersion: string;
-  provider: ProviderId;
+  /** 만든 당시의 제공자 id. 지금은 고를 수 없는 제공자(2026-11-11에 뺀 lg 등)일 수 있다 */
+  provider: string;
   requestedModel: string;
   responseModel: string | null;
   promptVersion: string;
@@ -89,7 +90,7 @@ export function isAiDraft(x: unknown): x is AiDraft {
     TASKS.includes(x.task as DraftTaskId) &&
     isStr(x.quizId) &&
     isStr(x.dataVersion) &&
-    isProviderId(x.provider) &&
+    isStr(x.provider) &&
     isStr(x.requestedModel) &&
     (x.responseModel === null || isStr(x.responseModel)) &&
     isStr(x.promptVersion) &&

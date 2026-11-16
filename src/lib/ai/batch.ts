@@ -6,7 +6,7 @@ export interface BatchTarget {
   key: string;
 }
 
-export type BatchStop = "complete" | "limit" | "rate-limit" | "budget" | "aborted" | "error";
+export type BatchStop = "complete" | "limit" | "rate-limit" | "aborted" | "error";
 
 export interface BatchResult<T extends BatchTarget> {
   stop: BatchStop;
@@ -80,9 +80,6 @@ export async function runBatch<T extends BatchTarget>(opts: BatchOptions<T>): Pr
       if (e.kind === "aborted" || opts.signal.aborted) return { stop: "aborted", done, failed, remaining: queue };
       // 429는 실패로 치지 않고 그 대상부터 재개할 수 있게 남겨 둔다
       if (e.kind === "rate-limit") return { stop: "rate-limit", done, failed: [...failed, { key: target.key, error: e }], remaining: queue };
-      // 중계의 접속 코드·잠금·예산 오류는 답안 내용 때문이 아니므로 그 대상을 남기고 바로 멈춘다(다른 사용자가 예산을 쓴 경우에도 답안을 헛되이 실패로 세지 않는다)
-      if (e.kind === "relay-budget") return { stop: "budget", done, failed: [...failed, { key: target.key, error: e }], remaining: queue };
-      if (e.kind === "relay-auth" || e.kind === "relay-locked") return { stop: "error", done, failed: [...failed, { key: target.key, error: e }], remaining: queue };
       queue.shift();
       failed.push({ key: target.key, error: e });
       consecutive++;

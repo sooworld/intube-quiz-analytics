@@ -1,7 +1,6 @@
 "use client";
 // AI 태그 초안 카드 (docs/decisions.md §8.3). 반영은 편집 중인 태그에만 들어가고, 저장은 교수가 누른다.
 import { useMemo, useState } from "react";
-import { modelLabel } from "@/lib/ai/capabilities";
 import { AiRunStatus } from "@/components/ai/AiRunStatus";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { CaveatNote } from "@/components/moodle/PageParts";
@@ -97,14 +96,14 @@ export function TagDraftCard({ editorQ, editorProv, onApply }: { editorQ: QMatri
             <select value={draft?.draftId ?? ""} onChange={(e) => setSelectedId(e.target.value)}>
               {[...tagDrafts].reverse().map((d) => (
                 <option key={d.draftId} value={d.draftId}>
-                  {formatDateTime(d.createdAt)} · {modelLabel(d.provider, d.requestedModel)} · {STATUS_TEXT[d.result.status]}
+                  {formatDateTime(d.createdAt)} · {d.requestedModel} · {STATUS_TEXT[d.result.status]}
                 </option>
               ))}
             </select>
           </label>
         ) : null}
       </div>
-      <AiRunStatus runInfo={runner.runInfo} busy={runner.busy} wait={runner.wait} error={runner.error} retryable={runner.retryable} idleMessage={message} onRetry={request} />
+      <AiRunStatus busy={runner.busy} wait={runner.wait} error={runner.error} retryable={runner.retryable} idleMessage={message} onRetry={request} />
       {runner.unsaved ? (
         <div className="alert alert-warning" role="alert">
           <p>초안을 브라우저에 저장하지 못해 반영할 수 없습니다(근거 기록 없이 확정되는 것을 막기 위해). 저장 공간을 확인한 뒤 다시 받으세요.</p>
@@ -115,8 +114,8 @@ export function TagDraftCard({ editorQ, editorProv, onApply }: { editorQ: QMatri
         <>
           <p className="small">
             <span className={`badge ${draft.result.status === "valid" ? "badge-ok" : draft.result.status === "invalid" ? "badge-danger" : "badge-demo"}`}>{STATUS_TEXT[draft.result.status]}</span>{" "}
-            {formatDateTime(draft.createdAt)} · 요청 모델 {modelLabel(draft.provider, draft.requestedModel)}
-            {draft.responseModel && modelLabel(draft.provider, draft.responseModel) !== modelLabel(draft.provider, draft.requestedModel) ? ` (응답 모델 ${modelLabel(draft.provider, draft.responseModel)})` : ""} · 프롬프트 {draft.promptVersion}
+            {formatDateTime(draft.createdAt)} · 요청 모델 {draft.requestedModel}
+            {draft.responseModel && draft.responseModel !== draft.requestedModel ? ` (응답 모델 ${draft.responseModel})` : ""} · 프롬프트 {draft.promptVersion}
           </p>
           {stale ? (
             <div className="alert alert-warning" role="status">

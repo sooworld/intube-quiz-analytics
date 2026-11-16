@@ -45,10 +45,6 @@ export interface GenerateRequest {
   model: string;
   apiKey: string;
   baseUrl?: string;
-  /** 기본 AI 중계의 접속 코드 */
-  relayCode?: string;
-  /** 실행 한 번을 가리키는 ID. 중계가 이 ID로 호출 수를 센다(재시도는 같은 ID) */
-  runId?: string;
   signal?: AbortSignal;
   fetchImpl?: FetchLike;
 }
@@ -56,7 +52,7 @@ export interface GenerateRequest {
 /** 토큰 사용량 (실연 기록용. 앱 저장소에는 넣지 않는다) */
 export interface TokenUsage {
   completionTokens: number | null;
-  /** 추론 토큰. max_tokens 안에서 함께 센다(기본 AI) */
+  /** 추론 토큰. 출력 상한 안에서 함께 센다 */
   reasoningTokens: number | null;
 }
 

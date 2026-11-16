@@ -1,7 +1,6 @@
 "use client";
 // 개념 관계 편집 (docs/decisions.md §8.3, §8.5). AI 초안 → 교수 확정. 응답 겹침은 접힌 "중복 현황"에서만 보여 준다.
 import { useMemo, useState } from "react";
-import { modelLabel } from "@/lib/ai/capabilities";
 import { AiRunStatus } from "@/components/ai/AiRunStatus";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { CaveatNote } from "@/components/moodle/PageParts";
@@ -157,14 +156,14 @@ export function RelationEditor({ editorDirty }: { editorDirty: boolean }) {
             <select value={draft?.draftId ?? ""} onChange={(e) => setSelectedId(e.target.value)}>
               {[...relDrafts].reverse().map((d) => (
                 <option key={d.draftId} value={d.draftId}>
-                  {formatDateTime(d.createdAt)} · {modelLabel(d.provider, d.requestedModel)} · {STATUS_TEXT[d.result.status]}
+                  {formatDateTime(d.createdAt)} · {d.requestedModel} · {STATUS_TEXT[d.result.status]}
                 </option>
               ))}
             </select>
           </label>
         ) : null}
       </div>
-      <AiRunStatus runInfo={runner.runInfo} busy={runner.busy} wait={runner.wait} error={runner.error} retryable={runner.retryable} idleMessage={message} onRetry={request} />
+      <AiRunStatus busy={runner.busy} wait={runner.wait} error={runner.error} retryable={runner.retryable} idleMessage={message} onRetry={request} />
       {runner.unsaved ? (
         <div className="alert alert-warning" role="alert">
           <p>초안을 브라우저에 저장하지 못해 확정할 수 없습니다. 저장 공간을 확인한 뒤 다시 받으세요.</p>
@@ -175,8 +174,8 @@ export function RelationEditor({ editorDirty }: { editorDirty: boolean }) {
         <>
           <p className="small">
             <span className={`badge ${draft.result.status === "valid" ? "badge-ok" : draft.result.status === "invalid" ? "badge-danger" : "badge-demo"}`}>{STATUS_TEXT[draft.result.status]}</span>{" "}
-            {formatDateTime(draft.createdAt)} · 요청 모델 {modelLabel(draft.provider, draft.requestedModel)}
-            {draft.responseModel && modelLabel(draft.provider, draft.responseModel) !== modelLabel(draft.provider, draft.requestedModel) ? ` (응답 모델 ${modelLabel(draft.provider, draft.responseModel)})` : ""}
+            {formatDateTime(draft.createdAt)} · 요청 모델 {draft.requestedModel}
+            {draft.responseModel && draft.responseModel !== draft.requestedModel ? ` (응답 모델 ${draft.responseModel})` : ""}
           </p>
           {stale ? <CaveatNote>이 초안은 지금과 다른 태그로 만든 것이라 확정할 수 없습니다. 새 초안을 받으세요.</CaveatNote> : null}
           {draft.result.flags.length > 0 ? <CaveatNote>입력에 지시문이 들어 있을 수 있어 확정을 막았습니다.</CaveatNote> : null}

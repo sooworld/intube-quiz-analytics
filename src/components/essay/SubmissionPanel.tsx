@@ -55,9 +55,7 @@ export function SubmissionPanel(props: {
   requestDisabled: boolean;
   /** 같은 설정의 제안이 이미 있음(다시 받으면 새로 부른다) */
   cached: boolean;
-  /** 마지막 요청의 호출 수·소요 시간·오늘 예산(기본 AI 중계일 때만) */
-  runInfo: string | null;
-  /** 대기 안내(보통 걸리는 시간·한도). Mock은 null */
+  /** 대기 안내(제한 시간). Mock은 null */
   wait: WaitGuide | null;
   next: NextInfo | null;
   /** 마운트할 때 초점을 둘 곳 (확정 직후: 다음 버튼, 다음 답안으로 왔을 때: 제목) */
@@ -151,8 +149,8 @@ export function SubmissionPanel(props: {
 
   const editing = !final && (mode === "edit" || mode === "manual");
   const showSuggestionDetail = !!usable && mode !== "manual";
-  // 제안 정보 줄은 예외일 때만 보인다: 기본 AI가 아닌 제공자(Mock 포함)이거나 검증 통과가 아닐 때
-  const metaWho = !viewed || viewed.provider === "lg" ? null : viewed.provider === "mock" ? "규칙 기반 모의 채점(AI 아님)" : providerModelLabel(viewed.provider, viewed.model, true);
+  // 제안 정보 줄: 누가 만든 제안인지와, 검증 통과가 아닐 때의 상태
+  const metaWho = !viewed ? null : viewed.provider === "mock" ? "규칙 기반 모의 채점(AI 아님)" : providerModelLabel(viewed.provider, viewed.model, true);
   const metaStatus =
     !viewed || viewed.result.status === "valid" ? null : viewed.result.status === "needs-review" ? "검토 필요 — 수락할 수 없고 수정 후 확정만 됩니다" : "검증 실패 — 직접 채점하세요";
   const hover = (ci: number) => ({ onMouseEnter: () => setActiveCriterion(ci), onMouseLeave: () => setActiveCriterion(null) });
@@ -211,7 +209,6 @@ export function SubmissionPanel(props: {
             <AiWaitText wait={props.wait} what="AI가 채점 제안을 쓰는 중입니다." /> 기다리는 동안 다른 답안을 검토해도 됩니다.
           </p>
         ) : null}
-        {!pending && props.runInfo ? <p className="small muted">{props.runInfo}</p> : null}
         {props.error ? <AiErrorNote error={props.error} retryable={props.errorRetryable} disabled={props.requestDisabled} onRetry={() => props.onRequest(suggestions.length > 0 && props.cached)} /> : null}
         {newArrived ? (
           <div className="alert alert-info" role="status">

@@ -1,9 +1,8 @@
 // 제공자 능력표 (계획 T3). "계약 테스트"는 모의 fetch로 요청·응답 형태만 검사했다는 뜻이고,
 // "실연 확인"은 실제 브라우저에서 키로 호출해 본 결과다. 둘을 섞지 않는다.
 import { ANTHROPIC_DEFAULT_MODEL } from "./providers/anthropic";
-import { LG_MODEL, LG_RELAY_BASE, relayBase } from "./providers/lg";
 import { OPENAI_DEFAULT_BASE } from "./providers/openai";
-import { AiError, isProviderId, type AiErrorKind, type ProviderConfig, type ProviderId } from "./types";
+import { isProviderId, type AiErrorKind, type ProviderConfig, type ProviderId } from "./types";
 
 export type Verification = "계약 테스트만" | "실연 확인" | "실연 실패";
 
@@ -21,22 +20,6 @@ export interface ProviderCapability {
 }
 
 export const CAPABILITIES: Record<ProviderId, ProviderCapability> = {
-  lg: {
-    id: "lg",
-    label: "AI",
-    needsKey: false,
-    defaultModel: LG_MODEL,
-    browserDirect: "불가. 제공자 서버가 브라우저 CORS를 허용하지 않아(사전 요청에 401) 중계(npm run ai:proxy)를 거칩니다. 키는 중계가 .env·Secret의 LG_API_KEY에서 읽습니다",
-    structuredOutput: "response_format: json_schema (strict)",
-    auth: "중계가 Authorization: Bearer를 붙임 (브라우저에는 키가 없고, 공개 중계는 접속 코드를 씀)",
-    // 2026-11-11: 서술형 채점 제안을 실연 스크립트(직접)와 브라우저(로컬 중계) 양쪽에서 확인(README 실연 기록)
-    verification: "실연 확인",
-    notes: [
-      "로컬 실행(npm run dev + npm run ai:proxy)이나, 설정에 입력한 시연용 공개 중계(https 주소와 접속 코드)에서 씁니다. 중계 없이 공개 사이트에서는 쓸 수 없습니다.",
-      "한도: 하루 100건, 분당 60건, 초당 1건(2026-11-11 응답 헤더 기준). 형식 오류면 1회 더 부르므로 답안 1건은 1–2건입니다.",
-      "추론이 항상 켜져 있어 추론 강도를 low로 보냅니다.",
-    ],
-  },
   mock: {
     id: "mock",
     label: "Mock (규칙 기반 모의 채점, AI 아님)",
@@ -90,19 +73,9 @@ export const CAPABILITIES: Record<ProviderId, ProviderCapability> = {
   },
 };
 
-/** 화면에 보일 모델 이름. 기본 AI(lg)는 실제 id 대신 "AI"로 보인다(기록에는 실제 id가 남는다) */
-export function modelLabel(provider: string, model: string): string {
-  return provider === "lg" ? "AI" : model;
-}
-
-/** 저장 기록의 제공자 문자열을 화면 이름으로 (알 수 없는 값은 그대로) */
+/** 저장 기록의 제공자 문자열을 화면 이름으로 (지금 목록에 없는 값은 그대로) */
 export function providerLabel(provider: string): string {
   return isProviderId(provider) ? CAPABILITIES[provider].label : provider;
-}
-
-/** 오류 문장에 붙일 제공자별 안내. 기본 AI의 네트워크 오류는 대개 로컬 중계가 꺼진 경우다 */
-export function errorHint(provider: ProviderId, e: unknown): string {
-  return provider === "lg" && e instanceof AiError && e.kind === "network" ? " AI 중계(npm run ai:proxy)가 켜져 있는지, AI 설정의 중계 주소가 맞는지 확인하세요." : "";
 }
 
 /** 화면에 보일 짧은 제공자 이름 (제안 이력 등) */
@@ -110,11 +83,10 @@ export function providerShortLabel(provider: ProviderId): string {
   return CAPABILITIES[provider].label.split(" ")[0]!;
 }
 
-/** "제공자 · 모델" 표시. 기본 AI는 제공자 이름과 모델 이름이 같은 "AI"라 하나만 보인다. short면 제공자 이름을 짧게 */
+/** "제공자 · 모델" 표시. short면 제공자 이름을 짧게 */
 export function providerModelLabel(provider: string, model: string, short = false): string {
   const name = short && isProviderId(provider) ? providerShortLabel(provider) : providerLabel(provider);
-  const shown = modelLabel(provider, model);
-  return shown === name ? name : `${name} · ${shown}`;
+  return `${name} · ${model}`;
 }
 
 /**
@@ -127,18 +99,6 @@ export function blockReason(config: ProviderConfig, pageProtocol = "https:", pur
   if (cap.needsKey && !config.apiKey?.trim()) return { kind: "missing-key", message: "API 키가 없습니다. AI 설정에서 키를 입력하세요." };
   const no = (message: string) => ({ kind: "unsupported" as const, message });
   if (purpose === "grade" && config.provider !== "mock" && !config.model.trim()) return no("모델 id가 없습니다. AI 설정에서 모델을 고르세요.");
-  if (config.provider === "lg") {
-    const url = relayBase(config.baseUrl);
-    if (url === null) return no("중계 주소 형식이 올바르지 않습니다. https://… 형태의 주소(경로 없이)를 넣으세요.");
-    // http 중계(로컬)는 https 페이지에서 부를 수 없다. 실연 스크립트의 직접 주소(https)는 막지 않는다
-    if (pageProtocol === "https:" && url.startsWith("http:")) {
-      return no(
-        url === LG_RELAY_BASE
-          ? "이 사이트에서 AI를 쓰려면 AI 설정에서 시연용 중계 주소(https)와 접속 코드를 입력하세요. 중계가 없으면 Mock이나 다른 제공자를 고르세요."
-          : "이 사이트(https)에서는 http 중계 주소를 부를 수 없습니다. https 중계 주소를 입력하세요.",
-      );
-    }
-  }
   if (config.provider === "openai") {
     const base = config.baseUrl?.trim() || OPENAI_DEFAULT_BASE;
     let url: URL;

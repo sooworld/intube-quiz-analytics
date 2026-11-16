@@ -8,13 +8,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AiWaitText } from "@/components/ai/AiRunStatus";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { runBatch, type BatchStop } from "@/lib/ai/batch";
-import { blockReason, CAPABILITIES, errorHint, providerModelLabel } from "@/lib/ai/capabilities";
+import { blockReason, CAPABILITIES, providerModelLabel } from "@/lib/ai/capabilities";
 import { createRequestGate, requestSuggestion, suggestionInputHash } from "@/lib/ai/client";
 import { browserAiSettingsStore } from "@/lib/ai/keyStore";
-import { budgetedBatch, budgetLeft, fetchRunUsage, newRunId, runLabel, startClock, usageLabel } from "@/lib/ai/relayUsage";
-import { AI_ERROR_TEXT, AiError, aiErrorText, isRetryable, type ProviderConfig, type StoredSuggestion } from "@/lib/ai/types";
+import { AiError, aiErrorText, isRetryable, type StoredSuggestion } from "@/lib/ai/types";
 import { useAiSettings } from "@/lib/ai/useAiSettings";
-import { useRelayUsage } from "@/lib/ai/useRelayUsage";
 import { formatSeconds, waitGuide } from "@/lib/ai/wait";
 import { latestSuggestion, recordKey, type GradeAction } from "@/lib/essay/grades";
 import { nextTarget, queueCounts, rowStatus, type QueueFilter } from "@/lib/essay/queue";
@@ -23,28 +21,30 @@ import type { EssaySubmission } from "@/lib/types";
 import { GradingQueue, QueueStatusBar, type QueueRow } from "./GradingQueue";
 import { SubmissionPanel } from "./SubmissionPanel";
 
-/** 제공자별 일괄 실행 상한과 간격. 무료 등급 분당 한도를 넘지 않게 Gemini는 간격을 넓힌다 */
+/** 제공자별 일괄 실행 상한과 간격. Gemini는 문항 하나(답안 25건)가 한 번에 끝나게 상한을 25건으로 두고, 무료 등급 분당 한도를 넘지 않게 간격을 넓힌다 */
 function batchPolicy(provider: string) {
   if (provider === "mock") return { limit: Number.POSITIVE_INFINITY, intervalMs: 80 };
-  if (provider === "gemini") return { limit: 10, intervalMs: 6500 };
+  if (provider === "gemini") return { limit: 25, intervalMs: 6500 };
   return { limit: 10, intervalMs: 1500 };
 }
 
-const BATCH_STOP_TEXT: Record<BatchStop, string> = {
-  complete: "모두 처리했습니다.",
-  limit: "한 번에 처리하는 상한(10건)에 도달했습니다. 다시 누르면 이어서 합니다.",
-  "rate-limit": "사용 한도(429)에 걸려 멈췄습니다. 잠시 뒤 다시 누르면 멈춘 답안부터 이어서 합니다.",
-  budget: "오늘 시연 예산을 다 써서 멈췄습니다. 처리하지 못한 답안은 그대로 남아 있습니다.",
-  aborted: "취소했습니다.",
-  error: "오류가 이어져 멈췄습니다. 설정을 확인하세요.",
-};
+/** 일괄 제안이 멈춘 이유. limit은 이번 실행의 상한(제공자별) */
+function batchStopText(stop: BatchStop, limit: number): string {
+  const text: Record<BatchStop, string> = {
+    complete: "모두 처리했습니다.",
+    limit: `한 번에 처리하는 상한(${limit}건)에 도달했습니다. 다시 누르면 이어서 합니다.`,
+    "rate-limit": "사용 한도(429)에 걸려 멈췄습니다. 잠시 뒤 다시 누르면 멈춘 답안부터 이어서 합니다.",
+    aborted: "취소했습니다.",
+    error: "오류가 이어져 멈췄습니다. 설정을 확인하세요.",
+  };
+  return text[stop];
+}
 
 type Focus = { key: string; target: "title" | "next" } | null;
 
 export function GradingWorkbench() {
   const { ds, grades, ready, status, dispatch, studentName, resetAll } = useEssay();
   const ai = useAiSettings();
-  const usage = useRelayUsage();
   const [itemId, setItemId] = useState(ds.quiz.items[0]!.id);
   const item = ds.quiz.items.find((i) => i.id === itemId)!;
   const subs = useMemo(() => ds.submissions.filter((s) => s.itemId === itemId), [ds, itemId]);
@@ -59,14 +59,11 @@ export function GradingWorkbench() {
   const single = useRef<AbortController | null>(null);
   const [pending, setPending] = useState<string | null>(null);
   const [error, setError] = useState<{ key: string; text: string; retryable: boolean } | null>(null);
-  /** 마지막 개별 요청의 호출 수·소요 시간(기본 AI 중계일 때만) */
-  const [runInfo, setRunInfo] = useState<{ key: string; text: string } | null>(null);
 
   const batchCtrl = useRef<AbortController | null>(null);
-  const [batch, setBatch] = useState<{ running: boolean; current: string | null; done: number; failed: number; total: number; message: string | null; failures: string[]; calls: number | null }>({
+  const [batch, setBatch] = useState<{ running: boolean; current: string | null; done: number; failed: number; total: number; message: string | null; failures: string[] }>({
     running: false,
     current: null,
-    calls: null,
     done: 0,
     failed: 0,
     total: 0,
@@ -87,18 +84,16 @@ export function GradingWorkbench() {
 
   const pageProtocol = typeof window === "undefined" ? "https:" : window.location.protocol;
   const cap = CAPABILITIES[ai.provider];
-  const wait = waitGuide(ai.tasks["essay-grade"]?.provider ?? ai.provider, "essay-grade");
+  const wait = waitGuide(ai.tasks["essay-grade"]?.provider ?? ai.provider);
 
-  /** 실행을 막는 이유(키 없음, https에서 로컬 중계, 작업별 설정 불일치). 키 자체는 화면 상태에 두지 않는다 */
-  const configBlock = ((): string | null => {
+  /** 실행을 막는 이유(키·모델 없음, 주소 문제, 작업별 설정 불일치). 키 자체는 화면 상태에 두지 않는다 */
+  const blockedText = ((): string | null => {
     try {
       return blockReason(browserAiSettingsStore().getConfigFor("essay-grade"), pageProtocol)?.message ?? null;
     } catch (e) {
       return aiErrorText(e);
     }
   })();
-  // 중계가 오늘 예산이 없다고 알려 주면 보내지 않는다(기본 AI일 때만 알 수 있음)
-  const blockedText = configBlock ?? (ai.provider === "lg" && budgetLeft(usage) === 0 ? AI_ERROR_TEXT["relay-budget"] : null);
 
   /** 같은 입력(제공자·모델·프롬프트·루브릭·답안)의 유효 제안이 이미 있으면 다시 부르지 않는다 */
   const cachedFor = (s: EssaySubmission): StoredSuggestion | undefined => {
@@ -119,7 +114,6 @@ export function GradingWorkbench() {
     gate.current.invalidate();
     setPending(null);
     setError(null);
-    setRunInfo(null);
     setFocus(null);
     setItemId(nextItemId);
     setSelected(nextKey);
@@ -131,17 +125,6 @@ export function GradingWorkbench() {
     goTo(id, recordKey(first.attemptId, id));
   };
 
-  /**
-   * 요청이 끝난 뒤 중계가 센 이 요청의 호출 수를 패널에 보인다(기본 AI 중계일 때만).
-   * 오늘 예산은 fetchRunUsage가 갱신하는 상단 배지에 이미 보이므로 패널에 다시 쓰지 않는다(U13)
-   */
-  const reportRun = async (config: ProviderConfig, runId: string, ms: number, k: string, gateId: number) => {
-    if (config.provider !== "lg") return;
-    const u = await fetchRunUsage(config, runId);
-    if (!gate.current.isCurrent(gateId)) return;
-    setRunInfo({ key: k, text: runLabel(u?.runCalls ?? null, ms) });
-  };
-
   const requestOne = async (force: boolean) => {
     if (!force && cachedFor(sub)) return; // 화면은 이미 그 제안을 보여 준다
     single.current?.abort();
@@ -151,22 +134,15 @@ export function GradingWorkbench() {
     const k = key;
     setPending(k);
     setError(null);
-    setRunInfo(null);
-    const runId = newRunId();
-    const elapsed = startClock();
-    let config: ProviderConfig | null = null;
     try {
-      config = browserAiSettingsStore().getConfigFor("essay-grade");
-      const s = await requestSuggestion({ config, item, essay: sub.text, signal: ctrl.signal, pageProtocol, runId });
+      const config = browserAiSettingsStore().getConfigFor("essay-grade");
+      const s = await requestSuggestion({ config, item, essay: sub.text, signal: ctrl.signal, pageProtocol });
       if (!gate.current.isCurrent(id)) return;
       dispatch({ type: "add-suggestion", key: k, suggestion: s });
-      await reportRun(config, runId, elapsed(), k, id);
     } catch (e) {
       if (!gate.current.isCurrent(id)) return;
       if (e instanceof AiError && e.kind === "aborted") return;
-      setError({ key: k, text: aiErrorText(e) + errorHint(ai.provider, e), retryable: isRetryable(e) });
-      // 실패·시간 초과한 호출도 중계는 센다
-      if (config) await reportRun(config, runId, elapsed(), k, id);
+      setError({ key: k, text: aiErrorText(e), retryable: isRetryable(e) });
     } finally {
       if (gate.current.isCurrent(id)) setPending(null);
     }
@@ -174,8 +150,6 @@ export function GradingWorkbench() {
 
   const batchTargets = subs.filter((s) => !grades.records[recordKey(s.attemptId, item.id)]?.final && !cachedFor(s));
   const policy = batchPolicy(ai.provider);
-  // 중계가 예산을 알려 주면 한 번에 보내는 답안 수를 남은 예산 이하로 줄이고 형식 오류 재시도를 끈다(재시도가 예산을 두 배로 쓰지 않게)
-  const eff = budgetedBatch(policy.limit, usage);
 
   const startBatch = async () => {
     const ctrl = new AbortController();
@@ -184,35 +158,31 @@ export function GradingWorkbench() {
     try {
       config = browserAiSettingsStore().getConfigFor("essay-grade");
     } catch (e) {
-      setBatch({ running: false, current: null, calls: null, done: 0, failed: 0, total: 0, message: aiErrorText(e), failures: [] });
+      setBatch({ running: false, current: null, done: 0, failed: 0, total: 0, message: aiErrorText(e), failures: [] });
       return;
     }
     const targetItem = item;
-    const runId = newRunId();
-    setBatch({ running: true, current: null, calls: null, done: 0, failed: 0, total: Math.min(eff.limit, batchTargets.length), message: null, failures: [] });
+    setBatch({ running: true, current: null, done: 0, failed: 0, total: Math.min(policy.limit, batchTargets.length), message: null, failures: [] });
     const result = await runBatch({
       targets: batchTargets.map((s) => ({ key: recordKey(s.attemptId, targetItem.id), text: s.text })),
-      limit: eff.limit,
+      limit: policy.limit,
       intervalMs: policy.intervalMs,
       signal: ctrl.signal,
       run: async (t, signal) => {
         setBatch((b) => ({ ...b, current: t.key }));
-        const s = await requestSuggestion({ config, item: targetItem, essay: t.text, signal, pageProtocol, runId, retryFormat: eff.retryFormat });
+        const s = await requestSuggestion({ config, item: targetItem, essay: t.text, signal, pageProtocol });
         dispatch({ type: "add-suggestion", key: t.key, suggestion: s });
       },
       onProgress: (p) => setBatch((b) => ({ ...b, done: p.done, failed: p.failed, total: p.total })),
     });
-    // 일괄 제안 전체가 한 실행이다: 중계가 센 총 호출 수(실패·재시도 포함)
-    const u = await fetchRunUsage(config, runId);
     setBatch({
       running: false,
       current: null,
-      calls: u?.runCalls ?? null,
       done: result.done.length,
       failed: result.failed.length,
       total: result.done.length + result.failed.length,
-      message: BATCH_STOP_TEXT[result.stop],
-      failures: result.failed.map((f) => `${studentName(f.key.split(":")[0]!)}: ${aiErrorText(f.error)}${errorHint(ai.provider, f.error)}`),
+      message: batchStopText(result.stop, policy.limit),
+      failures: result.failed.map((f) => `${studentName(f.key.split(":")[0]!)}: ${aiErrorText(f.error)}`),
     });
   };
 
@@ -282,13 +252,9 @@ export function GradingWorkbench() {
             <InfoTip label="일괄 제안">
               <span>
                 확정하지 않았고 같은 설정의 제안이 없는 답안을 차례로 보냅니다
-                {Number.isFinite(eff.limit) ? ` (한 번에 최대 ${eff.limit}건, 간격 ${(policy.intervalMs / 1000).toFixed(1)}초${eff.retryFormat ? "" : ", 오늘 예산을 아끼려 형식 오류 재시도 없음"})` : ""}.
+                {Number.isFinite(policy.limit) ? ` (한 번에 최대 ${policy.limit}건, 간격 ${(policy.intervalMs / 1000).toFixed(1)}초)` : ""}.
               </span>
-              {wait ? (
-                <span>
-                  AI는 답안 1건에 {wait.typicalSec ? `보통 약 ${formatSeconds(wait.typicalSec)} ` : ""}걸립니다. 최대 {formatSeconds(wait.limitSec)}까지 기다리고, 넘으면 &ldquo;다시 시도&rdquo;를 안내합니다.
-                </span>
-              ) : null}
+              {wait ? <span>답안 1건마다 최대 {formatSeconds(wait.limitSec)}까지 기다리고, 넘으면 &ldquo;다시 시도&rdquo;를 안내합니다.</span> : null}
               <span>
                 채점 기록은 이 브라우저에만 저장됩니다.{ai.provider === "mock" ? " Mock은 규칙 기반 모의 채점이며 AI가 아닙니다." : " 가상 답안만 보냅니다."}
               </span>
@@ -297,7 +263,7 @@ export function GradingWorkbench() {
           <p className="small">
             {providerText}{" "}
             {cap.needsKey ? ai.hasKey ? <span className="badge badge-ok">키 있음</span> : <span className="badge badge-danger">키 없음</span> : null}{" "}
-            {usageLabel(usage) ? <span className="badge">{usageLabel(usage)}</span> : null} <Link href="/settings/ai/">설정</Link>
+            <Link href="/settings/ai/">설정</Link>
           </p>
         </div>
         <div className="gw-progress-body">
@@ -317,7 +283,7 @@ export function GradingWorkbench() {
                 ? `제안 받는 중 ${batch.done + batch.failed}/${batch.total}`
                 : batchTargets.length === 0
                   ? "모든 답안에 제안이 있습니다"
-                  : `AI 제안 받기 (${Number.isFinite(eff.limit) && batchTargets.length > eff.limit ? `${batchTargets.length}건 중 ${eff.limit}건` : `${batchTargets.length}건`})`}
+                  : `AI 제안 받기 (${Number.isFinite(policy.limit) && batchTargets.length > policy.limit ? `${batchTargets.length}건 중 ${policy.limit}건` : `${batchTargets.length}건`})`}
             </button>
             {batch.running ? (
               <button type="button" className="btn btn-outline" onClick={() => batchCtrl.current?.abort()}>
@@ -335,13 +301,12 @@ export function GradingWorkbench() {
         {batch.running ? (
           <p className="small muted" role="status">
             <AiWaitText key={batch.current ?? "start"} wait={wait} what={`답안 ${Math.min(batch.done + batch.failed + 1, batch.total)}/${batch.total}번째를 AI가 채점하는 중입니다.`} />
-            {wait?.typicalSec ? ` 남은 시간은 대략 ${formatSeconds(wait.typicalSec * (batch.total - batch.done - batch.failed))}입니다.` : ""}
           </p>
         ) : null}
         {batch.message ? (
           <div role="status" className="small">
             <p>
-              {batch.message} 성공 {batch.done}건{batch.failed ? `, 실패 ${batch.failed}건. 실패한 답안은 "AI 제안 받기"를 다시 누르면 이어서 시도합니다` : ""}.{batch.calls !== null ? ` 중계가 보낸 호출 총 ${batch.calls}회.` : ""}
+              {batch.message} 성공 {batch.done}건{batch.failed ? `, 실패 ${batch.failed}건. 실패한 답안은 "AI 제안 받기"를 다시 누르면 이어서 시도합니다` : ""}.
             </p>
             {batch.failures.length ? (
               <ul>
@@ -368,7 +333,6 @@ export function GradingWorkbench() {
           errorRetryable={error?.key === key ? error.retryable : false}
           requestDisabled={requestDisabled}
           cached={!!cachedFor(sub)}
-          runInfo={runInfo?.key === key ? runInfo.text : null}
           wait={wait}
           next={
             next && nextItem

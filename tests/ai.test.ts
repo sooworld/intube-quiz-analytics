@@ -2,10 +2,11 @@
 import { describe, expect, it, vi } from "vitest";
 import w5e from "@/data/quiz-w5e.json";
 import { abortableSleep, runBatch } from "@/lib/ai/batch";
-import { blockReason } from "@/lib/ai/capabilities";
+import { blockReason, providerLabel, providerModelLabel, providerShortLabel } from "@/lib/ai/capabilities";
 import { createRequestGate, requestSuggestion, suggestionInputHash } from "@/lib/ai/client";
 import { buildGradingPrompt, gradingJsonSchema } from "@/lib/ai/prompt";
 import { mockSuggest } from "@/lib/ai/providers/mock";
+import { readChatCompletion } from "@/lib/ai/providers/openai";
 import { AiError, type ProviderConfig } from "@/lib/ai/types";
 import { charCount, findQuoteSpan, validateSuggestion } from "@/lib/ai/validate";
 import { fromAnthropicError } from "@/lib/ai/providers/anthropic";
@@ -413,5 +414,23 @@ describe("일괄 실행기", () => {
     const r = await p;
     expect(r.stop).toBe("aborted");
     expect(run).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("표시 이름", () => {
+  it("'제공자 · 모델'로 보이고, 지금 목록에 없는 제공자(2026-11-11에 뺀 lg 등)는 기록의 id 그대로 보인다", () => {
+    expect(providerShortLabel("gemini")).toBe("Google");
+    expect(providerModelLabel("gemini", "gemini-x")).toBe("Google Gemini · gemini-x");
+    expect(providerModelLabel("gemini", "gemini-x", true)).toBe("Google · gemini-x");
+    expect(providerLabel("lg")).toBe("lg");
+    expect(providerModelLabel("lg", "k-exaone_v2.5", true)).toBe("lg · k-exaone_v2.5");
+  });
+});
+
+describe("OpenAI 호환 응답 해석", () => {
+  it("사용량: completion_tokens_details의 추론 토큰을 읽고, 사용량이 없으면 null", () => {
+    const r = readChatCompletion({ model: "m", choices: [{ finish_reason: "stop", message: { content: "{}" } }], usage: { completion_tokens: 5, completion_tokens_details: { reasoning_tokens: 2 } } });
+    expect(r.usage).toEqual({ completionTokens: 5, reasoningTokens: 2 });
+    expect(readChatCompletion({ choices: [{ finish_reason: "stop", message: { content: "{}" } }] }).usage).toBeNull();
   });
 });

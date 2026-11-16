@@ -29,13 +29,12 @@ export function openaiRequestBody(req: Pick<GenerateRequest, "prompt" | "schema"
 interface ChatResponse {
   model?: string;
   choices?: { finish_reason?: string; message?: { content?: string | null; refusal?: string | null } }[];
-  /** 기본 AI(lg)는 reasoning_tokens를 usage 바로 아래에, OpenAI는 completion_tokens_details 아래에 둔다 */
-  usage?: { completion_tokens?: number; reasoning_tokens?: number; completion_tokens_details?: { reasoning_tokens?: number } | null };
+  usage?: { completion_tokens?: number; completion_tokens_details?: { reasoning_tokens?: number } | null };
 }
 
 const num = (x: unknown): number | null => (typeof x === "number" && Number.isFinite(x) ? x : null);
 
-/** Chat Completions 응답을 해석한다(OpenAI 호환·LG 공용). 추론 텍스트(reasoning_content)는 쓰지 않는다 */
+/** Chat Completions 응답을 해석한다. 추론 텍스트(reasoning_content)는 쓰지 않는다 */
 export function readChatCompletion(body: unknown): GenerateResult {
   const json = body as ChatResponse;
   const choice = json.choices?.[0];
@@ -44,7 +43,7 @@ export function readChatCompletion(body: unknown): GenerateResult {
   if (choice.finish_reason === "length") throw new AiError("truncated", "출력이 길이 제한에서 잘렸습니다.");
   if (choice.finish_reason === "content_filter") throw new AiError("safety", "출력이 콘텐츠 필터에 막혔습니다.");
   const u = json.usage;
-  const usage = u ? { completionTokens: num(u.completion_tokens), reasoningTokens: num(u.reasoning_tokens) ?? num(u.completion_tokens_details?.reasoning_tokens) } : null;
+  const usage = u ? { completionTokens: num(u.completion_tokens), reasoningTokens: num(u.completion_tokens_details?.reasoning_tokens) } : null;
   return { raw: parseModelJson(choice.message?.content ?? ""), responseModel: json.model ?? null, usage };
 }
 

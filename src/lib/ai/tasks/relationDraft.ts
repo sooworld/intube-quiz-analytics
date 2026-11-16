@@ -75,7 +75,7 @@ export const relationDraftTask: AiTask<RelationDraftInput, RelationDraftResult> 
   schemaVersion: "1",
   validatorVersion: "1",
   schemaName: "concept_relation_draft",
-  // 기본 AI는 추론 토큰이 출력 상한에 함께 들어간다. 4096에서는 실연 중 잘렸다(2026-11-11, 155초)
+  // 추론 토큰이 출력 상한에 함께 들어가는 모델은 4096에서 잘렸다(2026-11-11 실연, 155초)
   maxTokens: 8192,
   buildPrompt: (input) => {
     const name = new Map(input.concepts.map((c) => [c.id, c.name]));

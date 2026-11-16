@@ -1,9 +1,7 @@
 // 현재 브라우저의 개인 키 보관 (계획 T4). 교수별 키 "관리"가 아니라 이 브라우저에서만 쓰는 시연이다.
 // - 키는 기본 메모리(새로고침하면 사라짐). 선택하면 sessionStorage(탭을 닫으면 삭제). localStorage에는 두지 않는다
 // - 제공자나 base URL을 바꾸면 키를 비운다(다른 곳으로 같은 키를 보내지 않게)
-// - 제공자·모델·주소(비밀 아님)는 localStorage에 기억한다
-// - 기본 AI(lg)는 LG 키가 브라우저에 없다(중계가 .env·Secret에서 읽음). 키 자리에는 공개 중계의 접속 코드가 들어가고,
-//   중계 주소(relayUrl)를 바꾸면 코드를 비운다. 로컬 실행이면 lg, 아니면 mock이 기본값
+// - 제공자·모델·주소(비밀 아님)는 localStorage에 기억한다. 처음에는 Mock이다
 // 확정 점수 저장(useVersionedStorage)과 수명을 섞지 않으려고 별도 저장소로 둔다.
 import { CAPABILITIES } from "./capabilities";
 import { AI_TASK_IDS, MOCK_MODEL, type AiTaskId } from "./task";
@@ -27,8 +25,6 @@ export interface AiSettingsSnapshot {
   provider: ProviderId;
   model: string;
   baseUrl: string;
-  /** 기본 AI 중계 주소(출처). 빈칸이면 로컬 중계 */
-  relayUrl: string;
   persist: KeyPersist;
   hasKey: boolean;
   /** 작업별 설정 (없는 작업은 공통 설정을 따름) */
@@ -37,21 +33,15 @@ export interface AiSettingsSnapshot {
   storageWarning: string | null;
 }
 
-// v3(2026-11-11): 모든 AI 초안·채점이 기본 AI로 시작하도록 AI 선호 설정(제공자·모델·주소·작업별 모델)을 다시 초기화했다.
-// 이전에 고른 Mock·작업별 모델이 남아 일부 작업만 다른 모델로 도는 일을 막는다. 이전 값은 읽지 않는다
+// v3(2026-11-11): AI 선호 설정(제공자·모델·주소·작업별 모델)을 한 번 초기화했다. 이전 값은 읽지 않는다.
+// 저장된 제공자가 지금 목록에 없으면(2026-11-11에 뺀 기본 AI lg 등) 저장값을 쓰지 않고 Mock으로 시작한다
 export const SETTINGS_KEY = "qa-demo:v3:ai-settings";
 export const SESSION_KEY = "qa-demo:v1:ai-key";
-
-/** 로컬 실행(개발 서버)이면 기본 AI, 공개 배포 사이트면 Mock */
-export function defaultProviderFor(hostname: string): ProviderId {
-  return hostname === "localhost" || hostname === "127.0.0.1" ? "lg" : "mock";
-}
 
 interface StoredSettings {
   provider: ProviderId;
   models: Partial<Record<ProviderId, string>>;
   baseUrl: string;
-  relayUrl: string;
   tasks: Partial<Record<AiTaskId, TaskSetting>>;
 }
 
@@ -82,8 +72,8 @@ function safe<T>(fn: () => T): { ok: true; value: T } | { ok: false } {
   }
 }
 
-export function createAiSettingsStore(storages: { local: StorageLike | null; session: StorageLike | null }, defaultProvider: ProviderId = "mock") {
-  let settings: StoredSettings = { provider: defaultProvider, models: {}, baseUrl: "", relayUrl: "", tasks: {} };
+export function createAiSettingsStore(storages: { local: StorageLike | null; session: StorageLike | null }) {
+  let settings: StoredSettings = { provider: "mock", models: {}, baseUrl: "", tasks: {} };
   let key = "";
   let persist: KeyPersist = "memory";
   let warning: string | null = null;
@@ -91,25 +81,18 @@ export function createAiSettingsStore(storages: { local: StorageLike | null; ses
   let snapshot: AiSettingsSnapshot = build();
 
   function modelFor(p: ProviderId) {
-    // 기본 AI는 모델이 하나뿐이라 고르지 않는다
-    return p === "lg" ? CAPABILITIES.lg.defaultModel : (settings.models[p] ?? CAPABILITIES[p].defaultModel);
+    return settings.models[p] ?? CAPABILITIES[p].defaultModel;
   }
-  /** 제공자마다 자기 주소만 쓴다: OpenAI 호환은 baseUrl, 기본 AI는 relayUrl. 다른 제공자로 주소가 새지 않게 한다 */
+  /** 주소는 OpenAI 호환만 쓴다. 다른 제공자로 주소가 새지 않게 한다 */
   function baseUrlFor(p: ProviderId) {
-    if (p === "openai") return settings.baseUrl || undefined;
-    if (p === "lg") return settings.relayUrl || undefined;
-    return undefined;
+    return p === "openai" ? settings.baseUrl || undefined : undefined;
   }
-  /** 키(기본 AI는 접속 코드)를 묶어 두는 주소. 이 주소가 바뀌면 키를 비운다 */
+  /** 키를 묶어 두는 주소. 이 주소가 바뀌면 키를 비운다 */
   function bindingFor(p: ProviderId) {
-    return p === "openai" ? settings.baseUrl : p === "lg" ? settings.relayUrl : "";
-  }
-  /** 키 자리의 값을 어디에 실을지: 기본 AI는 중계 접속 코드(LG 키가 아님), 그 밖에는 API 키 */
-  function credentialFor(p: ProviderId): Pick<ProviderConfig, "apiKey" | "relayCode"> {
-    return p === "lg" ? { relayCode: key || undefined } : { apiKey: key || undefined };
+    return p === "openai" ? settings.baseUrl : "";
   }
   function build(): AiSettingsSnapshot {
-    return { provider: settings.provider, model: modelFor(settings.provider), baseUrl: settings.baseUrl, relayUrl: settings.relayUrl, persist, hasKey: key !== "", tasks: settings.tasks, storageWarning: warning };
+    return { provider: settings.provider, model: modelFor(settings.provider), baseUrl: settings.baseUrl, persist, hasKey: key !== "", tasks: settings.tasks, storageWarning: warning };
   }
   function emit() {
     snapshot = build();
@@ -147,7 +130,6 @@ export function createAiSettingsStore(storages: { local: StorageLike | null; ses
               provider: parsed.value.provider,
               models: typeof parsed.value.models === "object" && parsed.value.models ? parsed.value.models : {},
               baseUrl: typeof parsed.value.baseUrl === "string" ? parsed.value.baseUrl : "",
-              relayUrl: typeof parsed.value.relayUrl === "string" ? parsed.value.relayUrl : "",
               tasks: parseTasks(parsed.value.tasks),
             };
           }
@@ -175,7 +157,7 @@ export function createAiSettingsStore(storages: { local: StorageLike | null; ses
     getSnapshot: () => snapshot,
     /** 요청할 때만 키를 꺼낸다. 화면 상태에는 키를 두지 않는다 */
     getConfig(): ProviderConfig {
-      return { provider: settings.provider, model: modelFor(settings.provider), baseUrl: baseUrlFor(settings.provider), ...credentialFor(settings.provider) };
+      return { provider: settings.provider, model: modelFor(settings.provider), baseUrl: baseUrlFor(settings.provider), apiKey: key || undefined };
     },
     /**
      * 작업에 쓸 설정. 작업 설정의 제공자가 공통 제공자와 다르면 AiError(unsupported)를 던진다
@@ -188,7 +170,7 @@ export function createAiSettingsStore(storages: { local: StorageLike | null; ses
       if (t.provider !== settings.provider) {
         throw new AiError("unsupported", `이 작업은 ${CAPABILITIES[t.provider].label} 모델로 설정되어 있는데 공통 제공자는 ${CAPABILITIES[settings.provider].label}입니다. AI 설정의 작업별 모델을 고치세요.`);
       }
-      return { provider: t.provider, model: t.model, baseUrl: baseUrlFor(t.provider), ...credentialFor(t.provider) };
+      return { provider: t.provider, model: t.model, baseUrl: baseUrlFor(t.provider), apiKey: key || undefined };
     },
     /** null이면 공통 설정을 따른다 */
     setTaskSetting(task: AiTaskId, setting: TaskSetting | null) {
@@ -215,15 +197,6 @@ export function createAiSettingsStore(storages: { local: StorageLike | null; ses
       const next = u.trim();
       if (next === settings.baseUrl) return;
       settings = { ...settings, baseUrl: next };
-      dropKey();
-      saveSettings();
-      emit();
-    },
-    /** 기본 AI 중계 주소. 주소를 바꾸면 이전 주소용 접속 코드는 지운다(다른 곳으로 같은 코드를 보내지 않게) */
-    setRelayUrl(u: string) {
-      const next = u.trim();
-      if (next === settings.relayUrl) return;
-      settings = { ...settings, relayUrl: next };
       dropKey();
       saveSettings();
       emit();
@@ -255,7 +228,7 @@ export function browserAiSettingsStore(): AiSettingsStore {
       const r = safe(f);
       return r.ok ? r.value : null;
     };
-    singleton = createAiSettingsStore({ local: pick(() => window.localStorage), session: pick(() => window.sessionStorage) }, defaultProviderFor(window.location.hostname));
+    singleton = createAiSettingsStore({ local: pick(() => window.localStorage), session: pick(() => window.sessionStorage) });
     singleton.hydrate();
   }
   return singleton;

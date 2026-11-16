@@ -55,6 +55,12 @@ describe("초안 저장소", () => {
   it("drafts 배열이 없으면 복원 실패(저장 훅이 원문을 따로 보존)", () => {
     expect(restoreDrafts({ nope: true }, "v1")).toBeNull();
   });
+
+  it("지금은 고를 수 없는 제공자(2026-11-11에 뺀 lg)의 초안도 읽는다. 제공자가 문자열이 아니면 읽을 수 없다", () => {
+    const r = restoreDrafts({ drafts: [draft({ draftId: "dr-lg", provider: "lg", requestedModel: "k-exaone_v2.5" }), { ...draft({ draftId: "dr-bad" }), provider: 7 }] }, "v1")!;
+    expect(r.drafts.map((d) => d.draftId)).toEqual(["dr-lg"]);
+    expect(r.unreadable).toHaveLength(1);
+  });
 });
 
 describe("Q-matrix 출처", () => {

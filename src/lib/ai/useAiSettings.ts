@@ -7,7 +7,6 @@ const SERVER_SNAPSHOT: AiSettingsSnapshot = {
   provider: "mock",
   model: CAPABILITIES.mock.defaultModel,
   baseUrl: "",
-  relayUrl: "",
   persist: "memory",
   hasKey: false,
   tasks: {},

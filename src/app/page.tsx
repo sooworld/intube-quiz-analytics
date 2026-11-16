@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ActivityIcon } from "@/components/moodle/Icon";
 
 const FEATURES = [
   {
@@ -24,6 +25,12 @@ const STEPS = [
   { title: "퀴즈의 ‘분석 보기’를 엽니다", body: "AI 요약 초안으로 큰 그림을 보고, Heatmap과 문항분석으로 근거를 확인합니다." },
   { title: "보충 그룹을 정합니다", body: "제안된 그룹을 저장하거나, 근거가 약하면 보류합니다." },
   { title: "서술형 ‘채점 화면’에서 확정합니다", body: "AI 제안을 검토해 점수를 확정하고, 분석 화면에서 학급 결과를 봅니다." },
+];
+
+const QUICK_LINKS = [
+  { href: "/xapi/", type: "page", label: "xAPI 기록", hint: "Statement 원문과 검증 보고서" },
+  { href: "/quiz/quiz-w5/", type: "quiz", label: "5주차 퀴즈: 복잡도와 그래프 탐색 기초", hint: "객관식 · 분석 보기" },
+  { href: "/essay/quiz-w5e/", type: "quiz", label: "5주차 서술형 퀴즈: 알고리즘 분석과 설계", hint: "서술형 · AI 채점 제안" },
 ];
 
 export default function Intro() {
@@ -80,6 +87,23 @@ export default function Intro() {
         </ul>
         <Link className="btn btn-primary intro-cta" href="/courses/">시작해보기</Link>
       </section>
+
+      <nav className="intro-section" aria-labelledby="intro-quick">
+        <h2 id="intro-quick">바로 가기</h2>
+        <ul className="intro-quick">
+          {QUICK_LINKS.map((q) => (
+            <li key={q.href}>
+              <Link href={q.href}>
+                <ActivityIcon type={q.type} small />
+                <span>
+                  <strong>{q.label}</strong>
+                  <span className="muted">{q.hint}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

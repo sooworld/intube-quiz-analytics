@@ -305,8 +305,13 @@ table.data tr.is-selected td, table.data tr.is-selected th { background: var(--p
 .intro-steps .muted { font-size: var(--fs-md); }
 .intro-notes { margin: 0 0 1.5rem; padding-left: 1.25rem; font-size: var(--fs-md); color: var(--text-secondary); }
 .intro-notes li + li { margin-top: 0.25rem; }
+.intro-quick { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
+.intro-quick a { height: 100%; display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.875rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; color: var(--text); }
+.intro-quick a:hover { border-color: var(--primary); background: var(--primary-subtle); text-decoration: none; }
+.intro-quick strong { display: block; color: var(--primary); }
+.intro-quick .muted { font-size: var(--fs-sm); }
 @media (max-width: 760px) {
   .intro { padding: 0 1rem 2.5rem; }
   .intro-hero { padding-top: 1.5rem; }
-  .intro-grid { grid-template-columns: 1fr; }
+  .intro-grid, .intro-quick { grid-template-columns: 1fr; }
 }

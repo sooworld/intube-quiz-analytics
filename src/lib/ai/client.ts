@@ -85,7 +85,7 @@ export async function runTask<I, V>(task: AiTask<I, V>, input: I, opts: RunOptio
   const maxCalls = opts.retryFormat === false ? 1 : 2;
   let calls = 0;
   for (;;) {
-    const t = withTimeout(opts.signal, opts.timeoutMs ?? AI_TIMEOUT_MS);
+    const t = withTimeout(opts.signal, opts.timeoutMs ?? task.timeoutMs ?? AI_TIMEOUT_MS);
     calls++;
     try {
       const out = await generate(provider, {

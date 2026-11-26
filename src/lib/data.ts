@@ -5,6 +5,9 @@ import quizW5Def from "@/data/quiz-w5.json";
 import quizW5e from "@/data/quiz-w5e.json";
 import rosterFile from "@/data/roster.json";
 import quizW5Statements from "../../public/xapi/quiz-w5.statements.json";
+import { COURSE_LIT201 } from "./forum/content/litF3";
+import { findForum, forumIdList } from "./forum/registry";
+import type { ForumDataset } from "./forum/types";
 import type { Course, EssayQuizDataset, QuizDataset } from "./types";
 import { toQuizDataset, type QuizDefinitionFile } from "./xapi/toDataset";
 import type { XStatement } from "./xapi/vocab";
@@ -21,6 +24,24 @@ const datasets: Record<string, QuizDataset> = {
 
 export function getCourse(): Course {
   return courseFile.course as Course;
+}
+
+/** 데모의 모든 강좌. 첫 번째(ALGO101)가 기본 강좌다. LIT201은 토론(C형) 데모용으로 2026-11-26에 추가했다 */
+export function getCourses(): Course[] {
+  return [getCourse(), COURSE_LIT201];
+}
+
+export function getCourseById(id: string): Course | null {
+  return getCourses().find((c) => c.id === id) ?? null;
+}
+
+// 토론(B 논증형 + C 해석형) 데이터는 합성 글이다 (docs/forum-claim-map/b0-prereg.md)
+export function forumIds(): string[] {
+  return forumIdList();
+}
+
+export function getForum(id: string): ForumDataset | null {
+  return findForum(id);
 }
 
 export function quizIds(): string[] {

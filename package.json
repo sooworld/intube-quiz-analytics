@@ -15,7 +15,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "gen:essays": "tsx scripts/generate-essays.ts",
-    "ai:smoke": "tsx --env-file=.env scripts/ai-smoke.ts"
+    "ai:smoke": "tsx --env-file=.env scripts/ai-smoke.ts",
+    "forum:p0": "tsx --env-file-if-exists=.env scripts/forum-p0/run.ts",
+    "forum:bc": "tsx scripts/forum-bc/run.ts",
+    "forum:s5:live": "tsx --env-file-if-exists=.env scripts/forum-bc/live-lg.ts",
+    "forum:s5": "tsx scripts/forum-bc/s5-report.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.3.0",

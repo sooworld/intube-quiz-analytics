@@ -6,6 +6,9 @@ import { describe, expect, it } from "vitest";
 import type { AiTask } from "@/lib/ai/task";
 import { analysisSummaryTask } from "@/lib/ai/tasks/analysisSummary";
 import { essayGradeTask } from "@/lib/ai/tasks/essayGrade";
+import { forumCommentTask } from "@/lib/ai/tasks/forumComment";
+import { forumDesignTask } from "@/lib/ai/tasks/forumDesign";
+import { forumProfileTask } from "@/lib/ai/tasks/forumProfile";
 import { relationDraftTask } from "@/lib/ai/tasks/relationDraft";
 import { tagDraftTask } from "@/lib/ai/tasks/tagDraft";
 import type { SuggestionStatus } from "@/lib/ai/types";
@@ -15,6 +18,10 @@ const TASKS: Record<string, AiTask<unknown, { status: SuggestionStatus }>> = {
   "tag-draft": tagDraftTask as unknown as AiTask<unknown, { status: SuggestionStatus }>,
   "relation-draft": relationDraftTask as unknown as AiTask<unknown, { status: SuggestionStatus }>,
   "analysis-summary": analysisSummaryTask as unknown as AiTask<unknown, { status: SuggestionStatus }>,
+  // 토론 S5 실연(LG EXAONE, scripts/forum-bc/live-lg.ts). 실패한 호출 기록(ok=false)은 원문이 없어 건너뛴다
+  "forum-design": forumDesignTask as unknown as AiTask<unknown, { status: SuggestionStatus }>,
+  "forum-profile": forumProfileTask as unknown as AiTask<unknown, { status: SuggestionStatus }>,
+  "forum-comment": forumCommentTask as unknown as AiTask<unknown, { status: SuggestionStatus }>,
 };
 
 const dir = path.join(__dirname, "fixtures", "live");
@@ -28,7 +35,8 @@ describe("실연 응답 재생", () => {
   it.each(files)("%s: 같은 검증기 버전이면 같은 상태가 나오고, 키 흔적이 없다", (file) => {
     const text = readFileSync(path.join(dir, file), "utf8");
     expect(text).not.toMatch(/AIza|AQ\.[A-Za-z0-9_-]{20,}|sk-[A-Za-z0-9]{10,}/);
-    const rec = JSON.parse(text) as { task: string; validatorVersion: string; status: SuggestionStatus; input: unknown; raw: unknown };
+    const rec = JSON.parse(text) as { task: string; validatorVersion: string; status: SuggestionStatus; input: unknown; raw: unknown; ok?: boolean };
+    if (rec.ok === false) return;
     const task = TASKS[rec.task]!;
     expect(task).toBeDefined();
     const v = task.validate(rec.raw, rec.input);

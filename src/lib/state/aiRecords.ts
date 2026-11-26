@@ -80,7 +80,7 @@ export interface SummaryFinal {
 const isObj = (x: unknown): x is Record<string, unknown> => typeof x === "object" && x !== null && !Array.isArray(x);
 const isStr = (x: unknown): x is string => typeof x === "string";
 const isStrArr = (x: unknown): x is string[] => Array.isArray(x) && x.every(isStr);
-const TASKS: DraftTaskId[] = ["tag-draft", "relation-draft", "analysis-summary"];
+const TASKS: DraftTaskId[] = ["tag-draft", "relation-draft", "analysis-summary", "forum-design", "forum-profile", "forum-comment"];
 const STATUSES: SuggestionStatus[] = ["valid", "needs-review", "invalid"];
 
 export function isAiDraft(x: unknown): x is AiDraft {

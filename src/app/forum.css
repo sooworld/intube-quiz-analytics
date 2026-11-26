@@ -1,0 +1,80 @@
+/* 토론(B 논증형 + C 해석형) 화면. 기존 토큰(globals.css)만 쓴다. 글자 크기는 --fs-* 7단계에서 고른다 (decisions U13). */
+
+.forum-provenance { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0 0 1rem; font-size: var(--fs-sm); color: var(--text-secondary); }
+
+/* 토론 스레드 (Moodle 토론 근사) */
+.fp { border: 1px solid var(--border); border-radius: var(--radius); background: #fff; padding: 0.875rem 1rem; }
+.fp + .fp, .fp-children > .fp { margin-top: 0.75rem; }
+.fp-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: var(--fs-sm); color: var(--text-secondary); }
+.fp-head strong { color: var(--text); font-size: var(--fs-md); }
+.fp-body { white-space: pre-wrap; line-height: 1.7; }
+.fp-children { margin: 0.75rem 0 0 1.25rem; padding-left: 0.875rem; border-left: 2px solid var(--border); }
+.fp-opening { background: var(--surface-2); }
+.fp-foot { margin-top: 0.5rem; font-size: var(--fs-sm); }
+.poem { margin: 0.5rem 0 0; padding: 0.75rem 1rem; border-left: 3px solid var(--purpose-communication); background: #fff; line-height: 1.6; }
+.poem p { margin: 0 0 0.75rem; }
+.poem p:last-child { margin-bottom: 0; }
+.q-list { margin: 0.5rem 0 0; padding-left: 1.25rem; }
+.q-list li + li { margin-top: 0.25rem; }
+
+/* 설계 지도 표 */
+.dm-table { border-collapse: separate; border-spacing: 3px; font-size: var(--fs-md); }
+.dm-table th { font-weight: 600; text-align: left; padding: 0.25rem 0.375rem; vertical-align: middle; }
+.dm-table thead th { text-align: center; }
+.dm-obj { max-width: 280px; font-weight: 400 !important; }
+.dm-obj .id { font-weight: 700; margin-right: 0.25rem; }
+.dm-cell { width: 4.75rem; height: 2.25rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: #fff; font: inherit; font-size: var(--fs-sm); cursor: pointer; color: var(--text); }
+.dm-cell:focus-visible { outline: none; box-shadow: var(--focus); }
+.dm-cell[data-j="required"] { background: var(--seq-5); border-color: var(--seq-6); color: #fff; font-weight: 700; }
+.dm-cell[data-j="optional"] { background: var(--seq-1); border-color: var(--seq-3); }
+.dm-cell[data-j="none"] { color: var(--text-muted); font-size: var(--fs-xs); }
+.dm-cell[data-j="unset"] { border-style: dashed; background: var(--surface-2); }
+.dm-cell[data-diff="true"] { outline: 2px dashed var(--series-2); outline-offset: 1px; }
+.dm-cell[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--text); }
+.dm-cell.static { cursor: default; }
+.dm-lex { width: 4.75rem; height: 2.25rem; text-align: center; font-variant-numeric: tabular-nums; border-radius: var(--radius-sm); font-size: var(--fs-sm); }
+.dm-common { border-left: 2px solid var(--border-strong); }
+.dm-gaps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+.dm-gaps > div { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.625rem 0.75rem; }
+.dm-gaps h3 { font-size: var(--fs-md); margin: 0 0 0.25rem; }
+
+/* 표지: 사실·추정을 색만이 아니라 글자로 구분한다 (T7) */
+.mark-fact, .mark-guess { display: inline-block; font-size: var(--fs-xs); font-weight: 700; padding: 0 0.375rem; border-radius: var(--radius-sm); margin-right: 0.375rem; vertical-align: 1px; }
+.mark-fact { background: #e9ecef; color: var(--text); }
+.mark-guess { background: var(--warning-bg); color: var(--warning-text); }
+
+/* 첨언 */
+.cm-item { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1rem; }
+.cm-item + .cm-item { margin-top: 0.75rem; }
+.cm-item dl { display: grid; grid-template-columns: 3.5rem 1fr; gap: 0.375rem 0.75rem; margin: 0; }
+.cm-item dt { font-weight: 700; color: var(--text-secondary); font-size: var(--fs-md); }
+.cm-item dd { margin: 0; line-height: 1.65; }
+.cm-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.625rem; font-size: var(--fs-sm); }
+
+/* 글별 근거 */
+.pe-card { scroll-margin-top: calc(var(--navbar-h) + 1rem); }
+.pe-card:target { box-shadow: 0 0 0 3px var(--primary-subtle); }
+.pe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem 1.25rem; margin-top: 0.75rem; }
+.pe-grid h3 { font-size: var(--fs-md); margin: 0 0 0.375rem; }
+.pe-rubric { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.375rem; }
+.pe-rubric li { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.5rem; align-items: start; font-size: var(--fs-md); }
+.pe-quote { font-size: var(--fs-sm); color: var(--text-secondary); }
+.pe-quote button { all: unset; cursor: pointer; text-decoration: underline dotted; }
+.pe-quote button:focus-visible { box-shadow: var(--focus); }
+.pe-decide { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.pe-decide select { font: inherit; font-size: var(--fs-md); padding: 0.25rem 0.5rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); }
+.pe-secondary { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; font-size: var(--fs-sm); }
+.pe-filters { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 1rem; }
+
+/* 논의 지도 */
+.map-plan { font-size: var(--fs-sm); color: var(--text-secondary); }
+.map-zero { font-size: var(--fs-sm); color: var(--warning-text); font-weight: 600; }
+.overlap-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
+.overlap-pair blockquote { margin: 0; padding: 0.5rem 0.75rem; border-left: 3px solid var(--border-strong); background: var(--surface-2); font-size: var(--fs-md); line-height: 1.6; }
+
+@media (max-width: 760px) {
+  .dm-cell, .dm-lex { width: 3.5rem; }
+  .dm-obj { max-width: 160px; }
+  .cm-item dl { grid-template-columns: 1fr; }
+  .pe-rubric li { grid-template-columns: 1fr; }
+}

@@ -217,12 +217,12 @@ const course: Course = {
     {
       number: 5,
       title: "5주차: 복잡도와 그래프 탐색",
-      summary: "시간복잡도·정렬·그래프 탐색·최단 경로를 점검하는 차시 퀴즈입니다.",
+      summary: "시간복잡도·정렬·그래프 탐색·최단 경로를 점검하는 차시 퀴즈와, 추천 알고리즘을 두고 입장을 나누는 토론입니다.",
       activities: [
         { id: "p5", type: "page", name: "강의 자료: 그래프 탐색과 최단 경로" },
         { id: "quiz-w5", type: "quiz", name: "5주차 퀴즈: 복잡도와 그래프 탐색 기초", href: "/quiz/quiz-w5/" },
         { id: "quiz-w5e", type: "quiz", name: "5주차 서술형 퀴즈: 알고리즘 분석과 설계", href: "/essay/quiz-w5e/" },
-        { id: "f5", type: "forum", name: "5주차 토론" },
+        { id: "f5", type: "forum", name: "5주차 토론: 추천 알고리즘과 필터 버블", href: "/forum/f5/" },
       ],
     },
     { number: 6, title: "6주차: 해시와 트리", activities: [{ id: "p6", type: "page", name: "강의 자료: 해시 테이블" }] },

@@ -24,6 +24,8 @@
 | `/essay/quiz-w5e/grading/` | **AI 우선 배치**(2026-11-11): 위에 AI 채점 진행 막대(상태별 건수·일괄 제안), 아래 대기열(상태 필터) | 답안(근거 하이라이트) | AI 제안·결정. 수락 / 수정 후 확정 / 직접 채점, 확정 뒤 "다음 답안 →" |
 | `/essay/quiz-w5e/analysis/` | 확정률, **AI 요약 초안**(확정 점수로 만든 사실만), 개념 점수율, 기준별 분포, AI 제안 vs 교수 확정, AI 제안 vs 기준 채점(생성/보류 분리) |
 | `/settings/ai/` | 제공자(Mock·Gemini·Anthropic·OpenAI 호환), 모델, 현재 브라우저의 개인 키와 연결 확인, **작업별 모델** |
+| `/forum/f5/` | **토론(B 논증형, 합성 글)**: 토론 스레드 · 설계 지도(교수 체크표 먼저 → 도구 요구 판정·어휘 연관도) · 논의 지도(주·부 배정 막대, 형식 고정 첨언) · 글별 근거(교수 배정 확정과 이력) |
+| `/forum/lit-f3/`, `/courses/lit201/` | **토론(C 문학 해석형, 합성 글)**: 김소월 「진달래꽃」. 같은 네 탭, 작품 구절 대조 포함. 강좌 LIT201은 이 데모용 |
 
 ## 개발
 
@@ -37,6 +39,7 @@ npm run gen:data     # 가상 데이터 재생성 (시드 고정, src/data/cours
 npm run gen:essays   # 서술형 가상 답안 재생성 (src/data/quiz-w5e.json, docs/essay-review.md)
 npm run build:pages  # /intube-quiz-analytics/ 하위 경로로 정적 빌드 → out/
 npm run ai:smoke -- essay|tag|relation|summary [모델]  # Gemini 실연 1건 (.env의 GEMINI_API_KEY, 재시도 없음)
+npm run forum:bc     # 토론 B2 검증(TF-IDF·규칙, 합성 글) → docs/forum-claim-map/b2-tables.md
 ```
 
 `.env`(`ai:smoke`용 `GEMINI_API_KEY`)는 커밋하지 않습니다(`.gitignore`). 키를 `NEXT_PUBLIC_` 변수로 바꾸면 정적 번들에 들어가 공개되므로 쓰지 않습니다. 화면에서 쓰는 키는 브라우저의 `/settings/ai/`에 직접 입력합니다.
@@ -104,6 +107,17 @@ npm run ai:smoke -- essay|tag|relation|summary [모델]  # Gemini 실연 1건 (.
 | 2026-11-11 | 브라우저 → 로컬 중계 | 서술형 채점 제안 | 기본 | essay-grade-v1 / 1 | 실연 확인 (valid). 64초, 같은 답안에서 0·0·0. 첫 시도는 업스트림 HTTP 500(189ms)이었고 다시 눌러 성공 |
 
 `reasoning_effort: "low"`로 보냈습니다(기본값 max는 느리고 잘리기 쉬움). low에서도 잘림 없이 근거 인용이 맞았습니다.
+
+## 토론: 설계 지도 · 논의 지도 (인터페이스 시연)
+
+**성능 검증 전 인터페이스 시연입니다.** 글 36개는 모두 설계자가 쓴 합성 글이고, 기본 결과는 규칙 기반 Mock(AI 아님)입니다. 방법론·사전 고정·결과는 `docs/forum-claim-map/`(bc-methodology.md, b0-prereg.md, b2-results.md)에 있습니다.
+
+- **설계 지도:** 강의 목표 × 하위 논점(+공통 제출 요건)마다 필수·선택·무관. 교수가 모든 칸을 먼저 판정해야 도구 결과가 열립니다. 어휘 연관도(TF-IDF)는 요구 여부가 아니라고 표시합니다.
+- **논의 지도:** 하위 논점별 주 배정·부 배정 포함 글 수와 작성자 수, 새 논점 후보·주제 이탈·판단 보류, 답글 기능, 표현 중복 후보. 예정 비중은 교수 메모이며 글 수의 기대 비율이 아닙니다.
+- **첨언:** 관찰 → 해석 → 대안 → 보류 → 질문. 숫자는 코드가 계산한 사실 칩으로만 나오고, 학생 진단 어휘와 근거 없는 시간 재배분 제안을 막습니다.
+- **글별 근거:** 주·부 배정의 근거 문장, 루브릭 기준별 근거 후보(구간 확인 · 연결 판단 보류 / 미확인 / 해당 없음), 작품에서 그대로 찾지 못한 인용. 점수·순위는 없습니다. 교수가 배정을 확정하면 도구 제안과 따로 저장되고 이력이 남습니다.
+- AI 작업: `forum-design`, `forum-profile`, `forum-comment`. 작성자 이름은 프롬프트에 넣지 않습니다. 실제 모델에서는 글별 근거를 6개씩 나눠 부르고, 토론 작업의 제한 시간은 300초입니다.
+- **실연 기록 탭:** LG EXAONE(`k-exaone_v2.5`)으로 합성 글을 실제로 돌린 기록(2026-11-26, 1~4차)을 실패·검토 필요·불일치·지연까지 그대로 보여 줍니다. 성능 근거가 아니며 교수 기록과 섞지 않습니다. 원문은 `tests/fixtures/live/forum-*.json`이고 재생 테스트가 지금 검증기로 다시 검사합니다. 다시 돌리려면 `npm run forum:s5:live -- --run2`(LG 키 필요, 하루 100회), 요약만 다시 만들려면 `npm run forum:s5`.
 
 ## xAPI 원천 데이터
 

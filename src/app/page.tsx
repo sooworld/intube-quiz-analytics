@@ -18,6 +18,10 @@ const FEATURES = [
     title: "서술형은 AI가 먼저 채점",
     body: "루브릭 기준마다 AI가 점수와 답안 속 근거를 제안합니다. 교수가 수락하거나 고치거나 직접 채점해 확정합니다.",
   },
+  {
+    title: "토론은 구조를 봅니다 (시연)",
+    body: "논증형·문학 해석형 토론에서 과제가 강의 목표를 요구하는지(설계 지도), 글이 어느 논점에 모였고 어디가 비었는지(논의 지도)를 근거 문장과 함께 봅니다. 점수는 매기지 않습니다. 합성 글로 만든 인터페이스 시연입니다.",
+  },
 ];
 
 const STEPS = [
@@ -31,6 +35,8 @@ const QUICK_LINKS = [
   { href: "/xapi/", type: "page", label: "xAPI 기록", hint: "Statement 원문과 검증 보고서" },
   { href: "/quiz/quiz-w5/", type: "quiz", label: "5주차 퀴즈: 복잡도와 그래프 탐색 기초", hint: "객관식 · 분석 보기" },
   { href: "/essay/quiz-w5e/", type: "quiz", label: "5주차 서술형 퀴즈: 알고리즘 분석과 설계", hint: "서술형 · AI 채점 제안" },
+  { href: "/forum/f5/", type: "forum", label: "5주차 토론: 추천 알고리즘과 필터 버블", hint: "논증형 토론 · 설계 지도·논의 지도 (합성 글)" },
+  { href: "/forum/lit-f3/", type: "forum", label: "3주차 토론: 「진달래꽃」의 화자", hint: "해석형 토론 · LIT201 (합성 글)" },
 ];
 
 export default function Intro() {

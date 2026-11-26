@@ -10,9 +10,12 @@ export interface WaitGuide {
 }
 
 /** Mock은 바로 끝나므로 안내가 없다 */
-export function waitGuide(provider: ProviderId): WaitGuide | null {
-  return provider === "mock" ? null : { limitSec: AI_TIMEOUT_MS / 1000 };
+export function waitGuide(provider: ProviderId, timeoutMs: number = AI_TIMEOUT_MS): WaitGuide | null {
+  return provider === "mock" ? null : { limitSec: timeoutMs / 1000 };
 }
+
+/** 토론 작업의 요청당 제한 시간. 2026-11-26 LG 실연에서 요청당 106~250초가 걸렸다(Codex 균형 검토 5) */
+export const FORUM_TIMEOUT_MS = 300_000;
 
 /** 37 → "37초", 90 → "1분 30초", 150 → "2분 30초" */
 export function formatSeconds(sec: number): string {

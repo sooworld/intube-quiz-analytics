@@ -1,0 +1,127 @@
+{
+  "task": "forum-comment",
+  "forumId": "f5",
+  "run": 2,
+  "part": null,
+  "dataVersion": "2026-11-26.1",
+  "provider": "lg (OpenAI 호환, 스크립트 전용)",
+  "requestedModel": "k-exaone_v2.5",
+  "request": {
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "maxTokens": 16000
+  },
+  "promptVersion": "forum-comment-v1",
+  "schemaVersion": "1",
+  "validatorVersion": "2",
+  "input": {
+    "forumId": "f5",
+    "facts": [
+      {
+        "kind": "scope",
+        "text": "분석 범위는 2026-10-05 09:00~2026-10-12 23:59의 합성 글 18개(작성자 16명, 답글 8개, 스레드 10개)",
+        "id": "F01"
+      },
+      {
+        "kind": "source",
+        "text": "배정은 교수 확정 0개, 도구 제안 그대로 12개, 검토 필요로 보류한 글 6개 기준",
+        "id": "F02"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q1",
+        "count": 3,
+        "countAny": 4,
+        "text": "Q1 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 4개(작성자 4명)",
+        "id": "F03"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q2",
+        "count": 4,
+        "countAny": 5,
+        "text": "Q2 논점을 주 배정으로 다룬 글 4개(작성자 3명), 부 배정까지 포함하면 5개(작성자 4명)",
+        "id": "F04"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q3",
+        "count": 0,
+        "countAny": 0,
+        "text": "Q3 논점을 주 배정으로 다룬 글 0개(작성자 0명), 부 배정까지 포함하면 0개(작성자 0명)",
+        "id": "F05"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q4",
+        "count": 2,
+        "countAny": 3,
+        "text": "Q4 논점을 주 배정으로 다룬 글 2개(작성자 2명), 부 배정까지 포함하면 3개(작성자 3명)",
+        "id": "F06"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q1",
+        "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 30%)",
+        "id": "F07"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q2",
+        "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 35%)",
+        "id": "F08"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q3",
+        "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)",
+        "id": "F09"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q4",
+        "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)",
+        "id": "F10"
+      },
+      {
+        "kind": "special",
+        "focus": "new",
+        "count": 0,
+        "text": "새 논점 후보로 분류된 글 0개",
+        "id": "F11"
+      },
+      {
+        "kind": "special",
+        "focus": "off",
+        "count": 2,
+        "text": "주제 이탈로 분류된 글 2개",
+        "id": "F12"
+      },
+      {
+        "kind": "special",
+        "focus": "hold",
+        "count": 7,
+        "text": "판단 보류로 분류된 글 7개",
+        "id": "F13"
+      },
+      {
+        "kind": "overlap",
+        "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)",
+        "id": "F14"
+      },
+      {
+        "kind": "design-gap",
+        "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3",
+        "id": "F15"
+      }
+    ]
+  },
+  "createdAt": "2026-11-26T02:24:27.004Z",
+  "ok": false,
+  "error": {
+    "kind": "rate-limit",
+    "status": 429,
+    "message": "HTTP 429: {\"error\":{\"message\":\"service is busy, too many concurrent requests(600)\",\"type\":\"rate_limit_error\",\"param\":null,\"code\":\"rate_limit_exceeded\"}}"
+  },
+  "durationMs": 287
+}

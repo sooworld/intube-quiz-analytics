@@ -1,0 +1,1345 @@
+{
+  "model": "k-exaone_v2.5",
+  "date": "2026-11-26",
+  "note": "합성 글 · 1회 실행 · temperature 0 · 추론 low. 의도 라벨과 같아도 성능 근거가 아니다.",
+  "calls": [
+    {
+      "file": "forum-comment-f5-k-exaone_v2.5-2026-11-26-r2-429.json",
+      "run": "429",
+      "ok": false,
+      "recorded": null,
+      "current": null,
+      "seconds": 0,
+      "tokens": null,
+      "reasoning": null,
+      "error": "rate-limit"
+    },
+    {
+      "file": "forum-comment-f5-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "needs-review",
+      "current": "needs-review",
+      "seconds": 141,
+      "tokens": 4003,
+      "reasoning": 3208,
+      "error": null
+    },
+    {
+      "file": "forum-comment-f5-k-exaone_v2.5-2026-11-26-r3.json",
+      "run": "3",
+      "ok": true,
+      "recorded": "needs-review",
+      "current": "needs-review",
+      "seconds": 117,
+      "tokens": 3279,
+      "reasoning": 2698,
+      "error": null
+    },
+    {
+      "file": "forum-comment-f5-k-exaone_v2.5-2026-11-26-r4.json",
+      "run": "4",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 118,
+      "tokens": 3378,
+      "reasoning": 2686,
+      "error": null
+    },
+    {
+      "file": "forum-comment-lit-f3-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "needs-review",
+      "current": "needs-review",
+      "seconds": 116,
+      "tokens": 4105,
+      "reasoning": 3466,
+      "error": null
+    },
+    {
+      "file": "forum-comment-lit-f3-k-exaone_v2.5-2026-11-26-r3.json",
+      "run": "3",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 106,
+      "tokens": 3465,
+      "reasoning": 2820,
+      "error": null
+    },
+    {
+      "file": "forum-comment-lit-f3-k-exaone_v2.5-2026-11-26-r4.json",
+      "run": "4",
+      "ok": true,
+      "recorded": "needs-review",
+      "current": "needs-review",
+      "seconds": 122,
+      "tokens": 3723,
+      "reasoning": 3187,
+      "error": null
+    },
+    {
+      "file": "forum-design-f5-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 227,
+      "tokens": 7160,
+      "reasoning": 5950,
+      "error": null
+    },
+    {
+      "file": "forum-design-f5-k-exaone_v2.5-2026-11-26.json",
+      "run": "1",
+      "ok": false,
+      "recorded": null,
+      "current": null,
+      "seconds": 163,
+      "tokens": null,
+      "reasoning": null,
+      "error": "truncated"
+    },
+    {
+      "file": "forum-design-lit-f3-k-exaone_v2.5-2026-11-26-r2-429.json",
+      "run": "429",
+      "ok": false,
+      "recorded": null,
+      "current": null,
+      "seconds": 0,
+      "tokens": null,
+      "reasoning": null,
+      "error": "rate-limit"
+    },
+    {
+      "file": "forum-design-lit-f3-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 206,
+      "tokens": 6976,
+      "reasoning": 5374,
+      "error": null
+    },
+    {
+      "file": "forum-design-lit-f3-k-exaone_v2.5-2026-11-26.json",
+      "run": "1",
+      "ok": false,
+      "recorded": null,
+      "current": null,
+      "seconds": 149,
+      "tokens": null,
+      "reasoning": null,
+      "error": "truncated"
+    },
+    {
+      "file": "forum-profile-f5-b1-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 213,
+      "tokens": 6251,
+      "reasoning": 5134,
+      "error": null
+    },
+    {
+      "file": "forum-profile-f5-b2-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "needs-review",
+      "current": "needs-review",
+      "seconds": 200,
+      "tokens": 7986,
+      "reasoning": 6645,
+      "error": null
+    },
+    {
+      "file": "forum-profile-f5-b3-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 155,
+      "tokens": 4796,
+      "reasoning": 3843,
+      "error": null
+    },
+    {
+      "file": "forum-profile-f5-b3-k-exaone_v2.5-2026-11-26-r4.json",
+      "run": "4",
+      "ok": true,
+      "recorded": "needs-review",
+      "current": "needs-review",
+      "seconds": 138,
+      "tokens": 4123,
+      "reasoning": 3664,
+      "error": null
+    },
+    {
+      "file": "forum-profile-f5-k-exaone_v2.5-2026-11-26.json",
+      "run": "1",
+      "ok": false,
+      "recorded": null,
+      "current": null,
+      "seconds": 300,
+      "tokens": null,
+      "reasoning": null,
+      "error": "timeout"
+    },
+    {
+      "file": "forum-profile-lit-f3-b1-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 130,
+      "tokens": 4942,
+      "reasoning": 3632,
+      "error": null
+    },
+    {
+      "file": "forum-profile-lit-f3-b2-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 248,
+      "tokens": 7281,
+      "reasoning": 5951,
+      "error": null
+    },
+    {
+      "file": "forum-profile-lit-f3-b3-k-exaone_v2.5-2026-11-26-r2.json",
+      "run": "2",
+      "ok": true,
+      "recorded": "valid",
+      "current": "valid",
+      "seconds": 144,
+      "tokens": 6371,
+      "reasoning": 5193,
+      "error": null
+    },
+    {
+      "file": "forum-profile-lit-f3-k-exaone_v2.5-2026-11-26.json",
+      "run": "1",
+      "ok": false,
+      "recorded": null,
+      "current": null,
+      "seconds": 300,
+      "tokens": null,
+      "reasoning": null,
+      "error": "timeout"
+    }
+  ],
+  "forums": {
+    "f5": {
+      "design": {
+        "status": "valid",
+        "gapsDesigner": [
+          "O3"
+        ],
+        "gapsLlm": [
+          "O3"
+        ],
+        "diffCells": 10,
+        "o4RequiredQs": 4,
+        "totalQs": 4,
+        "o3q2": "optional",
+        "seconds": 227
+      },
+      "profile": {
+        "status": "needs-review",
+        "batches": [
+          213,
+          200,
+          155
+        ],
+        "review": [
+          {
+            "id": "b07",
+            "issues": [
+              "주 배정 근거로 옮긴 문장이 글에 없습니다"
+            ]
+          },
+          {
+            "id": "b08",
+            "issues": [
+              "주 배정 근거로 옮긴 문장이 글에 없습니다"
+            ]
+          },
+          {
+            "id": "b09",
+            "issues": [
+              "주 배정 근거로 옮긴 문장이 글에 없습니다"
+            ]
+          },
+          {
+            "id": "b10",
+            "issues": [
+              "주 배정 근거로 옮긴 문장이 글에 없습니다"
+            ]
+          },
+          {
+            "id": "b11",
+            "issues": [
+              "주 배정 근거로 옮긴 문장이 글에 없습니다"
+            ]
+          },
+          {
+            "id": "b12",
+            "issues": [
+              "주 배정 근거로 옮긴 문장이 글에 없습니다"
+            ]
+          }
+        ],
+        "agreePrimary": 18,
+        "agreeRule": 12,
+        "agreeFunction": 16,
+        "total": 18,
+        "ruleFailures": [
+          {
+            "id": "b04",
+            "roles": [
+              "everyday-example"
+            ],
+            "intent": "Q1",
+            "rule": "hold",
+            "llm": "Q1",
+            "secondary": [],
+            "review": false,
+            "quote": "제 경험을 말해 보면, 고양이 영상을 하나 끝까지 봤더니 그 주 내내 첫 화면이 고양이로 가득 찼어요."
+          },
+          {
+            "id": "b06",
+            "roles": [
+              "english-terms"
+            ],
+            "intent": "Q4",
+            "rule": "off",
+            "llm": "Q4",
+            "secondary": [],
+            "review": false,
+            "quote": "Exploration-exploitation trade-off를 조정하면 regulation 없이도 문제를 줄일 수 있다고 봅니다."
+          },
+          {
+            "id": "b12",
+            "roles": [
+              "extension"
+            ],
+            "intent": "new",
+            "rule": "Q1",
+            "llm": "new",
+            "secondary": [],
+            "review": true,
+            "quote": "..."
+          },
+          {
+            "id": "b16",
+            "roles": [
+              "injection",
+              "two-q"
+            ],
+            "intent": "Q2",
+            "rule": "Q1",
+            "llm": "Q2",
+            "secondary": [
+              "Q1"
+            ],
+            "review": false,
+            "quote": "저는 다양성 의무에 찬성합니다."
+          },
+          {
+            "id": "b17",
+            "roles": [
+              "different-vocab-rebuttal"
+            ],
+            "intent": "Q1",
+            "rule": "Q2",
+            "llm": "Q1",
+            "secondary": [
+              "Q2"
+            ],
+            "review": false,
+            "quote": "시야가 좁아지는 원인을 알고리즘에만 돌리기는 어렵다고 봅니다."
+          }
+        ],
+        "outside": []
+      },
+      "comments": [
+        {
+          "run": "2",
+          "promptVersion": "forum-comment-v1",
+          "seconds": 141,
+          "recorded": "needs-review",
+          "current": "needs-review",
+          "problems": [
+            "1번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에).",
+            "2번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에).",
+            "3번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에).",
+            "4번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에)."
+          ],
+          "facts": [
+            {
+              "id": "F01",
+              "kind": "scope",
+              "text": "분석 범위는 2026-10-05 09:00~2026-10-12 23:59의 합성 글 18개(작성자 16명, 답글 8개, 스레드 10개)"
+            },
+            {
+              "id": "F02",
+              "kind": "source",
+              "text": "배정은 교수 확정 0개, 도구 제안 그대로 12개, 검토 필요로 보류한 글 6개 기준"
+            },
+            {
+              "id": "F03",
+              "kind": "q-count",
+              "text": "Q1 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 4개(작성자 4명)"
+            },
+            {
+              "id": "F04",
+              "kind": "q-count",
+              "text": "Q2 논점을 주 배정으로 다룬 글 4개(작성자 3명), 부 배정까지 포함하면 5개(작성자 4명)"
+            },
+            {
+              "id": "F05",
+              "kind": "q-count",
+              "text": "Q3 논점을 주 배정으로 다룬 글 0개(작성자 0명), 부 배정까지 포함하면 0개(작성자 0명)"
+            },
+            {
+              "id": "F06",
+              "kind": "q-count",
+              "text": "Q4 논점을 주 배정으로 다룬 글 2개(작성자 2명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F07",
+              "kind": "q-plan",
+              "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 30%)"
+            },
+            {
+              "id": "F08",
+              "kind": "q-plan",
+              "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 35%)"
+            },
+            {
+              "id": "F09",
+              "kind": "q-plan",
+              "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)"
+            },
+            {
+              "id": "F10",
+              "kind": "q-plan",
+              "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)"
+            },
+            {
+              "id": "F11",
+              "kind": "special",
+              "text": "새 논점 후보로 분류된 글 0개"
+            },
+            {
+              "id": "F12",
+              "kind": "special",
+              "text": "주제 이탈로 분류된 글 2개"
+            },
+            {
+              "id": "F13",
+              "kind": "special",
+              "text": "판단 보류로 분류된 글 7개"
+            },
+            {
+              "id": "F14",
+              "kind": "overlap",
+              "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)"
+            },
+            {
+              "id": "F15",
+              "kind": "design-gap",
+              "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3"
+            }
+          ],
+          "items": [
+            {
+              "focus": "Q3",
+              "fields": {
+                "observation": "{F05}에 따르면 해당 논점을 주 배정으로 다룬 글과 부 배정까지 포함한 글이 모두 없고 작성자도 없다는 기준입니다. {F09}는 교수 메모상 중요도 중, 정리 시간 예정 비중을 언급합니다.",
+                "interpretation": "해당 논점이 실제 논의에서 다뤄지지 않았을 가능성을 시사할 수 있으나, 분류 기준과 배정 상태를 함께 봐야 합니다.",
+                "alternative": "배정 적용 결과이거나, 과제 설계에서 선택적으로 다뤄졌거나, 표본 규모와 합성 글 특성 때문에 분포가 제한적으로 보였을 수 있습니다.",
+                "holdCondition": "{F02}의 교수 확정 및 검토 필요 보류 기준과 원문 대조 전 상태를 고려하면 이 해석을 확정하면 안 됩니다.",
+                "question": "배정 기준과 과제 설계를 먼저 확인하고 싶습니다. 해당 논점이 필수·선택·권장 중 무엇이었고, {F09}의 교수 메모 중요도와 정리 시간 예정 비중을 어떻게 볼지 확인 부탁드립니다."
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            },
+            {
+              "focus": "Q1/Q2/Q4",
+              "fields": {
+                "observation": "{F03}, {F04}, {F06}은 해당 논점들의 주 배정 및 부 배정 포함 글과 작성자 기준을 제시합니다. {F07}, {F08}, {F10}은 교수 메모의 중요도와 정리 시간 예정 비중을 제시합니다.",
+                "interpretation": "교수 메모의 중요도·예정 비중과 실제 글 분포를 함께 비교해 볼 필요가 있으나, 분포만으로 수업 구조를 판단하기는 어렵습니다.",
+                "alternative": "{F01}의 분석 범위와 합성 글 특성, 답글·스레드 구조, 배정 적용 결과, 과제 설계가 분포에 영향을 주었을 수 있습니다.",
+                "holdCondition": "{F02}의 배정 확정·검토 필요 보류 기준을 고려하면 해석을 보류해야 합니다.",
+                "question": "배정 기준과 과제 설계를 먼저 확인하고 싶습니다. 해당 논점들의 교수 메모 중요도·정리 시간 예정 비중을 현재 분포와 함께 어떻게 해석할지 확인 부탁드립니다."
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            },
+            {
+              "focus": "hold",
+              "fields": {
+                "observation": "{F02}는 배정이 교수 확정, 도구 제안 그대로, 검토 필요 보류로 구분된 기준임을 보여줍니다. {F11}, {F12}, {F13}은 새 논점 후보, 주제 이탈, 판단 보류 분류 기준을 제시합니다.",
+                "interpretation": "분류 결과가 배정 검토 상태와 얽혀 있을 가능성이 있어, 논의 구조의 확정 신호로 보기 어려울 수 있습니다.",
+                "alternative": "{F01}의 분석 범위와 합성 글 특성, 배정 적용·검토 절차, 과제 설계 때문에 분류가 달라졌을 수 있습니다.",
+                "holdCondition": "교수 확정 배정과 원문 대조 전 상태를 고려하면 보류·이탈 분류를 확정 해석으로 믿으면 안 됩니다.",
+                "question": "배정 기준과 과제 설계를 먼저 확인하고 싶습니다. {F02}의 배정 구분과 {F11}·{F12}·{F13}의 분류가 교수자의 검토 절차와 어떻게 연결되는지 확인 부탁드립니다."
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            },
+            {
+              "focus": "design",
+              "fields": {
+                "observation": "{F15}는 교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표를 제시합니다. {F11}은 새 논점 후보 분류 기준을, {F14}는 원문 대조 전 표현 중복 후보 기준을 제시합니다.",
+                "interpretation": "해당 목표와 새 논점·중복 후보 분류가 과제 설계상 어떤 역할인지 검토할 필요가 있습니다. 다만 현재 정보만으로 의도를 단정하기 어렵습니다.",
+                "alternative": "새 논점 후보 없음은 배정·분류 기준의 결과일 수 있고, 중복 후보도 원문 대조 전 임시 신호일 수 있습니다.",
+                "holdCondition": "원문 대조 전이고 배정 확정 전이므로 설계 판단과 후보 분류를 확정하면 안 됩니다.",
+                "question": "배정 기준과 과제 설계를 먼저 확인하고 싶습니다. 해당 목표와 새 논점·표현 중복 후보 분류가 의도된 설계인지, 배정 확인과 함께 검토 부탁드립니다."
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            }
+          ]
+        },
+        {
+          "run": "3",
+          "promptVersion": "forum-comment-v2",
+          "seconds": 117,
+          "recorded": "needs-review",
+          "current": "needs-review",
+          "problems": [
+            "1번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에).",
+            "2번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에).",
+            "3번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에).",
+            "4번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에)."
+          ],
+          "facts": [
+            {
+              "id": "F01",
+              "kind": "scope",
+              "text": "분석 범위는 2026-10-05 09:00~2026-10-12 23:59의 합성 글 18개(작성자 16명, 답글 8개, 스레드 10개)"
+            },
+            {
+              "id": "F02",
+              "kind": "source",
+              "text": "배정은 교수 확정 0개, 도구 제안 그대로 12개, 검토 필요로 보류한 글 6개 기준"
+            },
+            {
+              "id": "F03",
+              "kind": "q-count",
+              "text": "Q1 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 4개(작성자 4명)"
+            },
+            {
+              "id": "F04",
+              "kind": "q-count",
+              "text": "Q2 논점을 주 배정으로 다룬 글 4개(작성자 3명), 부 배정까지 포함하면 5개(작성자 4명)"
+            },
+            {
+              "id": "F05",
+              "kind": "q-count",
+              "text": "Q3 논점을 주 배정으로 다룬 글 0개(작성자 0명), 부 배정까지 포함하면 0개(작성자 0명)"
+            },
+            {
+              "id": "F06",
+              "kind": "q-count",
+              "text": "Q4 논점을 주 배정으로 다룬 글 2개(작성자 2명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F07",
+              "kind": "q-plan",
+              "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 30%)"
+            },
+            {
+              "id": "F08",
+              "kind": "q-plan",
+              "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 35%)"
+            },
+            {
+              "id": "F09",
+              "kind": "q-plan",
+              "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)"
+            },
+            {
+              "id": "F10",
+              "kind": "q-plan",
+              "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)"
+            },
+            {
+              "id": "F11",
+              "kind": "special",
+              "text": "새 논점 후보로 분류된 글 0개"
+            },
+            {
+              "id": "F12",
+              "kind": "special",
+              "text": "주제 이탈로 분류된 글 2개"
+            },
+            {
+              "id": "F13",
+              "kind": "special",
+              "text": "판단 보류로 분류된 글 7개"
+            },
+            {
+              "id": "F14",
+              "kind": "overlap",
+              "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)"
+            },
+            {
+              "id": "F15",
+              "kind": "design-gap",
+              "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3"
+            }
+          ],
+          "items": [
+            {
+              "focus": "Q1",
+              "fields": {
+                "observation": "{F03}에서 Q1 논점을 주 배정으로 다룬 글과 부 배정 포함 글이 구분되고, {F07}에 교수 메모가 있습니다.",
+                "interpretation": "Q1은 주 배정 중심으로 다뤄졌으나 부 배정 포함 시 범위가 달라질 수 있는 논점으로 읽힐 수 있습니다.",
+                "alternative": "배정 기준이나 부 배정 코딩 방식에 따라 같은 관찰이 다른 구조로 설명될 수 있습니다.",
+                "holdCondition": "교수 확정 배정과 검토 필요 보류 기준이 확인되기 전에는 이 해석을 보류합니다.",
+                "question": "Q1의 주/부 배정 기준과 정리 시간 예정 비중 {F07}을 설계 의도와 함께 확인해도 될까요?"
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            },
+            {
+              "focus": "Q2",
+              "fields": {
+                "observation": "{F04}에서 Q2 논점을 주 배정으로 다룬 글과 부 배정 포함 글이 구분되고, {F08}에 교수 메모가 있습니다.",
+                "interpretation": "Q2도 주 배정과 부 배정 포함 범위에 따라 논의 구조가 다르게 읽힐 수 있습니다.",
+                "alternative": "작성자 수나 배정 분류 기준이 달라지면 같은 관찰이 다른 설명으로 갈 수 있습니다.",
+                "holdCondition": "배정 확정과 검토 필요 보류 기준이 확인되기 전에는 이 해석을 보류합니다.",
+                "question": "Q2의 주/부 배정 기준과 정리 시간 예정 비중 {F08}을 설계 의도와 함께 확인해도 될까요?"
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            },
+            {
+              "focus": "Q3",
+              "fields": {
+                "observation": "{F05}에서 Q3 논점은 주 배정과 부 배정 포함 모두에서 관찰되지 않고, {F09}에 교수 메모가 있습니다.",
+                "interpretation": "Q3가 이번 범위에서 표면화되지 않은 논점으로 읽힐 수 있습니다.",
+                "alternative": "부 배정 포함 기준, 코딩 규칙, 글 표본 구성에 따라 누락처럼 보일 수 있습니다.",
+                "holdCondition": "배정 기준과 분류 규칙 확인 전에는 미출현으로 단정하지 않습니다.",
+                "question": "Q3를 설계상 필수/권장/선택 중 어떻게 두었는지와 정리 시간 예정 비중 {F09}를 확인해도 될까요?"
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            },
+            {
+              "focus": "design",
+              "fields": {
+                "observation": "{F11} 새 논점 후보, {F12} 주제 이탈, {F13} 판단 보류, {F14} 표현 중복 후보, {F15} 목표 O3의 필수 하위 논점 없음이 함께 관찰됩니다.",
+                "interpretation": "논점 구조와 목표 매핑을 조정할 신호로 읽힐 수 있습니다.",
+                "alternative": "분류 기준 민감성, 원문 대조 전 상태, 설계 의도에 따라 다르게 설명될 수 있습니다.",
+                "holdCondition": "분류 규칙과 원문 대조, 목표-논점 매핑 의도 확인 전에는 구조 조정 근거로 확정하지 않습니다.",
+                "question": "배정 확인과 과제 설계 의도를 먼저 확인한 뒤, 이 분류와 O3 무필수 설계를 논의 구조에 반영할지 판단해도 될까요?"
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            }
+          ]
+        },
+        {
+          "run": "4",
+          "promptVersion": "forum-comment-v3",
+          "seconds": 118,
+          "recorded": "valid",
+          "current": "valid",
+          "problems": [],
+          "facts": [
+            {
+              "id": "F01",
+              "kind": "scope",
+              "text": "분석 범위는 2026-10-05 09:00~2026-10-12 23:59의 합성 글 18개(작성자 16명, 답글 8개, 스레드 10개)"
+            },
+            {
+              "id": "F02",
+              "kind": "source",
+              "text": "배정은 교수 확정 0개, 도구 제안 그대로 12개, 검토 필요로 보류한 글 6개 기준"
+            },
+            {
+              "id": "F03",
+              "kind": "q-count",
+              "text": "Q1 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 4개(작성자 4명)"
+            },
+            {
+              "id": "F04",
+              "kind": "q-count",
+              "text": "Q2 논점을 주 배정으로 다룬 글 4개(작성자 3명), 부 배정까지 포함하면 5개(작성자 4명)"
+            },
+            {
+              "id": "F05",
+              "kind": "q-count",
+              "text": "Q3 논점을 주 배정으로 다룬 글 0개(작성자 0명), 부 배정까지 포함하면 0개(작성자 0명)"
+            },
+            {
+              "id": "F06",
+              "kind": "q-count",
+              "text": "Q4 논점을 주 배정으로 다룬 글 2개(작성자 2명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F07",
+              "kind": "q-plan",
+              "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 30%)"
+            },
+            {
+              "id": "F08",
+              "kind": "q-plan",
+              "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 35%)"
+            },
+            {
+              "id": "F09",
+              "kind": "q-plan",
+              "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)"
+            },
+            {
+              "id": "F10",
+              "kind": "q-plan",
+              "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)"
+            },
+            {
+              "id": "F11",
+              "kind": "special",
+              "text": "새 논점 후보로 분류된 글 0개"
+            },
+            {
+              "id": "F12",
+              "kind": "special",
+              "text": "주제 이탈로 분류된 글 2개"
+            },
+            {
+              "id": "F13",
+              "kind": "special",
+              "text": "판단 보류로 분류된 글 7개"
+            },
+            {
+              "id": "F14",
+              "kind": "overlap",
+              "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)"
+            },
+            {
+              "id": "F15",
+              "kind": "design-gap",
+              "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3"
+            }
+          ],
+          "items": [
+            {
+              "focus": "Q3",
+              "fields": {
+                "observation": "{F05} {F09} {F02} {F13}",
+                "interpretation": "Q3는 주 배정과 부 배정 기준 모두 보고된 글이 없는 상태로 제시되어, 실제 논의 구조에서 거의 드러나지 않은 것으로 읽힐 수 있습니다.",
+                "alternative": "배정 검토 필요나 판단 보류로 분류된 글들이 Q3를 다룰 가능성이 있고, 과제 설계상 Q3가 선택적으로 운영되었을 수 있습니다.",
+                "holdCondition": "교수 확정 배정이 없고 검토 필요 보류가 있는 상태이므로, 배정 의도와 원문 맥락 확인 전에는 해석을 유보하는 편이 안전합니다.",
+                "question": "Q3를 필수 논점으로 설계했는지, 선택적으로 둔 것인지, 그리고 보류 글들이 Q3와 연결될 수 있는지 확인해 주실 수 있나요?"
+              },
+              "issues": []
+            },
+            {
+              "focus": "Q1/Q2/Q4",
+              "fields": {
+                "observation": "{F03} {F04} {F06} {F07} {F08} {F10}",
+                "interpretation": "주 배정 기준으로는 Q1, Q2, Q4에 논의가 모인 것으로 보이며, 교수 메모의 중요도 및 예정 비중과 함께 구조 검토 대상이 될 수 있습니다.",
+                "alternative": "부 배정 포함 여부에 따라 분포가 달라질 수 있고, 도구 제안 그대로 배정된 글들이 교수 의도와 다를 가능성도 있습니다.",
+                "holdCondition": "교수 확정 배정이 없고 검토 필요 보류가 있으므로, 배정 기준과 부 배정 포함 규칙 확인 전에는 단정하지 않는 것이 좋습니다.",
+                "question": "Q1, Q2, Q4 중 어떤 논점을 중심으로 구조를 확인하고, 부 배정 포함 기준을 어떻게 볼지 확인해 주실 수 있나요?"
+              },
+              "issues": []
+            },
+            {
+              "focus": "design",
+              "fields": {
+                "observation": "{F02} {F12} {F13} {F14} {F15}",
+                "interpretation": "배정과 분류가 확정 전이어서 논의 구조를 확정적으로 해석하기 어렵고, 주제 이탈·판단 보류·표현 중복 후보는 재검토 여지가 있습니다.",
+                "alternative": "도구 제안이나 어휘 중복 기준은 원문 대조 전일 수 있고, 주제 이탈·보류 분류도 교수 의도에 따라 달라질 수 있습니다.",
+                "holdCondition": "원문 대조와 교수 확정 전이므로, 분류 결과를 구조 평가처럼 굳히지 않는 편이 안전합니다.",
+                "question": "배정 검토 필요 글과 주제 이탈·표현 중복 후보를 어떻게 재분류할지, O3의 필수 여부를 어떻게 볼지 확인해 주실 수 있나요?"
+              },
+              "issues": []
+            },
+            {
+              "focus": "new",
+              "fields": {
+                "observation": "{F11} {F12} {F13} {F01} {F02}",
+                "interpretation": "새 논점 후보보다 기존 범주와 보류·이탈 분류가 중심인 것으로 보여, 새 논점 탐색 여부를 별도로 확인할 필요가 있습니다.",
+                "alternative": "분석 범위와 배정 미확정 상태 때문에 새 논점 후보가 드러나지 않았을 수 있고, 표본 범위 밖 논의가 있을 수 있습니다.",
+                "holdCondition": "범위와 배정 확정 전이므로, 새 논점 후보가 없다는 점을 구조 부재로 단정하기는 어렵습니다.",
+                "question": "새 논점 후보가 없음을 구조 부재로 볼지, 범위와 배정 확정 후 재검토할지 확인해 주실 수 있나요?"
+              },
+              "issues": []
+            }
+          ]
+        }
+      ],
+      "profileV3": {
+        "status": "needs-review",
+        "seconds": 138,
+        "posts": [
+          {
+            "id": "b13",
+            "llm": "off",
+            "fn": "sidestep",
+            "intent": "off",
+            "intentFn": "sidestep",
+            "review": false
+          },
+          {
+            "id": "b14",
+            "llm": "off",
+            "fn": "new-opinion",
+            "intent": "off",
+            "intentFn": "new-opinion",
+            "review": false
+          },
+          {
+            "id": "b15",
+            "llm": "hold",
+            "fn": "new-opinion",
+            "intent": "hold",
+            "intentFn": "new-opinion",
+            "review": false
+          },
+          {
+            "id": "b16",
+            "llm": "Q2",
+            "fn": "new-opinion",
+            "intent": "Q2",
+            "intentFn": "new-opinion",
+            "review": true
+          },
+          {
+            "id": "b17",
+            "llm": "Q1",
+            "fn": "rebut",
+            "intent": "Q1",
+            "intentFn": "rebut",
+            "review": false
+          },
+          {
+            "id": "b18",
+            "llm": "Q2",
+            "fn": "agree-reason",
+            "intent": "Q2",
+            "intentFn": "extend",
+            "review": false
+          }
+        ]
+      }
+    },
+    "lit-f3": {
+      "design": {
+        "status": "valid",
+        "gapsDesigner": [
+          "O3"
+        ],
+        "gapsLlm": [
+          "O3"
+        ],
+        "diffCells": 10,
+        "o4RequiredQs": 4,
+        "totalQs": 4,
+        "o3q2": null,
+        "seconds": 206
+      },
+      "profile": {
+        "status": "valid",
+        "batches": [
+          130,
+          248,
+          144
+        ],
+        "review": [],
+        "agreePrimary": 16,
+        "agreeRule": 13,
+        "agreeFunction": 17,
+        "total": 18,
+        "ruleFailures": [
+          {
+            "id": "c05",
+            "roles": [
+              "multi-passage",
+              "two-q"
+            ],
+            "intent": "Q3",
+            "rule": "Q1",
+            "llm": "Q3",
+            "secondary": [
+              "Q1"
+            ],
+            "review": false,
+            "quote": "1연과 4연은 앞의 두 행이 똑같고 마지막 행만 다릅니다. 1연은 \"말없이 고이 보내 드리우리다\"이고, 4연은 \"죽어도 아니 눈물 흘리우리다\"입니다."
+          },
+          {
+            "id": "c06",
+            "roles": [
+              "everyday-example"
+            ],
+            "intent": "Q1",
+            "rule": "hold",
+            "llm": "Q1",
+            "secondary": [],
+            "review": false,
+            "quote": "이 시의 화자도 그런 것 같아요. 울지 않겠다고 몇 번이나 말하는 게 오히려 울고 있다는 뜻으로 들렸어요."
+          },
+          {
+            "id": "c15",
+            "roles": [
+              "english-terms"
+            ],
+            "intent": "Q1",
+            "rule": "hold",
+            "llm": "Q1",
+            "secondary": [],
+            "review": false,
+            "quote": "화자의 persona는 verbal irony의 전형이라고 봅니다. Understatement로 감정을 누르는 것처럼 보이지만, '죽어도 아니'라는 double negation이 오히려 emotion을 amplify합니다."
+          },
+          {
+            "id": "c17",
+            "roles": [
+              "same-quote"
+            ],
+            "intent": "Q3",
+            "rule": "Q1",
+            "llm": "Q3",
+            "secondary": [
+              "Q1"
+            ],
+            "review": false,
+            "quote": "수미상관은 화자가 한 걸음도 나아가지 못하고 같은 자리에 머무는 모습을 보여 준다고 생각합니다."
+          }
+        ],
+        "outside": [
+          {
+            "id": "c10",
+            "intent": "hold",
+            "llm": "Q1",
+            "rule": "hold"
+          },
+          {
+            "id": "c12",
+            "intent": "hold",
+            "llm": "off",
+            "rule": "off"
+          }
+        ]
+      },
+      "comments": [
+        {
+          "run": "2",
+          "promptVersion": "forum-comment-v1",
+          "seconds": 116,
+          "recorded": "needs-review",
+          "current": "needs-review",
+          "problems": [
+            "1번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에).",
+            "3번째 첨언: 관찰에 사실 토큰 밖 서술이 깁니다(해석은 해석 칸에)."
+          ],
+          "facts": [
+            {
+              "id": "F01",
+              "kind": "scope",
+              "text": "분석 범위는 2026-09-21 09:00~2026-09-28 23:59의 합성 글 18개(작성자 16명, 답글 7개, 스레드 11개)"
+            },
+            {
+              "id": "F02",
+              "kind": "source",
+              "text": "배정은 교수 확정 0개, 도구 제안 그대로 18개, 검토 필요로 보류한 글 0개 기준"
+            },
+            {
+              "id": "F03",
+              "kind": "q-count",
+              "text": "Q1 논점을 주 배정으로 다룬 글 7개(작성자 7명), 부 배정까지 포함하면 11개(작성자 11명)"
+            },
+            {
+              "id": "F04",
+              "kind": "q-count",
+              "text": "Q2 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F05",
+              "kind": "q-count",
+              "text": "Q3 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F06",
+              "kind": "q-count",
+              "text": "Q4 논점을 주 배정으로 다룬 글 1개(작성자 1명), 부 배정까지 포함하면 2개(작성자 2명)"
+            },
+            {
+              "id": "F07",
+              "kind": "q-plan",
+              "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 35%)"
+            },
+            {
+              "id": "F08",
+              "kind": "q-plan",
+              "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 30%)"
+            },
+            {
+              "id": "F09",
+              "kind": "q-plan",
+              "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)"
+            },
+            {
+              "id": "F10",
+              "kind": "q-plan",
+              "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)"
+            },
+            {
+              "id": "F11",
+              "kind": "special",
+              "text": "새 논점 후보로 분류된 글 2개"
+            },
+            {
+              "id": "F12",
+              "kind": "special",
+              "text": "주제 이탈로 분류된 글 2개"
+            },
+            {
+              "id": "F13",
+              "kind": "special",
+              "text": "판단 보류로 분류된 글 0개"
+            },
+            {
+              "id": "F14",
+              "kind": "overlap",
+              "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)"
+            },
+            {
+              "id": "F15",
+              "kind": "design-gap",
+              "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3"
+            }
+          ],
+          "items": [
+            {
+              "focus": "Q1",
+              "fields": {
+                "observation": "분석 범위는 {F01}이고, 배정은 {F02}로 제시되어 있다. Q1은 주 배정과 부 배정 포함 모두 {F03}이며, 교수 메모는 {F07}이다.",
+                "interpretation": "Q1 관련 글과 작성자 범위가 넓게 나타나므로 구조상 중심 논점일 가능성을 시사한다. 다만 배정 확정 여부와 설계 의도에 따라 달라질 수 있는 추정이다.",
+                "alternative": "도구 제안 그대로 배정된 점, 과제 설계, 표본 범위, 합성 글 특성 때문에 분포가 달라졌을 수 있다.",
+                "holdCondition": "{F02}의 교수 확정 여부와 {F15}의 필수 요구 없음이 확인되기 전에는 이 해석을 보류한다.",
+                "question": "Q1을 주 배정 중심으로 본 설계 의도가 있는지, {F02}의 도구 제안을 교수 검토 후 확정할지 확인해 주실 수 있나요? 시간·비중을 묻는다면 {F07}을 기준으로 보겠습니다."
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            },
+            {
+              "focus": "overlap",
+              "fields": {
+                "observation": "Q2는 {F04}, Q3은 {F05}, Q4는 {F06}으로 제시되어 있고, 교수 메모는 각각 {F08}, {F09}, {F10}이다.",
+                "interpretation": "Q2와 Q3의 주 배정 범위가 같고 Q4는 부 배정 포함 시 범위가 달라지는 등 논점별 분포 차이가 있다. 메모의 중요도·예정 비중과 함께 보면 구조 검토 여지가 있다. 추정이다.",
+                "alternative": "배정 방식, 과제 설계, 표본 크기, 합성 글 특성, 도구 제안 그대로 배정된 점 때문에 다르게 나타날 수 있다.",
+                "holdCondition": "{F02}의 교수 확정 여부와 {F15}의 필수 요구 없음, 그리고 실제 원문 대조 전에는 해석을 보류한다.",
+                "question": "Q2·Q3·Q4의 예상 분포나 구조상 역할을 확인해 주실 수 있나요? 시간·비중을 묻는다면 {F08}, {F09}, {F10}을 기준으로 보겠습니다."
+              },
+              "issues": []
+            },
+            {
+              "focus": "new",
+              "fields": {
+                "observation": "새 논점 후보 {F11}, 주제 이탈 {F12}, 판단 보류 {F13}, 표현 중복 후보 쌍 {F14}, 그리고 어떤 하위 논점도 필수로 요구하지 않는 목표 {F15}가 제시되어 있다.",
+                "interpretation": "분류 후보와 중복 후보가 구조상 검토 대상이 될 수 있음을 보여준다. 다만 {F14}는 원문 대조 전이고 {F13}은 제시된 분류 기준상 확정적 해석은 어렵다.",
+                "alternative": "코딩 기준, 원문 대조, 과제 설계, 표본 범위, 합성 글 특성에 따라 분류가 달라질 수 있다.",
+                "holdCondition": "{F14}의 원문 대조와 {F15}의 목표 해석, {F02}의 배정 확정 여부가 확인되기 전에는 보류한다.",
+                "question": "새 논점·주제 이탈·표현 중복 후보 분류 기준과 {F15}의 필수 요구 없음이 구조 설계에 어떤 뜻인지 확인해 주실 수 있나요?"
+              },
+              "issues": [
+                "observation-free-text"
+              ]
+            }
+          ]
+        },
+        {
+          "run": "3",
+          "promptVersion": "forum-comment-v2",
+          "seconds": 106,
+          "recorded": "valid",
+          "current": "valid",
+          "problems": [],
+          "facts": [
+            {
+              "id": "F01",
+              "kind": "scope",
+              "text": "분석 범위는 2026-09-21 09:00~2026-09-28 23:59의 합성 글 18개(작성자 16명, 답글 7개, 스레드 11개)"
+            },
+            {
+              "id": "F02",
+              "kind": "source",
+              "text": "배정은 교수 확정 0개, 도구 제안 그대로 18개, 검토 필요로 보류한 글 0개 기준"
+            },
+            {
+              "id": "F03",
+              "kind": "q-count",
+              "text": "Q1 논점을 주 배정으로 다룬 글 7개(작성자 7명), 부 배정까지 포함하면 11개(작성자 11명)"
+            },
+            {
+              "id": "F04",
+              "kind": "q-count",
+              "text": "Q2 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F05",
+              "kind": "q-count",
+              "text": "Q3 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F06",
+              "kind": "q-count",
+              "text": "Q4 논점을 주 배정으로 다룬 글 1개(작성자 1명), 부 배정까지 포함하면 2개(작성자 2명)"
+            },
+            {
+              "id": "F07",
+              "kind": "q-plan",
+              "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 35%)"
+            },
+            {
+              "id": "F08",
+              "kind": "q-plan",
+              "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 30%)"
+            },
+            {
+              "id": "F09",
+              "kind": "q-plan",
+              "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)"
+            },
+            {
+              "id": "F10",
+              "kind": "q-plan",
+              "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)"
+            },
+            {
+              "id": "F11",
+              "kind": "special",
+              "text": "새 논점 후보로 분류된 글 2개"
+            },
+            {
+              "id": "F12",
+              "kind": "special",
+              "text": "주제 이탈로 분류된 글 2개"
+            },
+            {
+              "id": "F13",
+              "kind": "special",
+              "text": "판단 보류로 분류된 글 0개"
+            },
+            {
+              "id": "F14",
+              "kind": "overlap",
+              "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)"
+            },
+            {
+              "id": "F15",
+              "kind": "design-gap",
+              "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3"
+            }
+          ],
+          "items": [
+            {
+              "focus": "Q1",
+              "fields": {
+                "observation": "{F03}, {F07}.",
+                "interpretation": "Q1 주 배정 글과 교수 메모의 중요도·정리 시간 예정 비중을 함께 보면 Q1을 중심축으로 둔 구조로 읽힐 수 있음(추정).",
+                "alternative": "배정 규칙의 실제 적용, 과제 설계, 표본 크기 때문에 같은 분포가 다른 의도로 설명될 수 있음.",
+                "holdCondition": "{F02}의 배정 확정·도구 제안·검토 필요 보류 상태가 확인되기 전에는 배정 의도로 단정하지 않음.",
+                "question": "Q1 배정 기준과 과제 설계를 먼저 확인하고 싶습니다. {F07}의 정리 시간 예정 비중은 어떻게 반영할까요?"
+              },
+              "issues": []
+            },
+            {
+              "focus": "Q2",
+              "fields": {
+                "observation": "{F04}, {F08}.",
+                "interpretation": "Q2는 주 배정과 부 배정 포함 범위가 같은 사실로 제시되어, 부 배정 활용 양상을 따로 확인할 필요가 있음(추정).",
+                "alternative": "배정 라벨링 방식, 과제 설계, 표본 크기 때문에 주·부 배정 해석이 달라질 수 있음.",
+                "holdCondition": "{F02}와 실제 배정·검토 기록이 확인되기 전에는 Q2 구조 판단을 보류.",
+                "question": "Q2 배정 기준과 과제 설계를 확인하고 싶습니다. {F08}의 정리 시간 예정 비중은 어떻게 반영할까요?"
+              },
+              "issues": []
+            },
+            {
+              "focus": "Q3",
+              "fields": {
+                "observation": "{F05}, {F09}.",
+                "interpretation": "Q3도 주 배정과 부 배정 포함 범위가 같은 토큰으로 제시되어, Q3의 논의 구조를 안배로 볼지 조정 대상으로 볼지 추정이 갈림.",
+                "alternative": "배정 실패, 과제 설계, 표본 크기, 부 배정 표기 방식 차이로 다르게 설명될 수 있음.",
+                "holdCondition": "{F02} 및 배정·검토 기록 확인 전에는 Q3 구조 해석을 보류.",
+                "question": "Q3 배정 기준과 과제 설계를 먼저 확인하고 싶습니다. {F09}의 정리 시간 예정 비중은 어떻게 반영할까요?"
+              },
+              "issues": []
+            },
+            {
+              "focus": "design",
+              "fields": {
+                "observation": "{F06}, {F11}, {F12}, {F13}, {F14}, {F15}.",
+                "interpretation": "Q4, 새 논점 후보, 주제 이탈, 판단 보류, 표현 중복 후보, O3 목표의 필수 하위 논점 부재가 함께 나타나 구조 설계 검토가 필요해 보임(추정).",
+                "alternative": "분류 기준, 원문 대조 전 상태, 과제 설계, 배정 방식, 표본 크기에 따라 다른 설계로 설명될 수 있음.",
+                "holdCondition": "{F14}는 원문 대조 전이고 {F12}·{F11} 분류 기준이 확인되기 전에는 설계 판단으로 확정하지 않음.",
+                "question": "새 논점 후보와 주제 이탈·판단 보류·표현 중복 후보 분류 기준을 확인하고 싶습니다. O3 목표에 필수 하위 논점이 없는 설계가 맞나요?"
+              },
+              "issues": []
+            }
+          ]
+        },
+        {
+          "run": "4",
+          "promptVersion": "forum-comment-v3",
+          "seconds": 122,
+          "recorded": "needs-review",
+          "current": "needs-review",
+          "problems": [
+            "1번째 첨언: 사실 id를 중괄호 없이 썼습니다(사실 칩으로 보이지 않음).",
+            "2번째 첨언: 사실 id를 중괄호 없이 썼습니다(사실 칩으로 보이지 않음)."
+          ],
+          "facts": [
+            {
+              "id": "F01",
+              "kind": "scope",
+              "text": "분석 범위는 2026-09-21 09:00~2026-09-28 23:59의 합성 글 18개(작성자 16명, 답글 7개, 스레드 11개)"
+            },
+            {
+              "id": "F02",
+              "kind": "source",
+              "text": "배정은 교수 확정 0개, 도구 제안 그대로 18개, 검토 필요로 보류한 글 0개 기준"
+            },
+            {
+              "id": "F03",
+              "kind": "q-count",
+              "text": "Q1 논점을 주 배정으로 다룬 글 7개(작성자 7명), 부 배정까지 포함하면 11개(작성자 11명)"
+            },
+            {
+              "id": "F04",
+              "kind": "q-count",
+              "text": "Q2 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F05",
+              "kind": "q-count",
+              "text": "Q3 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 3개(작성자 3명)"
+            },
+            {
+              "id": "F06",
+              "kind": "q-count",
+              "text": "Q4 논점을 주 배정으로 다룬 글 1개(작성자 1명), 부 배정까지 포함하면 2개(작성자 2명)"
+            },
+            {
+              "id": "F07",
+              "kind": "q-plan",
+              "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 35%)"
+            },
+            {
+              "id": "F08",
+              "kind": "q-plan",
+              "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 30%)"
+            },
+            {
+              "id": "F09",
+              "kind": "q-plan",
+              "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)"
+            },
+            {
+              "id": "F10",
+              "kind": "q-plan",
+              "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)"
+            },
+            {
+              "id": "F11",
+              "kind": "special",
+              "text": "새 논점 후보로 분류된 글 2개"
+            },
+            {
+              "id": "F12",
+              "kind": "special",
+              "text": "주제 이탈로 분류된 글 2개"
+            },
+            {
+              "id": "F13",
+              "kind": "special",
+              "text": "판단 보류로 분류된 글 0개"
+            },
+            {
+              "id": "F14",
+              "kind": "overlap",
+              "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)"
+            },
+            {
+              "id": "F15",
+              "kind": "design-gap",
+              "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3"
+            }
+          ],
+          "items": [
+            {
+              "focus": "Q1",
+              "fields": {
+                "observation": "{F03} {F07}",
+                "interpretation": "Q1이 주 배정으로 다뤄진 관찰과 교수 메모의 중요도·예정 비중 토큰을 함께 보면, Q1을 중심 논점으로 정리할 여지가 있다는 추정이 가능하다.",
+                "alternative": "배정이 도구 제안 기본값이었거나, 여러 스레드가 Q1을 부분적으로 포함한 결과일 수 있다.",
+                "holdCondition": "교수 확정 배정이 없고 F02 기준의 제안 상태라면, 이 해석은 보류하는 편이 안전하다.",
+                "question": "Q1 배정 설계 의도와 F07의 예정 비중을 어떻게 연결해 확인하면 좋을까요?"
+              },
+              "issues": [
+                "bare-fact-id"
+              ]
+            },
+            {
+              "focus": "Q2",
+              "fields": {
+                "observation": "{F04} {F08}",
+                "interpretation": "Q2 주 배정 관찰과 교수 메모 토큰이 함께 있으므로 Q2도 주요 정리 대상일 수 있다는 추정이 선다.",
+                "alternative": "주 배정과 부 배정의 구분 기준, 스레드 구성, 과제 설계에 따라 같은 관찰이 다르게 읽힐 수 있다.",
+                "holdCondition": "배정 확정 여부와 검토 필요 분류 기준이 확인되기 전에는 이 해석을 확정하기 어렵다.",
+                "question": "Q2를 주 배정으로 본 기준과 F08의 예정 비중을 어떻게 확인하면 좋을까요?"
+              },
+              "issues": [
+                "bare-fact-id"
+              ]
+            },
+            {
+              "focus": "new",
+              "fields": {
+                "observation": "{F11} {F12} {F13} {F14} {F15}",
+                "interpretation": "새 논점 후보, 주제 이탈, 판단 보류, 표현 중복 후보, O3의 필수 하위 논점 부재가 함께 보이므로 논의 구조상 경계 설정이 필요할 수 있다는 추정이 든다.",
+                "alternative": "분류 기준의 엄격도, 인용 제거 후 비교 방식, 원문 대조 전 단계라는 점이 이런 관찰을 만들었을 수 있다.",
+                "holdCondition": "원문 대조와 교수 체크 기준이 확인되기 전에는 새 논점·이탈·중복 판단을 보류해야 한다.",
+                "question": "새 논점 후보와 주제 이탈, 표현 중복 후보를 어떤 배정·설계 기준으로 다룰지 확인해 주실 수 있을까요?"
+              },
+              "issues": []
+            },
+            {
+              "focus": "design",
+              "fields": {
+                "observation": "{F01} {F02} {F03} {F04} {F05} {F06}",
+                "interpretation": "분석 범위와 배정 기준, 논점별 주 배정 관찰을 함께 보면 전체 논의 구조가 배정 설계에 민감할 수 있다는 추정이 가능하다.",
+                "alternative": "표본 구성, 스레드 수, 답글 포함 방식, 도구 제안 그대로 채택된 점이 논점 분포에 영향을 주었을 수 있다.",
+                "holdCondition": "교수 확정 배정과 검토 필요 분류가 확인되기 전에는 구조 해석을 확정하지 않는 것이 좋다.",
+                "question": "전체 배정 설계에서 어떤 논점을 중심으로 보고, 어떤 분류를 우선 확인하면 좋을까요?"
+              },
+              "issues": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

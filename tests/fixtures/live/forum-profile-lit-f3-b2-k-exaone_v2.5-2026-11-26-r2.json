@@ -1,0 +1,488 @@
+{
+  "task": "forum-profile",
+  "forumId": "lit-f3",
+  "run": 2,
+  "part": "b2",
+  "dataVersion": "2026-11-26.1",
+  "provider": "lg (OpenAI 호환, 스크립트 전용)",
+  "requestedModel": "k-exaone_v2.5",
+  "request": {
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "maxTokens": 16000
+  },
+  "promptVersion": "forum-profile-v2",
+  "schemaVersion": "2",
+  "validatorVersion": "2",
+  "input": {
+    "forumId": "lit-f3",
+    "kind": "interpretation",
+    "topic": "「진달래꽃」의 화자는 떠나는 임을 정말 \"고이 보내 드리\"는가?",
+    "subQuestions": [
+      {
+        "id": "Q1",
+        "text": "화자는 떠나는 임을 정말 \"고이 보내 드리\"는가? \"죽어도 아니 눈물 흘리우리다\"는 진심인가, 반어인가?"
+      },
+      {
+        "id": "Q2",
+        "text": "\"사뿐히 즈려밟고 가시옵소서\"에서 꽃을 밟고 가라는 말은 무엇을 뜻하는가?"
+      },
+      {
+        "id": "Q3",
+        "text": "1연과 4연이 거의 같은 말로 되풀이되는 구조는 화자의 태도에 대해 무엇을 보여 주는가?"
+      },
+      {
+        "id": "Q4",
+        "text": "다른 사람의 해석 하나를 골라, 그 해석이 기대는 구절을 확인하고 동의하거나 반박해 보자"
+      }
+    ],
+    "rubric": [
+      {
+        "id": "c-passage",
+        "name": "구절 근거",
+        "description": "작품에 실제로 있는 구절을 근거로 드는가 (작품 원문과 대조)"
+      },
+      {
+        "id": "c-claim",
+        "name": "해석 주장",
+        "description": "화자의 태도나 구절의 뜻에 대한 자기 해석이 드러나는가"
+      },
+      {
+        "id": "c-link",
+        "name": "연결 이유",
+        "description": "구절이 왜 그 해석을 받치는지 설명하는가"
+      },
+      {
+        "id": "c-dialog",
+        "name": "다른 해석과의 대화",
+        "description": "다른 해석을 옮기고 인정·반박·종합하는가"
+      }
+    ],
+    "work": {
+      "title": "진달래꽃",
+      "author": "김소월",
+      "source": "시집 『진달래꽃』(1925). 현대 표기.",
+      "stanzas": [
+        [
+          "나 보기가 역겨워",
+          "가실 때에는",
+          "말없이 고이 보내 드리우리다"
+        ],
+        [
+          "영변에 약산",
+          "진달래꽃",
+          "아름 따다 가실 길에 뿌리우리다"
+        ],
+        [
+          "가시는 걸음걸음",
+          "놓인 그 꽃을",
+          "사뿐히 즈려밟고 가시옵소서"
+        ],
+        [
+          "나 보기가 역겨워",
+          "가실 때에는",
+          "죽어도 아니 눈물 흘리우리다"
+        ]
+      ]
+    },
+    "posts": [
+      {
+        "id": "c07",
+        "parentId": "c01",
+        "text": "저도 이 시의 핵심은 말과 마음이 반대로 가는 반어에 있다고 봅니다. 4연의 \"죽어도 아니 눈물 흘리우리다\"를 보면, 눈물을 흘리지 않겠다고 '죽어도'까지 붙여 다짐합니다. 정말 아무렇지 않은 사람이라면 이렇게 강하게 부정할 이유가 없습니다. 그래서 저도 이 시를 반어의 시로 읽었습니다."
+      },
+      {
+        "id": "c08",
+        "parentId": null,
+        "text": "첫 행 \"나 보기가 싫어서 가실 때에는\"에서 화자는 임이 떠나는 이유를 자기 탓으로 돌립니다. 임이 나를 보기 싫어서 떠난다고 먼저 말해 버리는 것은, 상처받기 전에 스스로 상처를 내는 방어처럼 보입니다. 그래서 뒤에 나오는 '고이 보내 드리우리다'도 진심이라기보다 자존심을 지키려는 말로 읽힙니다."
+      },
+      {
+        "id": "c09",
+        "parentId": null,
+        "text": "토론 질문에는 없지만, 이 시를 이별 노래의 전통 안에서 보면 다르게 읽힐 수 있다고 생각합니다. 고려가요 「가시리」에도 떠나는 임을 붙잡지 못하고 돌아오기를 바라는 화자가 나옵니다. 아리랑의 '나를 버리고 가시는 님은 십 리도 못 가서 발병 난다'도 떠나는 임에 대한 원망을 담고 있습니다. 「진달래꽃」은 7·5조에 가까운 민요조 리듬으로 이 전통을 잇되, 원망을 겉으로 드러내지 않고 꽃을 뿌리는 행동으로 바꾸었다는 점이 새롭습니다. 이별의 정한이라는 맥락을 따로 다뤄 보면 좋겠습니다."
+      },
+      {
+        "id": "c10",
+        "parentId": "c09",
+        "text": "「가시리」와 비교하면 진달래꽃의 화자가 더 적극적인 건가요, 더 수동적인 건가요? 꽃을 뿌리는 건 적극적인 것 같은데 보내 드린다는 건 수동적인 것 같아서 헷갈립니다."
+      },
+      {
+        "id": "c11",
+        "parentId": null,
+        "text": "다들 3연과 4연을 많이 이야기하는데, 저는 2연의 \"영변에 약산\"이 궁금했습니다. 굳이 영변의 약산이라는 실제 지명을 넣은 것은 이 꽃이 아무 꽃이 아니라 화자가 사는 곳, 화자의 삶에서 나온 꽃이라는 뜻이라고 생각합니다. 그 꽃을 '아름 따다' 뿌린다는 것은 화자가 자기 삶의 한 부분을 통째로 내어 준다는 의미로 읽힙니다. 이 연을 따로 다뤄 볼 만하다고 생각합니다."
+      },
+      {
+        "id": "c12",
+        "parentId": null,
+        "text": "읽으면서 너무 슬펐습니다. 돌아가신 할머니가 할아버지를 먼저 보내고 하시던 말씀이 생각났습니다. 좋은 시를 읽게 되어 감사합니다."
+      }
+    ],
+    "hints": {
+      "c07": {
+        "candidates": [
+          {
+            "qId": "Q1",
+            "cosine": 0.1813147648813765
+          },
+          {
+            "qId": "Q3",
+            "cosine": 0.0533961031310261
+          },
+          {
+            "qId": "Q4",
+            "cosine": 0.05050025848972515
+          },
+          {
+            "qId": "Q2",
+            "cosine": 0.04414309148612499
+          }
+        ],
+        "parentOverlap": 0.5423614965175816
+      },
+      "c08": {
+        "candidates": [
+          {
+            "qId": "Q1",
+            "cosine": 0.1681227688210032
+          },
+          {
+            "qId": "Q2",
+            "cosine": 0.11935053406621593
+          },
+          {
+            "qId": "Q3",
+            "cosine": 0.11492179364269145
+          },
+          {
+            "qId": "Q4",
+            "cosine": 0.1050366239862173
+          }
+        ],
+        "parentOverlap": null
+      },
+      "c09": {
+        "candidates": [
+          {
+            "qId": "Q2",
+            "cosine": 0.13520785596444476
+          },
+          {
+            "qId": "Q1",
+            "cosine": 0.12281799815520533
+          },
+          {
+            "qId": "Q4",
+            "cosine": 0.10023779146811715
+          },
+          {
+            "qId": "Q3",
+            "cosine": 0.09944568853802292
+          }
+        ],
+        "parentOverlap": null
+      },
+      "c10": {
+        "candidates": [
+          {
+            "qId": "Q2",
+            "cosine": 0.09582315579565476
+          },
+          {
+            "qId": "Q1",
+            "cosine": 0.0786967900313839
+          },
+          {
+            "qId": "Q3",
+            "cosine": 0.07555315040001223
+          },
+          {
+            "qId": "Q4",
+            "cosine": 0.05868200608496946
+          }
+        ],
+        "parentOverlap": 0.09286117381534233
+      },
+      "c11": {
+        "candidates": [
+          {
+            "qId": "Q2",
+            "cosine": 0.06366439517687111
+          },
+          {
+            "qId": "Q3",
+            "cosine": 0.058976327484917
+          },
+          {
+            "qId": "Q4",
+            "cosine": 0.03556901298190015
+          },
+          {
+            "qId": "Q1",
+            "cosine": 0.035325115989140794
+          }
+        ],
+        "parentOverlap": null
+      },
+      "c12": {
+        "candidates": [
+          {
+            "qId": "Q3",
+            "cosine": 0.02086223449175183
+          },
+          {
+            "qId": "Q2",
+            "cosine": 0.019921550870140664
+          },
+          {
+            "qId": "Q1",
+            "cosine": 0.019394753160979963
+          },
+          {
+            "qId": "Q4",
+            "cosine": 0.018765197955647225
+          }
+        ],
+        "parentOverlap": null
+      }
+    }
+  },
+  "createdAt": "2026-11-26T02:26:42.103Z",
+  "ok": true,
+  "responseModel": "k-exaone_v2.5",
+  "usage": {
+    "completionTokens": 7281,
+    "reasoningTokens": 5951
+  },
+  "durationMs": 247653,
+  "raw": {
+    "posts": [
+      {
+        "postId": "c07",
+        "primary": "Q1",
+        "secondary": [],
+        "primaryQuote": "4연의 \"죽어도 아니 눈물 흘리우리다\"를 보면, 눈물을 흘리지 않겠다고 '죽어도'까지 붙여 다짐합니다.",
+        "newPoint": {
+          "topicLink": "",
+          "contrasts": [],
+          "statement": ""
+        },
+        "function": "agree-reason",
+        "respondsTo": "c01",
+        "rubric": [
+          {
+            "criterionId": "c-passage",
+            "quote": "4연의 \"죽어도 아니 눈물 흘리우리다\"를 보면, 눈물을 흘리지 않겠다고 '죽어도'까지 붙여 다짐합니다."
+          },
+          {
+            "criterionId": "c-claim",
+            "quote": "저도 이 시의 핵심은 말과 마음이 반대로 가는 반어에 있다고 봅니다."
+          },
+          {
+            "criterionId": "c-link",
+            "quote": "정말 아무렇지 않은 사람이라면 이렇게 강하게 부정할 이유가 없습니다."
+          },
+          {
+            "criterionId": "c-dialog",
+            "quote": ""
+          }
+        ],
+        "flags": []
+      },
+      {
+        "postId": "c08",
+        "primary": "Q1",
+        "secondary": [],
+        "primaryQuote": "그래서 뒤에 나오는 '고이 보내 드리우리다'도 진심이라기보다 자존심을 지키려는 말로 읽힙니다.",
+        "newPoint": {
+          "topicLink": "",
+          "contrasts": [],
+          "statement": ""
+        },
+        "function": "new-opinion",
+        "respondsTo": "",
+        "rubric": [
+          {
+            "criterionId": "c-passage",
+            "quote": "첫 행 \"나 보기가 싫어서 가실 때에는\"에서 화자는 임이 떠나는 이유를 자기 탓으로 돌립니다."
+          },
+          {
+            "criterionId": "c-claim",
+            "quote": "임이 나를 보기 싫어서 떠난다고 먼저 말해 버리는 것은, 상처받기 전에 스스로 상처를 내는 방어처럼 보입니다."
+          },
+          {
+            "criterionId": "c-link",
+            "quote": "그래서 뒤에 나오는 '고이 보내 드리우리다'도 진심이라기보다 자존심을 지키려는 말로 읽힙니다."
+          },
+          {
+            "criterionId": "c-dialog",
+            "quote": ""
+          }
+        ],
+        "flags": []
+      },
+      {
+        "postId": "c09",
+        "primary": "new",
+        "secondary": [],
+        "primaryQuote": "「진달래꽃」은 7·5조에 가까운 민요조 리듬으로 이 전통을 잇되, 원망을 겉으로 드러내지 않고 꽃을 뿌리는 행동으로 바꾸었다는 점이 새롭습니다.",
+        "newPoint": {
+          "topicLink": "이 시를 이별 노래의 전통 안에서 보면 다르게 읽힐 수 있다고 생각합니다.",
+          "contrasts": [
+            {
+              "qId": "Q1",
+              "reason": "화자의 '고이 보내 드리우리다'나 '죽어도 아니 눈물 흘리우리다'의 진심/반어를 다루지 않는다."
+            },
+            {
+              "qId": "Q2",
+              "reason": "'사뿐히 즈려밟고 가시옵소서'의 꽃 밟기 의미를 다루지 않는다."
+            },
+            {
+              "qId": "Q3",
+              "reason": "1연과 4연의 반복 구조를 다루지 않는다."
+            },
+            {
+              "qId": "Q4",
+              "reason": "다른 사람의 해석 하나를 골라 동의·반박하기보다 이별 노래 전통과 민요조 리듬을 비교한다."
+            }
+          ],
+          "statement": "「진달래꽃」은 7·5조에 가까운 민요조 리듬으로 이 전통을 잇되, 원망을 겉으로 드러내지 않고 꽃을 뿌리는 행동으로 바꾸었다는 점이 새롭습니다."
+        },
+        "function": "new-opinion",
+        "respondsTo": "",
+        "rubric": [
+          {
+            "criterionId": "c-passage",
+            "quote": ""
+          },
+          {
+            "criterionId": "c-claim",
+            "quote": "「진달래꽃」은 7·5조에 가까운 민요조 리듬으로 이 전통을 잇되, 원망을 겉으로 드러내지 않고 꽃을 뿌리는 행동으로 바꾸었다는 점이 새롭습니다."
+          },
+          {
+            "criterionId": "c-link",
+            "quote": "고려가요 「가시리」에도 떠나는 임을 붙잡지 못하고 돌아오기를 바라는 화자가 나옵니다."
+          },
+          {
+            "criterionId": "c-dialog",
+            "quote": ""
+          }
+        ],
+        "flags": []
+      },
+      {
+        "postId": "c10",
+        "primary": "Q1",
+        "secondary": [],
+        "primaryQuote": "「가시리」와 비교하면 진달래꽃의 화자가 더 적극적인 건가요, 더 수동적인 건가요?",
+        "newPoint": {
+          "topicLink": "",
+          "contrasts": [],
+          "statement": ""
+        },
+        "function": "question",
+        "respondsTo": "c09",
+        "rubric": [
+          {
+            "criterionId": "c-passage",
+            "quote": ""
+          },
+          {
+            "criterionId": "c-claim",
+            "quote": ""
+          },
+          {
+            "criterionId": "c-link",
+            "quote": ""
+          },
+          {
+            "criterionId": "c-dialog",
+            "quote": "「가시리」와 비교하면 진달래꽃의 화자가 더 적극적인 건가요, 더 수동적인 건가요?"
+          }
+        ],
+        "flags": []
+      },
+      {
+        "postId": "c11",
+        "primary": "new",
+        "secondary": [],
+        "primaryQuote": "굳이 영변의 약산이라는 실제 지명을 넣은 것은 이 꽃이 아무 꽃이 아니라 화자가 사는 곳, 화자의 삶에서 나온 꽃이라는 뜻이라고 생각합니다.",
+        "newPoint": {
+          "topicLink": "이 연을 따로 다뤄 볼 만하다고 생각합니다.",
+          "contrasts": [
+            {
+              "qId": "Q1",
+              "reason": "떠나는 임을 보내는 태도의 진심/반어를 다루지 않는다."
+            },
+            {
+              "qId": "Q2",
+              "reason": "'사뿐히 즈려밟고 가시옵소서'의 꽃 밟기 의미를 다루지 않는다."
+            },
+            {
+              "qId": "Q3",
+              "reason": "1연과 4연의 반복 구조를 다루지 않는다."
+            },
+            {
+              "qId": "Q4",
+              "reason": "다른 사람의 해석을 골라 동의·반박하기보다 2연의 지명과 꽃의 의미를 새로 본다."
+            }
+          ],
+          "statement": "굳이 영변의 약산이라는 실제 지명을 넣은 것은 이 꽃이 아무 꽃이 아니라 화자가 사는 곳, 화자의 삶에서 나온 꽃이라는 뜻이라고 생각합니다."
+        },
+        "function": "new-opinion",
+        "respondsTo": "",
+        "rubric": [
+          {
+            "criterionId": "c-passage",
+            "quote": "저는 2연의 \"영변에 약산\"이 궁금했습니다."
+          },
+          {
+            "criterionId": "c-claim",
+            "quote": "굳이 영변의 약산이라는 실제 지명을 넣은 것은 이 꽃이 아무 꽃이 아니라 화자가 사는 곳, 화자의 삶에서 나온 꽃이라는 뜻이라고 생각합니다."
+          },
+          {
+            "criterionId": "c-link",
+            "quote": "그 꽃을 '아름 따다' 뿌린다는 것은 화자가 자기 삶의 한 부분을 통째로 내어 준다는 의미로 읽힙니다."
+          },
+          {
+            "criterionId": "c-dialog",
+            "quote": ""
+          }
+        ],
+        "flags": []
+      },
+      {
+        "postId": "c12",
+        "primary": "off",
+        "secondary": [],
+        "primaryQuote": "",
+        "newPoint": {
+          "topicLink": "",
+          "contrasts": [],
+          "statement": ""
+        },
+        "function": "sidestep",
+        "respondsTo": "",
+        "rubric": [
+          {
+            "criterionId": "c-passage",
+            "quote": ""
+          },
+          {
+            "criterionId": "c-claim",
+            "quote": ""
+          },
+          {
+            "criterionId": "c-link",
+            "quote": ""
+          },
+          {
+            "criterionId": "c-dialog",
+            "quote": ""
+          }
+        ],
+        "flags": []
+      }
+    ]
+  },
+  "status": "valid"
+}

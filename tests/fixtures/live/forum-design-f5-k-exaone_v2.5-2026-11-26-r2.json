@@ -1,0 +1,254 @@
+{
+  "task": "forum-design",
+  "forumId": "f5",
+  "run": 2,
+  "part": null,
+  "dataVersion": "2026-11-26.1",
+  "provider": "lg (OpenAI 호환, 스크립트 전용)",
+  "requestedModel": "k-exaone_v2.5",
+  "request": {
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "maxTokens": 16000
+  },
+  "promptVersion": "forum-design-v1",
+  "schemaVersion": "1",
+  "validatorVersion": "2",
+  "input": {
+    "forumId": "f5",
+    "objectives": [
+      {
+        "id": "O1",
+        "kind": "content",
+        "text": "그래프 탐색(이웃의 이웃)과 협업 필터링으로 추천 후보를 만드는 원리를 설명한다"
+      },
+      {
+        "id": "O2",
+        "kind": "content",
+        "text": "추천 결과가 다시 학습 데이터가 되는 피드백 루프가 노출 다양성을 줄이는 과정을 설명한다"
+      },
+      {
+        "id": "O3",
+        "kind": "content",
+        "text": "정확도·다양성·참신성 같은 추천 품질 지표가 서로 충돌하는 경우를 구분한다"
+      },
+      {
+        "id": "O4",
+        "kind": "competency",
+        "text": "주장에 이유·근거·보장(조건)을 갖춘 논증을 쓴다"
+      },
+      {
+        "id": "O5",
+        "kind": "competency",
+        "text": "다른 입장의 근거를 정확히 옮기고 그에 응답한다"
+      }
+    ],
+    "subQuestions": [
+      {
+        "id": "Q1",
+        "text": "필터 버블은 실제로 생기는가? 생긴다면 협업 필터링이 후보를 고르는 방식과 클릭이 다시 학습되는 과정 중 어디에서 생기는가?"
+      },
+      {
+        "id": "Q2",
+        "text": "규제한다면 어떤 수단이 적절한가? 알고리즘 공개, 추천 끄기 선택권, 다양성 의무 중 무엇을, 왜?"
+      },
+      {
+        "id": "Q3",
+        "text": "규제에 반대하는 쪽의 가장 강한 근거(비용, 혁신 위축, 검열 우려)는 무엇이고, 어떻게 답하겠는가?"
+      },
+      {
+        "id": "Q4",
+        "text": "규제 대신 설계로 풀 수 있는가? 예: 탐색 비율을 높이거나 결과를 다양하게 재배열하기"
+      }
+    ],
+    "intro": "이번 주에는 그래프 탐색을 배웠습니다. 친구 추천이나 영상 추천은 '이웃의 이웃'을 찾는 그래프 탐색과 비슷한 사용자의 기록을 모으는 협업 필터링으로 후보를 만듭니다. 추천이 비슷한 것만 계속 보여 주어 시야가 좁아지는 현상을 필터 버블이라고 합니다. 추천 알고리즘을 규제해야 하는지 자기 입장을 정하고, 이유와 근거를 들어 글을 써 주세요. 다른 학생의 글에도 하나 이상 답글을 달아 주세요."
+  },
+  "createdAt": "2026-11-26T02:11:05.884Z",
+  "ok": true,
+  "responseModel": "k-exaone_v2.5",
+  "usage": {
+    "completionTokens": 7160,
+    "reasoningTokens": 5950
+  },
+  "durationMs": 226828,
+  "raw": {
+    "cells": [
+      {
+        "objectiveId": "O1",
+        "target": "Q1",
+        "judgment": "required",
+        "quote": "협업 필터링이 후보를 고르는 방식",
+        "reason": "Q1이 협업 필터링의 후보 선택 과정에서 필터 버블이 어디서 생기는지 묻므로, 후보 생성 원리 설명이 필요하다. 그래프 탐색 부분까지는 필요하지 않다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "Q2",
+        "judgment": "optional",
+        "quote": "알고리즘 공개",
+        "reason": "후보 생성 원리를 알면 알고리즘 공개 논의에 도움이 되지만, 규제 수단 선택 자체에 반드시 필요한 수행은 아니다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "Q3",
+        "judgment": "none",
+        "quote": "",
+        "reason": "규제 반대 근거인 비용·혁신 위축·검열 우려는 그래프 탐색이나 협업 필터링 후보 생성 원리를 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "Q4",
+        "judgment": "optional",
+        "quote": "탐색 비율을 높이거나 결과를 다양하게 재배열하기",
+        "reason": "설계 대안을 이해하는 데 후보 생성 원리가 맥락을 주지만, 설계로 풀 수 있는지 판단하는 데 필수는 아니다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "common",
+        "judgment": "optional",
+        "quote": "친구 추천이나 영상 추천은 '이웃의 이웃'을 찾는 그래프 탐색과 비슷한 사용자의 기록을 모으는 협업 필터링으로 후보를 만듭니다.",
+        "reason": "안내 글의 배경 지식은 도움이 되지만, 공통 요건은 입장 정하기·이유와 근거·답글 달기이지 후보 생성 원리 설명이 아니다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q1",
+        "judgment": "required",
+        "quote": "클릭이 다시 학습되는 과정",
+        "reason": "Q1이 필터 버블이 클릭 재학습 과정에서 생기는지 묻므로, 추천 결과가 학습 데이터가 되는 피드백 루프와 다양성 감소 설명이 필요하다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q2",
+        "judgment": "optional",
+        "quote": "다양성 의무",
+        "reason": "피드백 루프 지식은 다양성 의무 논의에 도움이 되지만, 어떤 규제 수단이 적절한지 답하는 데 반드시 필요한 수행은 아니다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q3",
+        "judgment": "none",
+        "quote": "",
+        "reason": "비용·혁신 위축·검열 우려 같은 반대 근거는 피드백 루프 설명을 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q4",
+        "judgment": "required",
+        "quote": "탐색 비율을 높이거나 결과를 다양하게 재배열하기",
+        "reason": "설계 대안이 필터 버블·다양성 감소 문제를 실제로 풀 수 있는지 평가하려면 피드백 루프와 노출 다양성 감소 설명이 필요하다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "common",
+        "judgment": "optional",
+        "quote": "추천이 비슷한 것만 계속 보여 주어 시야가 좁아지는 현상을 필터 버블이라고 합니다.",
+        "reason": "필터 버블 설명은 글의 근거로 도움이 될 수 있지만, 공통 요건이 이를 직접 요구하지는 않는다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q1",
+        "judgment": "none",
+        "quote": "",
+        "reason": "Q1은 필터 버블의 존재와 발생 위치를 묻지, 정확도·다양성·참신성 지표 간 충돌 구분을 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q2",
+        "judgment": "optional",
+        "quote": "다양성 의무",
+        "reason": "다양성 의무는 다양성 지표와 trade-off 논의에 관련되지만, 규제 수단 선택에 반드시 필요한 수행은 아니다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q3",
+        "judgment": "none",
+        "quote": "",
+        "reason": "규제 반대 근거는 품질 지표 간 충돌 구분과 직접 관련이 없다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q4",
+        "judgment": "optional",
+        "quote": "탐색 비율을 높이거나 결과를 다양하게 재배열하기",
+        "reason": "설계 대안은 지표 간 충돌을 건드릴 수 있지만, 그 충돌을 구분하지 않아도 설계 가능성을 논할 수 있다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "common",
+        "judgment": "optional",
+        "quote": "이유와 근거를 들어 글을 써 주세요",
+        "reason": "지표 충돌 구분은 근거를 보강할 수 있으나, 공통 요건이 특정 품질 지표 논의를 요구하지는 않는다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q1",
+        "judgment": "required",
+        "quote": "필터 버블은 실제로 생기는가?",
+        "reason": "실제 발생 여부와 위치를 주장하려면 이유·근거를 갖춘 논증이 필요하다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q2",
+        "judgment": "required",
+        "quote": "무엇을, 왜?",
+        "reason": "어떤 규제 수단인지와 그 이유를 제시해야 하므로 이유·근거를 갖춘 논증이 요구된다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q3",
+        "judgment": "required",
+        "quote": "어떻게 답하겠는가?",
+        "reason": "반대 근거에 대한 응답을 구성하려면 이유·근거·조건을 갖춘 논증이 필요하다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q4",
+        "judgment": "required",
+        "quote": "풀 수 있는가?",
+        "reason": "설계로 풀 수 있는지 판단하려면 찬성/반대 주장과 근거를 갖춘 논증이 필요하다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "common",
+        "judgment": "required",
+        "quote": "이유와 근거를 들어 글을 써 주세요",
+        "reason": "공통 요건이 명시적으로 이유와 근거를 요구하므로 O4 수행이 필요하다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q1",
+        "judgment": "none",
+        "quote": "",
+        "reason": "Q1은 다른 입장의 근거를 정확히 옮기고 응답하라고 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q2",
+        "judgment": "none",
+        "quote": "",
+        "reason": "Q2는 규제 수단 선택과 이유를 묻지, 다른 입장 근거의 정확한 전달을 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q3",
+        "judgment": "required",
+        "quote": "규제에 반대하는 쪽의 가장 강한 근거(비용, 혁신 위축, 검열 우려)는 무엇이고, 어떻게 답하겠는가?",
+        "reason": "반대 입장의 근거를 정확히 제시하고 이에 응답하는 수행을 직접 요구한다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q4",
+        "judgment": "none",
+        "quote": "",
+        "reason": "Q4는 설계 대안의 가능성을 묻지, 다른 입장 근거를 옮기고 응답하라고 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "common",
+        "judgment": "required",
+        "quote": "다른 학생의 글에도 하나 이상 답글을 달아 주세요",
+        "reason": "다른 학생의 글에 답글을 다는 것은 상대 입장에 응답하는 수행이므로, 충실한 답글에는 상대 근거 파악과 응답이 필요하다."
+      }
+    ]
+  },
+  "status": "valid"
+}

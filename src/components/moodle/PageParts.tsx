@@ -20,7 +20,7 @@ export function PageHeader({ title, crumbs, activityType, children }: { title: s
       <div className="activity-header">
         {activityType ? <ActivityIcon type={activityType} /> : null}
         <div>
-          {activityType ? <div className="small muted">{activityType === "quiz" ? "Quiz" : activityType}</div> : null}
+          {activityType ? <div className="small muted">{activityType === "quiz" ? "Quiz" : activityType === "forum" ? "Forum" : activityType}</div> : null}
           <h1>{title}</h1>
         </div>
       </div>

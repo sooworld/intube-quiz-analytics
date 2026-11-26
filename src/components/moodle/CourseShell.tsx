@@ -12,9 +12,12 @@ export function CourseShell({ course, children }: { course: Course; children: Re
   const pathname = usePathname() ?? "/";
   const [open, setOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [expanded, setExpanded] = useState<Record<number, boolean>>(() =>
-    Object.fromEntries(course.sections.map((s) => [s.number, s.number === 5])),
-  );
+  const [expanded, setExpanded] = useState<Record<number, boolean>>(() => {
+    // 지금 화면의 활동이 든 주차를 펼친다(없으면 5주차). 토론 C형 강좌(LIT201)는 3주차가 펼쳐진다
+    const here = (s: Course["sections"][number]) => s.activities.some((a) => !!a.href && pathname.startsWith(a.href.replace(/\/$/, "")));
+    const any = course.sections.some(here);
+    return Object.fromEntries(course.sections.map((s) => [s.number, any ? here(s) : s.number === 5]));
+  });
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const firstRender = useRef(true);

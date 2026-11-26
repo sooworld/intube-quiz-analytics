@@ -50,6 +50,12 @@ const DIGIT = /[0-9０-９%％]/;
 const NATIVE_NUM = /(?:^|[^가-힣])(?:한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|스무|서른|마흔|쉰)\s?(?:명|문항|개(?![가-힣])|건|가지|퍼센트|프로)/;
 const SINO_NUM = /(?:^|[^가-힣])[일이삼사오육칠팔구]?[십백][일이삼사오육칠팔구]?\s?(?:명|문항|개(?![가-힣])|건|가지|퍼센트|프로)/;
 
+/** 토큰을 지운 나머지에 숫자·%·수량 표현이 있는지 (토론 첨언 검증도 같은 규칙을 쓴다) */
+export function hasNumberOutsideTokens(text: string): boolean {
+  const outside = text.replace(TOKEN, " ");
+  return DIGIT.test(outside) || NATIVE_NUM.test(outside) || SINO_NUM.test(outside);
+}
+
 /** 문장에서 사실 토큰 id 목록 */
 export function sentenceFactIds(text: string): string[] {
   return [...text.matchAll(TOKEN)].map((m) => m[1]!);
@@ -61,7 +67,7 @@ export function checkSentence(text: string, heading: SummaryHeading, factIds: Se
   const unknown = ids.filter((id) => !factIds.has(id));
   const outside = text.replace(TOKEN, " ");
   const issues: SentenceIssue[] = [];
-  if (DIGIT.test(outside) || NATIVE_NUM.test(outside) || SINO_NUM.test(outside)) issues.push("number-outside-token");
+  if (hasNumberOutsideTokens(text)) issues.push("number-outside-token");
   if (heading !== SUGGESTION_HEADING && ids.length === 0) issues.push("no-fact");
   if (FORBIDDEN_TERMS.some((t) => outside.includes(t))) issues.push("forbidden-term");
   return { sentence: { text, factIds: [...new Set(ids)], issues }, unknown };

@@ -18,6 +18,8 @@ export interface DraftRunState {
   retryable: boolean;
   /** 초안을 받았지만 브라우저 저장소에 쓰지 못했을 때 (반영을 막는다) */
   unsaved: boolean;
+  /** 나눠 부를 때 진행 (묶음 done/total) */
+  progress?: { done: number; total: number };
 }
 
 /** 초안을 어느 퀴즈의 저장소에 쌓을지 (객관식은 QuizContext, 서술형은 EssayContext) */
@@ -28,12 +30,23 @@ export interface DraftTarget {
   addDraft: (d: AiDraft) => boolean;
 }
 
-export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiTask<I, V> & { id: DraftTaskId }, target: DraftTarget) {
+/**
+ * 실제 모델에서 입력이 커서 한 번에 보내면 잘리거나 시간을 넘길 때, 입력을 나눠 차례로 부르고 결과를 합쳐 초안 하나로 저장한다.
+ * Mock은 나누지 않는다. 한 묶음이라도 실패하면 전체를 실패로 둔다(부분 결과를 저장하지 않음).
+ */
+export interface DraftSplit<I, V> {
+  split: (input: I) => I[];
+  merge: (parts: V[]) => V;
+}
+
+export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiTask<I, V> & { id: DraftTaskId }, target: DraftTarget, splitter?: DraftSplit<I, V>) {
   const { quizId, dataVersion, addDraft } = target;
   const ai = useAiSettings();
   const [state, setState] = useState<DraftRunState>({ busy: false, error: null, retryable: false, unsaved: false });
   const ctrl = useRef<AbortController | null>(null);
   const gate = useRef(createRequestGate());
+  /** 나눠 부를 때 이미 끝난 묶음 결과 (같은 입력·설정에서만 다시 쓴다. 저장소에는 넣지 않고, 다 끝나야 초안 하나로 저장) */
+  const partial = useRef<{ key: string; done: Map<number, V> } | null>(null);
   const taskSetting = JSON.stringify(ai.tasks[task.id] ?? null);
 
   // 설정이 바뀌면 진행 중인 요청을 취소한다
@@ -64,8 +77,31 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
     setState({ busy: true, error: null, retryable: false, unsaved: false });
     try {
       const pageProtocol = typeof window === "undefined" ? "https:" : window.location.protocol;
-      const r = await runTask(task, input, { config, signal: c.signal, pageProtocol });
+      const opts = { config, signal: c.signal, pageProtocol };
+      let r = await (async () => {
+        if (!splitter || config.provider === "mock") return runTask(task, input, opts);
+        const parts = splitter.split(input);
+        const key = JSON.stringify([basisHash, config.provider, config.model, config.baseUrl ?? ""]);
+        if (partial.current?.key !== key) partial.current = { key, done: new Map() };
+        const done = partial.current.done;
+        let last: Awaited<ReturnType<typeof runTask<I, V>>> | null = null;
+        let calls = 0;
+        for (const [k, part] of parts.entries()) {
+          if (done.has(k)) continue;
+          setState({ busy: true, error: null, retryable: false, unsaved: false, progress: { done: done.size, total: parts.length } });
+          last = await runTask(task, part, opts);
+          calls += last.calls;
+          if (!gate.current.isCurrent(id)) return last;
+          done.set(k, last.result);
+        }
+        const results = parts.map((_, k) => done.get(k)!);
+        partial.current = null;
+        // 모든 묶음이 보존본이면 응답 메타가 없으므로 설정 값으로 채운다(다시 부르지 않음)
+        const meta = last ?? { provider: config.provider as Exclude<typeof config.provider, "mock">, requestedModel: config.model, responseModel: null, promptVersion: task.promptVersion, schemaVersion: task.schemaVersion, validatorVersion: task.validatorVersion, calls: 0, raw: null, usage: null, result: results[0]! };
+        return { ...meta, calls, raw: null, result: splitter.merge(results) };
+      })();
       if (!gate.current.isCurrent(id)) return null;
+      r = r!;
       const now = new Date();
       const draft: AiDraft<I, V> = {
         draftId: newId("dr", now),
@@ -89,7 +125,9 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
     } catch (e) {
       if (!gate.current.isCurrent(id)) return null;
       const aborted = e instanceof AiError && e.kind === "aborted";
-      setState({ busy: false, error: aborted ? null : aiErrorText(e), retryable: isRetryable(e), unsaved: false });
+      const kept = partial.current?.done.size ?? 0;
+      const note = kept > 0 ? ` 끝난 글 묶음 ${kept}개는 이 화면에 보존했습니다. 다시 실행하면 남은 묶음만 보냅니다(완료 전에는 집계에 넣지 않음).` : "";
+      setState({ busy: false, error: aborted ? null : `${aiErrorText(e)}${note}`, retryable: isRetryable(e) || kept > 0, unsaved: false });
       return null;
     } finally {
       release();
@@ -114,7 +152,7 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
         ? "설정 오류 (AI 설정의 작업별 모델 확인)"
         : providerModelLabel(t.provider, t.model);
 
-  const wait = waitGuide(t?.provider ?? ai.provider);
+  const wait = waitGuide(t?.provider ?? ai.provider, task.timeoutMs);
 
   return { ...state, run, cancel, modelLabel, wait };
 }

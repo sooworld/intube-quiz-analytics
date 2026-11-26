@@ -1,0 +1,188 @@
+{
+  "task": "forum-comment",
+  "forumId": "f5",
+  "run": 4,
+  "part": null,
+  "dataVersion": "2026-11-26.1",
+  "provider": "lg (OpenAI 호환, 스크립트 전용)",
+  "requestedModel": "k-exaone_v2.5",
+  "request": {
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "maxTokens": 16000
+  },
+  "promptVersion": "forum-comment-v3",
+  "schemaVersion": "2",
+  "validatorVersion": "4",
+  "input": {
+    "forumId": "f5",
+    "facts": [
+      {
+        "kind": "scope",
+        "text": "분석 범위는 2026-10-05 09:00~2026-10-12 23:59의 합성 글 18개(작성자 16명, 답글 8개, 스레드 10개)",
+        "id": "F01"
+      },
+      {
+        "kind": "source",
+        "text": "배정은 교수 확정 0개, 도구 제안 그대로 12개, 검토 필요로 보류한 글 6개 기준",
+        "id": "F02"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q1",
+        "count": 3,
+        "countAny": 4,
+        "text": "Q1 논점을 주 배정으로 다룬 글 3개(작성자 3명), 부 배정까지 포함하면 4개(작성자 4명)",
+        "id": "F03"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q2",
+        "count": 4,
+        "countAny": 5,
+        "text": "Q2 논점을 주 배정으로 다룬 글 4개(작성자 3명), 부 배정까지 포함하면 5개(작성자 4명)",
+        "id": "F04"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q3",
+        "count": 0,
+        "countAny": 0,
+        "text": "Q3 논점을 주 배정으로 다룬 글 0개(작성자 0명), 부 배정까지 포함하면 0개(작성자 0명)",
+        "id": "F05"
+      },
+      {
+        "kind": "q-count",
+        "focus": "Q4",
+        "count": 2,
+        "countAny": 3,
+        "text": "Q4 논점을 주 배정으로 다룬 글 2개(작성자 2명), 부 배정까지 포함하면 3개(작성자 3명)",
+        "id": "F06"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q1",
+        "text": "Q1 교수 메모(중요도 상, 정리 시간 예정 비중 30%)",
+        "id": "F07"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q2",
+        "text": "Q2 교수 메모(중요도 상, 정리 시간 예정 비중 35%)",
+        "id": "F08"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q3",
+        "text": "Q3 교수 메모(중요도 중, 정리 시간 예정 비중 20%)",
+        "id": "F09"
+      },
+      {
+        "kind": "q-plan",
+        "focus": "Q4",
+        "text": "Q4 교수 메모(중요도 중, 정리 시간 예정 비중 15%)",
+        "id": "F10"
+      },
+      {
+        "kind": "special",
+        "focus": "new",
+        "count": 0,
+        "text": "새 논점 후보로 분류된 글 0개",
+        "id": "F11"
+      },
+      {
+        "kind": "special",
+        "focus": "off",
+        "count": 2,
+        "text": "주제 이탈로 분류된 글 2개",
+        "id": "F12"
+      },
+      {
+        "kind": "special",
+        "focus": "hold",
+        "count": 7,
+        "text": "판단 보류로 분류된 글 7개",
+        "id": "F13"
+      },
+      {
+        "kind": "overlap",
+        "text": "표현 중복 후보 쌍 1개(인용 제거 후 어휘 중복 기준, 원문 대조 전)",
+        "id": "F14"
+      },
+      {
+        "kind": "design-gap",
+        "text": "교수 체크표에서 어떤 하위 논점도 필수로 요구하지 않는 목표: O3",
+        "id": "F15"
+      }
+    ]
+  },
+  "createdAt": "2026-11-26T02:53:34.810Z",
+  "ok": true,
+  "responseModel": "k-exaone_v2.5",
+  "usage": {
+    "completionTokens": 3378,
+    "reasoningTokens": 2686
+  },
+  "durationMs": 118376,
+  "raw": {
+    "items": [
+      {
+        "focus": "Q3",
+        "observationFacts": [
+          "F05",
+          "F09",
+          "F02",
+          "F13"
+        ],
+        "interpretation": "Q3는 주 배정과 부 배정 기준 모두 보고된 글이 없는 상태로 제시되어, 실제 논의 구조에서 거의 드러나지 않은 것으로 읽힐 수 있습니다.",
+        "alternative": "배정 검토 필요나 판단 보류로 분류된 글들이 Q3를 다룰 가능성이 있고, 과제 설계상 Q3가 선택적으로 운영되었을 수 있습니다.",
+        "holdCondition": "교수 확정 배정이 없고 검토 필요 보류가 있는 상태이므로, 배정 의도와 원문 맥락 확인 전에는 해석을 유보하는 편이 안전합니다.",
+        "question": "Q3를 필수 논점으로 설계했는지, 선택적으로 둔 것인지, 그리고 보류 글들이 Q3와 연결될 수 있는지 확인해 주실 수 있나요?"
+      },
+      {
+        "focus": "Q1/Q2/Q4",
+        "observationFacts": [
+          "F03",
+          "F04",
+          "F06",
+          "F07",
+          "F08",
+          "F10"
+        ],
+        "interpretation": "주 배정 기준으로는 Q1, Q2, Q4에 논의가 모인 것으로 보이며, 교수 메모의 중요도 및 예정 비중과 함께 구조 검토 대상이 될 수 있습니다.",
+        "alternative": "부 배정 포함 여부에 따라 분포가 달라질 수 있고, 도구 제안 그대로 배정된 글들이 교수 의도와 다를 가능성도 있습니다.",
+        "holdCondition": "교수 확정 배정이 없고 검토 필요 보류가 있으므로, 배정 기준과 부 배정 포함 규칙 확인 전에는 단정하지 않는 것이 좋습니다.",
+        "question": "Q1, Q2, Q4 중 어떤 논점을 중심으로 구조를 확인하고, 부 배정 포함 기준을 어떻게 볼지 확인해 주실 수 있나요?"
+      },
+      {
+        "focus": "design",
+        "observationFacts": [
+          "F02",
+          "F12",
+          "F13",
+          "F14",
+          "F15"
+        ],
+        "interpretation": "배정과 분류가 확정 전이어서 논의 구조를 확정적으로 해석하기 어렵고, 주제 이탈·판단 보류·표현 중복 후보는 재검토 여지가 있습니다.",
+        "alternative": "도구 제안이나 어휘 중복 기준은 원문 대조 전일 수 있고, 주제 이탈·보류 분류도 교수 의도에 따라 달라질 수 있습니다.",
+        "holdCondition": "원문 대조와 교수 확정 전이므로, 분류 결과를 구조 평가처럼 굳히지 않는 편이 안전합니다.",
+        "question": "배정 검토 필요 글과 주제 이탈·표현 중복 후보를 어떻게 재분류할지, O3의 필수 여부를 어떻게 볼지 확인해 주실 수 있나요?"
+      },
+      {
+        "focus": "new",
+        "observationFacts": [
+          "F11",
+          "F12",
+          "F13",
+          "F01",
+          "F02"
+        ],
+        "interpretation": "새 논점 후보보다 기존 범주와 보류·이탈 분류가 중심인 것으로 보여, 새 논점 탐색 여부를 별도로 확인할 필요가 있습니다.",
+        "alternative": "분석 범위와 배정 미확정 상태 때문에 새 논점 후보가 드러나지 않았을 수 있고, 표본 범위 밖 논의가 있을 수 있습니다.",
+        "holdCondition": "범위와 배정 확정 전이므로, 새 논점 후보가 없다는 점을 구조 부재로 단정하기는 어렵습니다.",
+        "question": "새 논점 후보가 없음을 구조 부재로 볼지, 범위와 배정 확정 후 재검토할지 확인해 주실 수 있나요?"
+      }
+    ]
+  },
+  "status": "valid"
+}

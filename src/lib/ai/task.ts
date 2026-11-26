@@ -2,15 +2,18 @@
 // 제공자는 작업 내용을 모르고 { system, user, schema }만 전달한다.
 import type { FetchLike } from "./providers/http";
 
-export type AiTaskId = "essay-grade" | "tag-draft" | "relation-draft" | "analysis-summary";
+export type AiTaskId = "essay-grade" | "tag-draft" | "relation-draft" | "analysis-summary" | "forum-design" | "forum-profile" | "forum-comment";
 
-export const AI_TASK_IDS: AiTaskId[] = ["essay-grade", "tag-draft", "relation-draft", "analysis-summary"];
+export const AI_TASK_IDS: AiTaskId[] = ["essay-grade", "tag-draft", "relation-draft", "analysis-summary", "forum-design", "forum-profile", "forum-comment"];
 
 export const AI_TASK_LABEL: Record<AiTaskId, string> = {
   "essay-grade": "서술형 채점 제안",
   "tag-draft": "개념 태그 초안",
   "relation-draft": "개념 관계 초안",
   "analysis-summary": "결과 분석 요약 초안",
+  "forum-design": "토론 설계 지도 판정",
+  "forum-profile": "토론 글별 근거 찾기",
+  "forum-comment": "토론 논의 지도 첨언",
 };
 
 export interface PromptPair {
@@ -27,6 +30,8 @@ export interface AiTask<I, V> {
   /** OpenAI json_schema name */
   schemaName: string;
   maxTokens: number;
+  /** 요청당 제한 시간. 없으면 AI_TIMEOUT_MS(90초) */
+  timeoutMs?: number;
   buildPrompt(input: I): PromptPair;
   /** 모든 속성 필수, additionalProperties false, 조건 분기(if/then/oneOf) 없음 */
   schema(input: I): Record<string, unknown>;

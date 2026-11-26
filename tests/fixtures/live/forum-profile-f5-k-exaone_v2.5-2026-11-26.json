@@ -1,0 +1,22 @@
+{
+  "task": "forum-profile",
+  "forumId": "f5",
+  "dataVersion": "2026-11-26.1",
+  "provider": "lg (OpenAI 호환, 스크립트 전용)",
+  "requestedModel": "k-exaone_v2.5",
+  "request": {
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "maxTokens": 12000
+  },
+  "promptVersion": "forum-profile-v2",
+  "schemaVersion": "2",
+  "createdAt": "2026-11-26T01:56:51.829Z",
+  "ok": false,
+  "error": {
+    "kind": "timeout",
+    "status": null,
+    "message": "응답 시간이 초과되었습니다."
+  },
+  "durationMs": 300017
+}

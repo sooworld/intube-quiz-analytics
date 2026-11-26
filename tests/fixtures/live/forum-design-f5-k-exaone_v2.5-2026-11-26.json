@@ -1,0 +1,22 @@
+{
+  "task": "forum-design",
+  "forumId": "f5",
+  "dataVersion": "2026-11-26.1",
+  "provider": "lg (OpenAI 호환, 스크립트 전용)",
+  "requestedModel": "k-exaone_v2.5",
+  "request": {
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "maxTokens": 4096
+  },
+  "promptVersion": "forum-design-v1",
+  "schemaVersion": "1",
+  "createdAt": "2026-11-26T01:54:07.336Z",
+  "ok": false,
+  "error": {
+    "kind": "truncated",
+    "status": null,
+    "message": "출력이 길이 제한에서 잘렸습니다."
+  },
+  "durationMs": 162952
+}

@@ -1,0 +1,254 @@
+{
+  "task": "forum-design",
+  "forumId": "lit-f3",
+  "run": 2,
+  "part": null,
+  "dataVersion": "2026-11-26.1",
+  "provider": "lg (OpenAI 호환, 스크립트 전용)",
+  "requestedModel": "k-exaone_v2.5",
+  "request": {
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "maxTokens": 16000
+  },
+  "promptVersion": "forum-design-v1",
+  "schemaVersion": "1",
+  "validatorVersion": "2",
+  "input": {
+    "forumId": "lit-f3",
+    "objectives": [
+      {
+        "id": "O1",
+        "kind": "content",
+        "text": "반복·종결어미·높임 표현 같은 형식 요소를 근거로 화자의 태도를 해석한다"
+      },
+      {
+        "id": "O2",
+        "kind": "content",
+        "text": "반어를 개념으로 설명하고 작품의 구절에 적용한다"
+      },
+      {
+        "id": "O3",
+        "kind": "content",
+        "text": "작품을 1920년대 민요조 율격과 이별 노래의 전통(정한) 맥락에서 읽는다"
+      },
+      {
+        "id": "O4",
+        "kind": "competency",
+        "text": "해석 주장을 작품 구절과 연결 이유로 뒷받침한다"
+      },
+      {
+        "id": "O5",
+        "kind": "competency",
+        "text": "다른 해석을 정확히 옮기고 인정·반박·종합한다"
+      }
+    ],
+    "subQuestions": [
+      {
+        "id": "Q1",
+        "text": "화자는 떠나는 임을 정말 \"고이 보내 드리\"는가? \"죽어도 아니 눈물 흘리우리다\"는 진심인가, 반어인가?"
+      },
+      {
+        "id": "Q2",
+        "text": "\"사뿐히 즈려밟고 가시옵소서\"에서 꽃을 밟고 가라는 말은 무엇을 뜻하는가?"
+      },
+      {
+        "id": "Q3",
+        "text": "1연과 4연이 거의 같은 말로 되풀이되는 구조는 화자의 태도에 대해 무엇을 보여 주는가?"
+      },
+      {
+        "id": "Q4",
+        "text": "다른 사람의 해석 하나를 골라, 그 해석이 기대는 구절을 확인하고 동의하거나 반박해 보자"
+      }
+    ],
+    "intro": "이번 주에는 김소월의 「진달래꽃」을 읽었습니다. 화자는 떠나는 임을 정말 '고이 보내 드리'는 걸까요? 아래 하위 질문 가운데 하나 이상을 골라, 작품의 구절을 근거로 자기 해석을 써 주세요. 다른 학생의 해석에도 하나 이상 답글을 달아 주세요."
+  },
+  "createdAt": "2026-11-26T02:38:12.361Z",
+  "ok": true,
+  "responseModel": "k-exaone_v2.5",
+  "usage": {
+    "completionTokens": 6976,
+    "reasoningTokens": 5374
+  },
+  "durationMs": 205666,
+  "raw": {
+    "cells": [
+      {
+        "objectiveId": "O1",
+        "target": "Q1",
+        "judgment": "required",
+        "quote": "화자는 떠나는 임을 정말 \"고이 보내 드리\"는가? \"죽어도 아니 눈물 흘리우리다\"는 진심인가, 반어인가?",
+        "reason": "높임 표현 '드리'와 종결어미 '-우리다'를 근거로 화자의 태도와 진심 여부를 해석하는 수행이 필요하다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "Q2",
+        "judgment": "optional",
+        "quote": "\"사뿐히 즈려밟고 가시옵소서\"에서 꽃을 밟고 가라는 말은 무엇을 뜻하는가?",
+        "reason": "높임 표현이 포함되어 있으나, 꽃을 밟고 가라는 말의 의미는 상징이나 맥락으로도 설명할 수 있어 필수는 아니다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "Q3",
+        "judgment": "required",
+        "quote": "1연과 4연이 거의 같은 말로 되풀이되는 구조는 화자의 태도에 대해 무엇을 보여 주는가?",
+        "reason": "반복이라는 형식 요소를 근거로 화자의 태도를 해석하는 것이 이 논점의 핵심이다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "Q4",
+        "judgment": "optional",
+        "quote": "다른 사람의 해석 하나를 골라, 그 해석이 기대는 구절을 확인하고 동의하거나 반박해 보자",
+        "reason": "선택한 해석이 형식 요소에 기대면 도움이 되지만, 어떤 해석이든 구절 확인 후 동의하거나 반박할 수 있다."
+      },
+      {
+        "objectiveId": "O1",
+        "target": "common",
+        "judgment": "none",
+        "quote": "",
+        "reason": "안내 글은 반복·종결어미·높임 표현 같은 형식 요소를 근거로 태도를 해석하라고 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q1",
+        "judgment": "required",
+        "quote": "화자는 떠나는 임을 정말 \"고이 보내 드리\"는가? \"죽어도 아니 눈물 흘리우리다\"는 진심인가, 반어인가?",
+        "reason": "진심인지 반어인지 묻고 있으므로 반어 개념을 설명하고 해당 구절에 적용해야 한다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q2",
+        "judgment": "none",
+        "quote": "",
+        "reason": "꽃을 밟고 가라는 말의 뜻은 반어 개념 없이도 상징이나 정서로 설명할 수 있다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q3",
+        "judgment": "none",
+        "quote": "",
+        "reason": "반복 구조가 화자의 태도에 대해 보여 주는 것은 반어 개념 설명과 직접 요구되지 않는다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "Q4",
+        "judgment": "optional",
+        "quote": "다른 사람의 해석 하나를 골라, 그 해석이 기대는 구절을 확인하고 동의하거나 반박해 보자",
+        "reason": "선택한 해석이 반어에 근거하면 도움이 되지만, 모든 해석에 반어 개념 적용이 필수는 아니다."
+      },
+      {
+        "objectiveId": "O2",
+        "target": "common",
+        "judgment": "none",
+        "quote": "",
+        "reason": "안내 글에는 반어 개념을 설명하거나 적용하라는 요구가 없다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q1",
+        "judgment": "optional",
+        "quote": "화자는 떠나는 임을 정말 \"고이 보내 드리\"는가? \"죽어도 아니 눈물 흘리우리다\"는 진심인가, 반어인가?",
+        "reason": "이별 노래 전통과 정한의 맥락은 해석에 도움될 수 있으나, 진심/반어 판정에 반드시 필요한 것은 아니다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q2",
+        "judgment": "optional",
+        "quote": "\"사뿐히 즈려밟고 가시옵소서\"에서 꽃을 밟고 가라는 말은 무엇을 뜻하는가?",
+        "reason": "민요조 율격이나 이별 노래 전통은 정서 이해에 도움될 수 있으나 의미 파악에 필수는 아니다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q3",
+        "judgment": "optional",
+        "quote": "1연과 4연이 거의 같은 말로 되풀이되는 구조는 화자의 태도에 대해 무엇을 보여 주는가?",
+        "reason": "반복이 민요적 관습과 관련될 수 있어 도움되지만, 구조 분석만으로 태도를 해석할 수 있다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "Q4",
+        "judgment": "optional",
+        "quote": "다른 사람의 해석 하나를 골라, 그 해석이 기대는 구절을 확인하고 동의하거나 반박해 보자",
+        "reason": "선택한 해석이 시대적 맥락을 동원하면 도움이 되지만, 구절 확인과 동의/반박 자체에는 필수 아니다."
+      },
+      {
+        "objectiveId": "O3",
+        "target": "common",
+        "judgment": "none",
+        "quote": "",
+        "reason": "안내 글은 1920년대 민요조 율격이나 이별 노래 전통 맥락을 요구하지 않는다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q1",
+        "judgment": "required",
+        "quote": "화자는 떠나는 임을 정말 \"고이 보내 드리\"는가? \"죽어도 아니 눈물 흘리우리다\"는 진심인가, 반어인가?",
+        "reason": "진심/반어라는 해석 주장을 작품 구절과 연결해 뒷받침해야 한다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q2",
+        "judgment": "required",
+        "quote": "\"사뿐히 즈려밟고 가시옵소서\"에서 꽃을 밟고 가라는 말은 무엇을 뜻하는가?",
+        "reason": "꽃을 밟고 가라는 말의 뜻에 대한 주장은 해당 구절을 근거로 뒷받침해야 한다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q3",
+        "judgment": "required",
+        "quote": "1연과 4연이 거의 같은 말로 되풀이되는 구조는 화자의 태도에 대해 무엇을 보여 주는가?",
+        "reason": "반복 구조가 보여 주는 태도에 대한 주장도 작품 구절과 연결해 근거로 뒷받침해야 한다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "Q4",
+        "judgment": "required",
+        "quote": "다른 사람의 해석 하나를 골라, 그 해석이 기대는 구절을 확인하고 동의하거나 반박해 보자",
+        "reason": "해석이 기대는 구절을 확인하고 동의/반박하려면 주장과 구절을 연결하는 근거 제시가 필요하다."
+      },
+      {
+        "objectiveId": "O4",
+        "target": "common",
+        "judgment": "required",
+        "quote": "작품의 구절을 근거로 자기 해석을 써 주세요.",
+        "reason": "안내 글이 작품 구절을 근거로 자기 해석을 쓸 것을 직접 요구한다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q1",
+        "judgment": "none",
+        "quote": "",
+        "reason": "다른 해석을 옮기거나 인정·반박·종합하라는 요구가 없다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q2",
+        "judgment": "none",
+        "quote": "",
+        "reason": "다른 해석을 정확히 옮기고 반응하는 수행은 이 논점의 요구가 아니다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q3",
+        "judgment": "none",
+        "quote": "",
+        "reason": "반복 구조의 태도 해석을 묻는 논점에는 다른 해석 비교 요구가 없다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "Q4",
+        "judgment": "required",
+        "quote": "다른 사람의 해석 하나를 골라, 그 해석이 기대는 구절을 확인하고 동의하거나 반박해 보자",
+        "reason": "다른 해석 하나를 골라 확인하고 동의하거나 반박하라고 직접 요구한다."
+      },
+      {
+        "objectiveId": "O5",
+        "target": "common",
+        "judgment": "required",
+        "quote": "다른 학생의 해석에도 하나 이상 답글을 달아 주세요.",
+        "reason": "다른 학생 해석에 답글하려면 그 해석을 옮겨 반응하는 수행이 필요하다."
+      }
+    ]
+  },
+  "status": "valid"
+}

@@ -11,6 +11,8 @@ import type { Course, Item, QuizDataset, Response } from "../src/lib/types";
 import { toQuizDataset } from "../src/lib/xapi/toDataset";
 import { STATEMENT_DATA_VERSION } from "../src/lib/xapi/vocab";
 import { buildCohort, PROFILE_STRENGTH, rng, SEED, type Profile } from "./shared/cohort";
+import { SYLLABUS_ALGO101 } from "../src/lib/syllabus/content/algo101";
+import { conceptsFrom, sectionTitle } from "../src/lib/syllabus/resolve";
 import { quizStatements } from "./shared/xapiStatements";
 import { SPEC_BASIS, VALIDATOR, validateStatements } from "./shared/xapiValidate";
 
@@ -29,12 +31,8 @@ function weightedPick<T>(entries: [T, number][]): T {
   return entries[entries.length - 1]![0];
 }
 
-const concepts = [
-  { id: "c-hyp", name: "시간복잡도", description: "Big-O 표기, 최선·평균·최악의 경우, 증가율의 의미" },
-  { id: "c-reg", name: "정렬·탐색", description: "퀵·병합 정렬의 동작과 안정성, 해시·이진 탐색" },
-  { id: "c-clu", name: "그래프 탐색", description: "DFS·BFS의 자료구조와 방문 표시" },
-  { id: "c-dist", name: "최단 경로", description: "BFS·다익스트라의 적용 조건, 경로 비용 계산" },
-];
+// 개념은 강의계획서에서 고른다(docs/decisions.md U19). 이름·설명은 계획서 문구 그대로, 순서는 이 목록 순서
+const concepts = conceptsFrom(SYLLABUS_ALGO101, ["c-hyp", "c-reg", "c-clu", "c-dist"]);
 
 const items: Item[] = [
   {
@@ -210,13 +208,13 @@ const course: Course = {
   teacher: "김교수",
   sections: [
     { number: 0, title: "General", activities: [{ id: "news", type: "forum", name: "Announcements" }] },
-    { number: 1, title: "1주차: 알고리즘과 문제 해결", activities: [{ id: "p1", type: "page", name: "강의 자료: 알고리즘의 표현" }, { id: "f1", type: "forum", name: "질문 게시판" }] },
-    { number: 2, title: "2주차: 자료구조 기초", activities: [{ id: "p2", type: "page", name: "강의 자료: 배열·연결 리스트·스택·큐" }, { id: "as2", type: "assign", name: "과제 1: 스택·큐 구현" }] },
-    { number: 3, title: "3주차: 재귀와 분할 정복", activities: [{ id: "p3", type: "page", name: "강의 자료: 재귀 호출과 점화식" }] },
-    { number: 4, title: "4주차: 정렬과 탐색", activities: [{ id: "p4", type: "page", name: "강의 자료: 정렬 알고리즘" }, { id: "u4", type: "url", name: "참고 영상" }] },
+    { number: 1, title: sectionTitle(SYLLABUS_ALGO101, 1), activities: [{ id: "p1", type: "page", name: "강의 자료: 알고리즘의 표현" }, { id: "f1", type: "forum", name: "질문 게시판" }] },
+    { number: 2, title: sectionTitle(SYLLABUS_ALGO101, 2), activities: [{ id: "p2", type: "page", name: "강의 자료: 배열·연결 리스트·스택·큐" }, { id: "as2", type: "assign", name: "과제 1: 스택·큐 구현" }] },
+    { number: 3, title: sectionTitle(SYLLABUS_ALGO101, 3), activities: [{ id: "p3", type: "page", name: "강의 자료: 재귀 호출과 점화식" }] },
+    { number: 4, title: sectionTitle(SYLLABUS_ALGO101, 4), activities: [{ id: "p4", type: "page", name: "강의 자료: 정렬 알고리즘" }, { id: "u4", type: "url", name: "참고 영상" }] },
     {
       number: 5,
-      title: "5주차: 복잡도와 그래프 탐색",
+      title: sectionTitle(SYLLABUS_ALGO101, 5),
       summary: "시간복잡도·정렬·그래프 탐색·최단 경로를 점검하는 차시 퀴즈와, 추천 알고리즘을 두고 입장을 나누는 토론입니다.",
       activities: [
         { id: "p5", type: "page", name: "강의 자료: 그래프 탐색과 최단 경로" },
@@ -225,9 +223,9 @@ const course: Course = {
         { id: "f5", type: "forum", name: "5주차 토론: 추천 알고리즘과 필터 버블", href: "/forum/f5/" },
       ],
     },
-    { number: 6, title: "6주차: 해시와 트리", activities: [{ id: "p6", type: "page", name: "강의 자료: 해시 테이블" }] },
-    { number: 7, title: "7주차: 동적 계획법과 탐욕", activities: [{ id: "p7", type: "page", name: "강의 자료: 동적 계획법" }] },
-    { number: 8, title: "8주차: 중간 정리", activities: [{ id: "as8", type: "assign", name: "중간 프로젝트" }] },
+    { number: 6, title: sectionTitle(SYLLABUS_ALGO101, 6), activities: [{ id: "p6", type: "page", name: "강의 자료: 해시 테이블" }] },
+    { number: 7, title: sectionTitle(SYLLABUS_ALGO101, 7), activities: [{ id: "p7", type: "page", name: "강의 자료: 동적 계획법" }] },
+    { number: 8, title: sectionTitle(SYLLABUS_ALGO101, 8), activities: [{ id: "as8", type: "assign", name: "중간 프로젝트" }] },
   ],
 };
 

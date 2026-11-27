@@ -11,8 +11,11 @@ export const TAG_LIMITS = { quote: 200, rationale: 300, gapName: 40, gaps: 10 } 
 /** 모델에 보내는 문항. 현재 태그(conceptIds)는 넣지 않는다(초안이 기존 태그를 따라가지 않게) */
 export type TagDraftItem = Omit<Item, "conceptIds">;
 
+/** 모델에 보내는 개념. detail(강의계획서 상세)은 v2 프롬프트에서만 쓴다 */
+export type TagConcept = Concept & { detail?: string };
+
 export interface TagDraftInput {
-  concepts: Concept[];
+  concepts: TagConcept[];
   items: TagDraftItem[];
 }
 
@@ -45,10 +48,10 @@ export interface TagDraftResult {
   problems: string[];
 }
 
-/** 퀴즈 데이터에서 작업 입력을 만든다 */
-export function tagDraftInput(concepts: Concept[], items: Item[]): TagDraftInput {
+/** 퀴즈 데이터에서 작업 입력을 만든다. details(개념 id → 계획서 상세)를 주면 v2 입력이 된다 */
+export function tagDraftInput(concepts: Concept[], items: Item[], details?: Record<ConceptId, string>): TagDraftInput {
   return {
-    concepts: concepts.map(({ id, name, description }) => ({ id, name, description })),
+    concepts: concepts.map(({ id, name, description }) => (details?.[id] ? { id, name, description, detail: details[id] } : { id, name, description })),
     items: [...items].sort((a, b) => a.number - b.number).map((it) => {
       const rest: TagDraftItem & { conceptIds?: string[] } = { ...it };
       delete rest.conceptIds;
@@ -57,9 +60,11 @@ export function tagDraftInput(concepts: Concept[], items: Item[]): TagDraftInput
   };
 }
 
-/** 입력 최신성: 문항 내용과 개념이 바뀌면 달라진다. 태그 편집으로는 바뀌지 않는다 */
-export function tagDraftBasis(input: TagDraftInput): string {
-  return hashString(JSON.stringify(["tag-draft", input.concepts, input.items]));
+/** 입력 최신성: 문항 내용과 개념이 바뀌면 달라진다. 태그 편집으로는 바뀌지 않는다.
+ *  v1은 계획서 도입 전 공식 그대로 둔다(저장된 v1 초안이 계속 유효). v2부터 프롬프트 버전을 해시에 넣는다 */
+export function tagDraftBasis(input: TagDraftInput, task: { promptVersion: string } = { promptVersion: "tag-draft-v1" }): string {
+  if (task.promptVersion === "tag-draft-v1") return hashString(JSON.stringify(["tag-draft", input.concepts, input.items]));
+  return hashString(JSON.stringify(["tag-draft", task.promptVersion, input.concepts, input.items]));
 }
 
 /** 출처별 원문 */
@@ -88,6 +93,13 @@ const SYSTEM = [
   "8. 약속한 JSON 형식으로만 답합니다.",
 ].join("\n");
 
+// v2: 개념 블록에 강의계획서 상세를 붙인다(docs/decisions.md U19). 실호출 비교 전이다.
+// 상세는 개념의 범위를 알려 줄 뿐이다. 상세 낱말이 문항에 나왔다는 것만으로 태그하면 상세가 길수록 태그가 늘어난다.
+const DETAIL_RULE =
+  "   - <concept> 안의 '상세:'는 강의계획서에서 옮긴 학습내용입니다. 개념의 범위를 이해하는 데만 쓰고, 상세의 낱말이 문항에 나온다는 것만으로 태그하지 않습니다.";
+const RULE_2_END = "오답 선택지에만 나오는 낱말은 그 개념을 측정한다는 근거가 아닙니다.";
+const SYSTEM_V2 = SYSTEM.replace(RULE_2_END, `${RULE_2_END}\n${DETAIL_RULE}`);
+
 function itemBlock(it: TagDraftItem): string {
   const lines = [`<item id="${it.id}" number="${it.number}" type="${it.type}">`, `지문: ${f(it.stem)}`];
   if (it.type === "mcq") {
@@ -103,6 +115,27 @@ function itemBlock(it: TagDraftItem): string {
   return lines.join("\n");
 }
 
+function conceptBlock(c: TagConcept, withDetail: boolean): string {
+  const head = `${f(c.name)}: ${f(c.description)}`;
+  return `<concept id="${c.id}">${withDetail && c.detail ? `${head}\n상세: ${f(c.detail)}` : head}</concept>`;
+}
+
+/** withDetail=false는 v1 프롬프트와 글자까지 같다(입력에 detail이 있어도 쓰지 않는다) */
+function tagPrompt(withDetail: boolean) {
+  return (input: TagDraftInput) => ({
+    system: withDetail ? SYSTEM_V2 : SYSTEM,
+    user: [
+      "## 개념 목록",
+      "<concepts>",
+      ...input.concepts.map((c) => conceptBlock(c, withDetail)),
+      "</concepts>",
+      "",
+      "## 문항",
+      ...input.items.map(itemBlock),
+    ].join("\n"),
+  });
+}
+
 export const tagDraftTask: AiTask<TagDraftInput, TagDraftResult> & { id: "tag-draft" } = {
   id: "tag-draft",
   promptVersion: "tag-draft-v1",
@@ -110,18 +143,7 @@ export const tagDraftTask: AiTask<TagDraftInput, TagDraftResult> & { id: "tag-dr
   validatorVersion: "1",
   schemaName: "concept_tag_draft",
   maxTokens: 8192,
-  buildPrompt: (input) => ({
-    system: SYSTEM,
-    user: [
-      "## 개념 목록",
-      "<concepts>",
-      ...input.concepts.map((c) => `<concept id="${c.id}">${f(c.name)}: ${f(c.description)}</concept>`),
-      "</concepts>",
-      "",
-      "## 문항",
-      ...input.items.map(itemBlock),
-    ].join("\n"),
-  }),
+  buildPrompt: tagPrompt(false),
   schema: (input) => {
     const itemIds = input.items.map((i) => i.id);
     return {
@@ -170,6 +192,13 @@ export const tagDraftTask: AiTask<TagDraftInput, TagDraftResult> & { id: "tag-dr
   },
   validate: validateTagDraft,
   mock: mockTagDraft,
+};
+
+/** 계획서 상세를 넣는 v2. 스키마·검증기·Mock은 v1과 같고 프롬프트만 다르다. 실호출 비교 전(Mock은 이 객체로 돌리지 않는다) */
+export const tagDraftTaskV2: AiTask<TagDraftInput, TagDraftResult> & { id: "tag-draft" } = {
+  ...tagDraftTask,
+  promptVersion: "tag-draft-v2",
+  buildPrompt: tagPrompt(true),
 };
 
 const isObj = (x: unknown): x is Record<string, unknown> => typeof x === "object" && x !== null && !Array.isArray(x);

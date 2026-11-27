@@ -2,8 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { ActivityNav } from "@/components/moodle/PageParts";
+import { SyllabusRef } from "@/components/syllabus/SyllabusRef";
 import { getDataset, getEssayDataset } from "@/lib/data";
 import { formatDateTime } from "@/lib/format";
+import { getSyllabus } from "@/lib/syllabus/registry";
+import { syllabusHref, syllabusItem } from "@/lib/syllabus/resolve";
 
 export default async function EssayQuizPage({ params }: { params: Promise<{ quizId: string }> }) {
   const { quizId } = await params;
@@ -12,11 +15,31 @@ export default async function EssayQuizPage({ params }: { params: Promise<{ quiz
   const finished = ds.attempts.filter((a) => a.status === "finished").length;
   const empty = ds.submissions.filter((s) => s.text === null).length;
   const conceptName = new Map(ds.quiz.concepts.map((c) => [c.id, c.name]));
+  // 루브릭 기준이 가리키는 계획서 개념 (퀴즈 개념 순서로)
+  const syl = getSyllabus(ds.quiz.courseId);
+  const used = new Set(ds.quiz.items.flatMap((it) => it.rubric.flatMap((c) => c.conceptIds)));
+  const sylItems = syl ? ds.quiz.concepts.filter((c) => used.has(c.id)).map((c) => syllabusItem(syl, c.id)).filter((x) => x !== null) : [];
+  const conceptRef = (id: string) => {
+    const si = syl ? syllabusItem(syl, id) : null;
+    return si ? <SyllabusRef key={id} courseId={ds.quiz.courseId} item={si}>{conceptName.get(id) ?? id}</SyllabusRef> : <span key={id}>{conceptName.get(id) ?? id}</span>;
+  };
   // 이전 활동은 같은 주차의 객관식 퀴즈다. 제목은 데이터에서 읽는다(재생성으로 제목이 바뀌어도 맞게)
   const prevQuiz = getDataset("quiz-w5");
   return (
     <>
       <p>{ds.quiz.intro}</p>
+      {sylItems.length > 0 ? (
+        <p className="small">
+          이 퀴즈가 다루는 계획서 항목:{" "}
+          {sylItems.map((si, i) => (
+            <span key={si.id}>
+              {i > 0 ? " · " : ""}
+              {conceptRef(si.id)}
+            </span>
+          ))}{" "}
+          <Link className="muted" href={syllabusHref(ds.quiz.courseId)}>강의계획서 전체</Link>
+        </p>
+      ) : null}
       <dl className="grid-4" style={{ margin: "1rem 0" }}>
         <div className="stat-tile"><dt className="label">마감</dt><dd className="value" style={{ fontSize: "var(--fs-lg)", margin: 0 }}>{formatDateTime(ds.quiz.closeDate)}</dd></div>
         <div className="stat-tile"><dt className="label">문항</dt><dd className="value" style={{ margin: 0 }}>{ds.quiz.items.length}</dd><dd className="detail" style={{ margin: 0 }}>서술형 · 문항당 {ds.quiz.items[0]?.maxScore}점</dd></div>
@@ -54,7 +77,14 @@ export default async function EssayQuizPage({ params }: { params: Promise<{ quiz
                   {item.rubric.map((c) => (
                     <tr key={c.id}>
                       <th scope="row">{c.name}</th>
-                      <td>{c.conceptIds.map((id) => conceptName.get(id)).join(", ")}</td>
+                      <td>
+                        {c.conceptIds.map((id, i) => (
+                          <span key={id}>
+                            {i > 0 ? ", " : ""}
+                            {conceptRef(id)}
+                          </span>
+                        ))}
+                      </td>
                       {c.levels.map((l) => <td key={l.level}>{l.descriptor}</td>)}
                     </tr>
                   ))}

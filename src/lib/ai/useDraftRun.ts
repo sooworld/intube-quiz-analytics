@@ -4,8 +4,8 @@
 import { useEffect, useRef, useState } from "react";
 import { providerModelLabel } from "./capabilities";
 import { acquireAiRun, createRequestGate, currentAiRun, newId, runTask } from "./client";
-import { browserAiSettingsStore } from "./keyStore";
-import { AI_TASK_LABEL, type AiTask } from "./task";
+import { browserAiSettingsStore, type AiSettingsSnapshot } from "./keyStore";
+import { AI_TASK_LABEL, type AiTask, type AiTaskId } from "./task";
 import { aiErrorText, AiError, isRetryable, type SuggestionStatus } from "./types";
 import { useAiSettings } from "./useAiSettings";
 import { waitGuide } from "./wait";
@@ -39,6 +39,13 @@ export interface DraftSplit<I, V> {
   merge: (parts: V[]) => V;
 }
 
+/** 이 작업이 Mock(규칙 기반)으로 실행되는지 (getConfigFor와 같은 규칙). Mock은 프롬프트를 쓰지 않으므로 화면은 v1 객체로 실행해야 한다.
+ *  runTask는 Mock에도 task의 promptVersion을 기록해, v2 객체로 돌리면 Mock 초안이 상세를 쓴 것처럼 보인다(계획 반례 5) */
+export function taskUsesMock(ai: Pick<AiSettingsSnapshot, "provider" | "tasks">, taskId: AiTaskId): boolean {
+  const t = ai.tasks[taskId];
+  return t ? t.provider === "mock" : ai.provider === "mock";
+}
+
 export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiTask<I, V> & { id: DraftTaskId }, target: DraftTarget, splitter?: DraftSplit<I, V>) {
   const { quizId, dataVersion, addDraft } = target;
   const ai = useAiSettings();
@@ -57,12 +64,19 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
   // 화면을 떠나면 취소한다
   useEffect(() => () => ctrl.current?.abort(), []);
 
+  const usesMock = taskUsesMock(ai, task.id);
+
   const run = async (input: I, basisHash: string): Promise<AiDraft<I, V> | null> => {
     let config;
     try {
       config = browserAiSettingsStore().getConfigFor(task.id);
     } catch (e) {
       setState({ busy: false, error: aiErrorText(e), retryable: false, unsaved: false });
+      return null;
+    }
+    // 화면이 본 설정(Mock 여부)과 실행 시점 설정이 다르면 보내지 않는다. 화면은 Mock 여부로 v1/v2 입력을 고른다
+    if ((config.provider === "mock") !== usesMock) {
+      setState({ busy: false, error: "AI 설정이 바뀌었습니다. 화면을 확인한 뒤 다시 실행하세요.", retryable: false, unsaved: false });
       return null;
     }
     const release = acquireAiRun(task.id);
@@ -154,5 +168,5 @@ export function useDraftRun<I, V extends { status: SuggestionStatus }>(task: AiT
 
   const wait = waitGuide(t?.provider ?? ai.provider, task.timeoutMs);
 
-  return { ...state, run, cancel, modelLabel, wait };
+  return { ...state, run, cancel, modelLabel, wait, taskUsesMock: usesMock };
 }

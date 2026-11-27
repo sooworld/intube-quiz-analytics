@@ -86,6 +86,39 @@ export function lexicalDesignMap(ds: ForumDataset, v: ForumVectors = fitForum(ds
   return { cells, maxByObjective, q1Threshold, lowObjectives };
 }
 
+// ── 설계 지도: 계획서 문장 포함 어휘 연관도 (docs/decisions.md U19) ──
+// 목표 문장에 계획서 상세를 이어 붙이지 않는다. 이어 붙이면 길어진 문서가 정규화로 희석돼 값이 오히려 내려간다
+// (2026-11-27 실측: f5 20칸 중 11칸 하락). 대신 목표 문장과 상세의 문장들을 각각 재어 가장 가까운 문장을 고른다.
+// 모델(v)은 사전 등록 말뭉치로 적합한 그대로 쓴다. 그래서 Q·안내 글 벡터는 B2와 같고, 값은 B2 이상이다.
+// 요구 판정이 아니며(S1), 계획서를 활동에서 거꾸로 만들었으므로 높게 나온 값은 근거가 아니다.
+
+export interface SyllabusCell extends LexicalCell {
+  /** 목표 문장만 쓴 값 (사전 등록 B2 설정) */
+  sentenceCosine: number;
+  /** 최댓값을 낸 문장. -1 = 목표 문장, 0 이상 = 계획서 상세의 그 번째 문장 */
+  sourceIndex: number;
+  sourceText: string;
+}
+
+export function syllabusDesignMap(ds: ForumDataset, detailSentences: Record<string, string[]>, v: ForumVectors = fitForum(ds)): SyllabusCell[] {
+  const targets: [string, SparseVec][] = [...ds.subQuestions.map((q) => [q.id, v.question.get(q.id)!] as [string, SparseVec]), [COMMON, v.intro]];
+  const cells: SyllabusCell[] = [];
+  for (const o of ds.objectives) {
+    const ov = v.objective.get(o.id)!;
+    const sents = (detailSentences[o.id] ?? []).map((s) => [s, v.model.transform(s)] as const);
+    for (const [target, tv] of targets) {
+      const sentenceCosine = sparseCosine(ov, tv);
+      let best = { cosine: sentenceCosine, sourceIndex: -1, sourceText: o.text };
+      sents.forEach(([s, sv], i) => {
+        const c = sparseCosine(sv, tv);
+        if (c > best.cosine) best = { cosine: c, sourceIndex: i, sourceText: s };
+      });
+      cells.push({ objectiveId: o.id, target, sentenceCosine, ...best });
+    }
+  }
+  return cells;
+}
+
 // ── 설계 지도: 필수 판정에서 공백 찾기 (T3) ──
 
 /** 칸이 없으면 "미검토"(교수 체크표) 또는 "미확정"(도구 판정이 검토 필요). 무관은 "none"으로 따로 적는다 (Codex 구현 검토 6) */

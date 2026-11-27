@@ -14,6 +14,8 @@ export interface ForumObjective {
   /** 내용 목표는 K1(관련성), 역량 목표는 K2·K3(루브릭)로 잰다 (T1) */
   kind: "content" | "competency";
   text: string;
+  /** 이 목표를 꺼내 온 강의계획서 목표 id (src/lib/syllabus). AI 입력에는 넣지 않는다(designInput이 명시 투영) */
+  syllabusId?: string;
 }
 
 export type Importance = "상" | "중" | "하";

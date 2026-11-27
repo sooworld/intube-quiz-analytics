@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { getSyllabus } from "@/lib/syllabus/registry";
+import { syllabusHref, syllabusWeekHref } from "@/lib/syllabus/resolve";
 import type { Course } from "@/lib/types";
 import { ActivityIcon } from "./Icon";
 import { PageHeader } from "./PageParts";
@@ -20,12 +22,14 @@ export function CourseHome({
   extraTabs?: ReactNode;
   otherCourses: { href: string; label: string }[];
 }) {
+  const syl = getSyllabus(course.id);
   return (
     <div className="page">
       <PageHeader title={course.fullName} crumbs={[{ label: "My courses" }, { label: course.shortName }]} />
       <nav className="secondary-nav" aria-label="과정 메뉴">
         <ul>
           <li><Link href={homeHref} aria-current="page">Course</Link></li>
+          {syl ? <li><Link href={syllabusHref(course.id)}>강의계획서</Link></li> : null}
           <li><span className="tab-btn muted" title="데모에서는 열리지 않음">Participants</span></li>
           <li><span className="tab-btn muted" title="데모에서는 열리지 않음">Grades</span></li>
           <li><span className="tab-btn muted" title="데모에서는 열리지 않음">Reports</span></li>
@@ -48,7 +52,14 @@ export function CourseHome({
       </div>
       {course.sections.map((s) => (
         <section key={s.number} className="course-section" aria-labelledby={`sec-${s.number}`}>
-          <h2 id={`sec-${s.number}`}>{s.title}</h2>
+          <div className="course-section-head">
+            <h2 id={`sec-${s.number}`}>{s.title}</h2>
+            {syl?.weeks.some((w) => w.week === s.number) ? (
+              <Link className="small" href={syllabusWeekHref(course.id, s.number)} aria-label={`강의계획서 ${s.number}주차`}>
+                계획서
+              </Link>
+            ) : null}
+          </div>
           {s.summary ? <p className="muted">{s.summary}</p> : null}
           <ul className="activity-list">
             {s.activities.map((a) => (

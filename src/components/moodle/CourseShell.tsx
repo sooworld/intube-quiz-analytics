@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { syllabusCourseIds } from "@/lib/syllabus/registry";
+import { syllabusHref } from "@/lib/syllabus/resolve";
 import type { Course } from "@/lib/types";
 import { Icon } from "./Icon";
 
@@ -54,6 +56,8 @@ export function CourseShell({ course, children }: { course: Course; children: Re
   }, [open, isMobile]);
 
   const isCurrent = (href?: string) => !!href && pathname.startsWith(href.replace(/\/$/, ""));
+  const hasSyllabus = syllabusCourseIds().includes(course.id);
+  const isSyllabus = isCurrent(syllabusHref(course.id));
 
   return (
     <div className={`course-shell${open ? "" : " drawer-closed"}`}>
@@ -69,6 +73,13 @@ export function CourseShell({ course, children }: { course: Course; children: Re
             <Icon name="close" />
           </button>
         </div>
+        {hasSyllabus ? (
+          <p className="course-index-syllabus">
+            <Link href={syllabusHref(course.id)} aria-current={isSyllabus ? "page" : undefined} onClick={() => { if (isMobile) setOpen(false); }}>
+              <Icon name="page" size={16} /> 강의계획서
+            </Link>
+          </p>
+        ) : null}
         <ul className="course-index">
           {course.sections.map((s) => {
             const isOpen = expanded[s.number] ?? false;

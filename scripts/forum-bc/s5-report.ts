@@ -6,7 +6,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateForumComment, type ForumCommentInput, type ForumCommentResult } from "../../src/lib/ai/tasks/forumComment";
-import { validateForumDesign } from "../../src/lib/ai/tasks/forumDesign";
+import { validateForumDesign, type ForumDesignInput } from "../../src/lib/ai/tasks/forumDesign";
 import { forumProfileTask, validateForumProfile, type ForumProfileInput, type ForumProfileResult } from "../../src/lib/ai/tasks/forumProfile";
 import { COMMON, designGaps, diffChecklists, type Checklist } from "../../src/lib/forum/analysis";
 import { FORUM_F5 } from "../../src/lib/forum/content/f5";
@@ -86,7 +86,8 @@ for (const ds of [FORUM_F5, FORUM_LIT_F3] as ForumDataset[]) {
 
   for (const { rec } of pick("2", "design", ds.forum.id)) {
     if (!rec.ok) continue;
-    const res = validateForumDesign(rec.raw, designInput(ds));
+    // 기록 당시 입력으로 검증한다(지난 실험 조건을 지금 입력과 섞지 않음). 입력 기록이 없을 때만 지금 입력을 쓴다
+    const res = validateForumDesign(rec.raw, (rec.input as ForumDesignInput | undefined) ?? designInput(ds));
     out(`**설계 판정 (2차)**: 지금 판정 ${res.status}`);
     if (res.status === "invalid") continue;
     const llm: Record<string, CellJudgment> = {};

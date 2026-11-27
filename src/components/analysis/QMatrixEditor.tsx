@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { CaveatNote } from "@/components/moodle/PageParts";
+import { SyllabusRef } from "@/components/syllabus/SyllabusRef";
+import { getSyllabus } from "@/lib/syllabus/registry";
+import { syllabusItem } from "@/lib/syllabus/resolve";
 import { classConcept } from "@/lib/analysis/concepts";
 import { itemsForConcept } from "@/lib/analysis/matrix";
 import { pct } from "@/lib/format";
@@ -29,6 +32,7 @@ function Editor() {
   const [prov, setProv] = useState<QProvenance>(() => structuredClone(qprovenance));
   const [message, setMessage] = useState<string | null>(null);
 
+  const syl = getSyllabus(ds.quiz.courseId);
   const dirty = useMemo(() => JSON.stringify(draft) !== JSON.stringify(qmatrix) || JSON.stringify(prov) !== JSON.stringify(qprovenance), [draft, qmatrix, prov, qprovenance]);
   const untagged = m.items.filter((it) => (draft[it.id] ?? []).length === 0);
 
@@ -79,7 +83,15 @@ function Editor() {
             <thead>
               <tr>
                 <th scope="col">문항</th>
-                {concepts.map((c) => <th key={c.id} scope="col" style={{ textAlign: "center" }}>{c.name}</th>)}
+                {concepts.map((c) => {
+                  // 개념 이름을 계획서 항목 링크로 둔다(좁은 표라 칩 대신 이름 + ⓘ, 계획 반례 12)
+                  const si = syl ? syllabusItem(syl, c.id) : null;
+                  return (
+                    <th key={c.id} scope="col" style={{ textAlign: "center" }}>
+                      {si ? <SyllabusRef courseId={ds.quiz.courseId} item={si}>{c.name}</SyllabusRef> : c.name}
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>

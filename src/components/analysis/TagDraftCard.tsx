@@ -2,13 +2,17 @@
 // AI 태그 초안 카드 (docs/decisions.md §8.3). 반영은 편집 중인 태그에만 들어가고, 저장은 교수가 누른다.
 import { useMemo, useState } from "react";
 import { AiRunStatus } from "@/components/ai/AiRunStatus";
+import { DetailPromptToggle } from "@/components/ai/DetailPromptToggle";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { CaveatNote } from "@/components/moodle/PageParts";
-import { tagDraftBasis, tagDraftInput, tagDraftTask, type TagDraftInput, type TagDraftResult } from "@/lib/ai/tasks/tagDraft";
-import { useDraftRun } from "@/lib/ai/useDraftRun";
+import { tagDraftBasis, tagDraftInput, tagDraftTask, tagDraftTaskV2, type TagDraftInput, type TagDraftResult } from "@/lib/ai/tasks/tagDraft";
+import { useAiSettings } from "@/lib/ai/useAiSettings";
+import { taskUsesMock, useDraftRun } from "@/lib/ai/useDraftRun";
 import { formatDateTime } from "@/lib/format";
 import type { AiDraft, QProvenance } from "@/lib/state/aiRecords";
 import { useQuiz } from "@/lib/state/QuizContext";
+import { getSyllabus } from "@/lib/syllabus/registry";
+import { conceptDetails } from "@/lib/syllabus/resolve";
 import type { ConceptId, ItemId, QMatrix } from "@/lib/types";
 
 const STATUS_TEXT = { valid: "구조·출처 검사 통과", "needs-review": "검토 필요", invalid: "반영 불가(형식 오류)" } as const;
@@ -21,16 +25,28 @@ export interface TagApply {
 
 export function TagDraftCard({ editorQ, editorProv, onApply }: { editorQ: QMatrix; editorProv: QProvenance; onApply: (updates: TagApply[], draftId: string) => void }) {
   const { ds, concepts, conceptById, drafts, addDraft } = useQuiz();
-  const runner = useDraftRun(tagDraftTask, { quizId: ds.quiz.id, dataVersion: ds.dataVersion, addDraft });
-  const input = useMemo(() => tagDraftInput(concepts, ds.quiz.items), [concepts, ds.quiz.items]);
-  const basis = useMemo(() => tagDraftBasis(input), [input]);
+  // v2(계획서 상세 포함)는 기본으로 켠다. Mock이면 v1으로 실행한다(DetailPromptToggle)
+  const [withDetail, setWithDetail] = useState(true);
+  const usesMock = taskUsesMock(useAiSettings(), "tag-draft");
+  const v2 = withDetail && !usesMock;
+  const runner = useDraftRun(v2 ? tagDraftTaskV2 : tagDraftTask, { quizId: ds.quiz.id, dataVersion: ds.dataVersion, addDraft });
+  const inputV1 = useMemo(() => tagDraftInput(concepts, ds.quiz.items), [concepts, ds.quiz.items]);
+  const inputV2 = useMemo(() => {
+    const syl = getSyllabus(ds.quiz.courseId);
+    return tagDraftInput(concepts, ds.quiz.items, syl ? conceptDetails(syl, concepts.map((c) => c.id)) : undefined);
+  }, [concepts, ds.quiz.items, ds.quiz.courseId]);
+  const basisV1 = useMemo(() => tagDraftBasis(inputV1, tagDraftTask), [inputV1]);
+  const basisV2 = useMemo(() => tagDraftBasis(inputV2, tagDraftTaskV2), [inputV2]);
+  const input = v2 ? inputV2 : inputV1;
+  const basis = v2 ? basisV2 : basisV1;
   const tagDrafts = drafts.filter((d) => d.task === "tag-draft") as unknown as AiDraft<TagDraftInput, TagDraftResult>[];
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [confirmItem, setConfirmItem] = useState<ItemId | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   const draft = tagDrafts.find((d) => d.draftId === selectedId) ?? tagDrafts.at(-1) ?? null;
-  const stale = !!draft && draft.basisHash !== basis;
+  // 초안은 자기 프롬프트 버전의 입력과 비교한다(체크박스를 바꿨다고 이전 버전 초안이 낡은 것은 아니다)
+  const stale = !!draft && draft.basisHash !== (draft.promptVersion === tagDraftTaskV2.promptVersion ? basisV2 : basisV1);
   const injection = !!draft && draft.result.flags.includes("injection-suspected");
   const canApply = !!draft && !stale && !runner.unsaved && draft.result.status !== "invalid" && !injection;
   const name = (id: ConceptId) => conceptById.get(id)?.name ?? id;
@@ -81,6 +97,7 @@ export function TagDraftCard({ editorQ, editorProv, onApply }: { editorQ: QMatri
           </span>
         </InfoTip>
       </h2>
+      <DetailPromptToggle checked={withDetail} onChange={setWithDetail} usesMock={usesMock} disabled={runner.busy} />
       <div className="btn-row">
         <button type="button" className="btn btn-primary" onClick={request} disabled={runner.busy}>
           {runner.busy ? "초안 받는 중…" : tagDrafts.length > 0 ? "새 초안 받기" : "초안 받기"}

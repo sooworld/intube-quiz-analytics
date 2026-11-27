@@ -1,6 +1,8 @@
 // C형(해석) 토론 합성 자료 — LIT201 3주차 토론. 과제·목표·하위 논점·체크표는 docs/forum-claim-map/b0-prereg.md에서 고정했다.
 // 글은 설계자가 쓴 합성 글이다(실패 탐색 전용). 사람 글로 보고하지 않는다. 설계자 의도 라벨은 scripts/forum-bc/gold.ts에 따로 둔다.
 // 작품: 김소월 「진달래꽃」 (1925년 시집 『진달래꽃』, 작가 1934년 작고, 국내 저작권 보호 기간 만료로 판단 — 실제 도입 전 법무 확인).
+import { SYLLABUS_LIT201 } from "../../syllabus/content/lit201";
+import { forumObjectives, sectionTitle } from "../../syllabus/resolve";
 import type { Course } from "../../types";
 import type { ForumDataset } from "../types";
 
@@ -11,18 +13,18 @@ export const COURSE_LIT201: Course = {
   teacher: "이교수",
   sections: [
     { number: 0, title: "General", activities: [{ id: "lit-news", type: "forum", name: "Announcements" }] },
-    { number: 1, title: "1주차: 시를 읽는 방법", activities: [{ id: "lit-p1", type: "page", name: "강의 자료: 화자와 어조" }] },
-    { number: 2, title: "2주차: 민요시와 율격", activities: [{ id: "lit-p2", type: "page", name: "강의 자료: 7·5조와 3음보" }] },
+    { number: 1, title: sectionTitle(SYLLABUS_LIT201, 1), activities: [{ id: "lit-p1", type: "page", name: "강의 자료: 화자와 어조" }] },
+    { number: 2, title: sectionTitle(SYLLABUS_LIT201, 2), activities: [{ id: "lit-p2", type: "page", name: "강의 자료: 7·5조와 3음보" }] },
     {
       number: 3,
-      title: "3주차: 김소월",
+      title: sectionTitle(SYLLABUS_LIT201, 3),
       summary: "「진달래꽃」을 읽고, 화자의 태도를 구절을 근거로 해석해 토론합니다.",
       activities: [
         { id: "lit-p3", type: "page", name: "강의 자료: 「진달래꽃」 읽기" },
         { id: "lit-f3", type: "forum", name: "3주차 토론: 「진달래꽃」의 화자", href: "/forum/lit-f3/" },
       ],
     },
-    { number: 4, title: "4주차: 한용운", activities: [{ id: "lit-p4", type: "page", name: "강의 자료: 「님의 침묵」 읽기" }] },
+    { number: 4, title: sectionTitle(SYLLABUS_LIT201, 4), activities: [{ id: "lit-p4", type: "page", name: "강의 자료: 「님의 침묵」 읽기" }] },
   ],
 };
 
@@ -40,13 +42,8 @@ export const FORUM_LIT_F3: ForumDataset = {
     opensAt: "2026-09-21T09:00:00+09:00",
     closesAt: "2026-09-28T23:59:00+09:00",
   },
-  objectives: [
-    { id: "O1", kind: "content", text: "반복·종결어미·높임 표현 같은 형식 요소를 근거로 화자의 태도를 해석한다" },
-    { id: "O2", kind: "content", text: "반어를 개념으로 설명하고 작품의 구절에 적용한다" },
-    { id: "O3", kind: "content", text: "작품을 1920년대 민요조 율격과 이별 노래의 전통(정한) 맥락에서 읽는다" },
-    { id: "O4", kind: "competency", text: "해석 주장을 작품 구절과 연결 이유로 뒷받침한다" },
-    { id: "O5", kind: "competency", text: "다른 해석을 정확히 옮기고 인정·반박·종합한다" },
-  ],
+  // 목표는 강의계획서(LIT201)에서 꺼낸다. 문장은 b0-prereg.md §2에서 고정한 그대로다(tests/syllabus-links.test.ts가 고정)
+  objectives: forumObjectives(SYLLABUS_LIT201, { O1: "w3-form", O2: "w3-irony", O3: "w3-context", O4: "g-interpret", O5: "g-dialog" }),
   subQuestions: [
     { id: "Q1", text: "화자는 떠나는 임을 정말 \"고이 보내 드리\"는가? \"죽어도 아니 눈물 흘리우리다\"는 진심인가, 반어인가?", importance: "상", plannedShare: 0.35 },
     { id: "Q2", text: "\"사뿐히 즈려밟고 가시옵소서\"에서 꽃을 밟고 가라는 말은 무엇을 뜻하는가?", importance: "상", plannedShare: 0.3 },

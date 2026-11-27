@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { QuizSecondaryNav } from "@/components/analysis/QuizSecondaryNav";
 import { PageHeader } from "@/components/moodle/PageParts";
-import { getCourse, getDataset, quizIds } from "@/lib/data";
+import { courseHomeHref, sectionHref } from "@/lib/syllabus/resolve";
+import { getCourse, getCourseById, getDataset, quizIds } from "@/lib/data";
 import { QuizProvider } from "@/lib/state/QuizContext";
 
 export const dynamicParams = false;
@@ -15,7 +16,8 @@ export default async function QuizLayout({ children, params }: { children: React
   const { quizId } = await params;
   const ds = getDataset(quizId);
   if (!ds) notFound();
-  const course = getCourse();
+  // 퀴즈가 속한 강좌. 없으면 기본 강좌(ALGO101)
+  const course = getCourseById(ds.quiz.courseId) ?? getCourse();
   const section = course.sections.find((s) => s.number === ds.quiz.sectionNumber);
   return (
     <div className="page">
@@ -24,8 +26,8 @@ export default async function QuizLayout({ children, params }: { children: React
         activityType="quiz"
         crumbs={[
           { label: "My courses" },
-          { label: course.shortName, href: "/courses/" },
-          { label: section?.title ?? "", href: `/#sec-${ds.quiz.sectionNumber}` },
+          { label: course.shortName, href: courseHomeHref(course.id) },
+          { label: section?.title ?? "", href: sectionHref(course.id, ds.quiz.sectionNumber) },
           { label: ds.quiz.name },
         ]}
       />

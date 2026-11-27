@@ -3,18 +3,36 @@
 // 1) 교수가 목표 × 하위 논점 체크표의 모든 칸을 먼저 판정한다(F3). 2) 그다음 도구의 요구 판정과 어휘 연관도를 연다.
 // "관련 있다"와 "요구한다"를 구분한다. 어휘 연관도(TF-IDF)는 요구 판정으로 쓰지 않는다(S1).
 // 미검토(빈칸)와 무관을 나누고, 검토 필요인 도구 칸은 "미확정"으로 두어 공백 계산에서 뺀다(Codex 구현 검토 1·6).
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { AiRunStatus } from "@/components/ai/AiRunStatus";
+import { DetailPromptToggle } from "@/components/ai/DetailPromptToggle";
 import { InfoTip } from "@/components/moodle/InfoTip";
 import { CaveatNote } from "@/components/moodle/PageParts";
-import { forumDesignBasis, forumDesignTask, type DesignCellResult } from "@/lib/ai/tasks/forumDesign";
-import { useDraftRun } from "@/lib/ai/useDraftRun";
-import { cellState, COMMON, designGaps, diffChecklists, isComplete, lexicalDesignMap, type CellState, type Checklist } from "@/lib/forum/analysis";
-import { designInput } from "@/lib/forum/inputs";
+import { SyllabusRef } from "@/components/syllabus/SyllabusRef";
+import { forumDesignBasis, forumDesignTask, forumDesignTaskV2, type DesignCellResult } from "@/lib/ai/tasks/forumDesign";
+import { useAiSettings } from "@/lib/ai/useAiSettings";
+import { taskUsesMock, useDraftRun } from "@/lib/ai/useDraftRun";
+import {
+  cellState,
+  COMMON,
+  designGaps,
+  diffChecklists,
+  fitForum,
+  isComplete,
+  qDocument,
+  syllabusDesignMap,
+  type CellState,
+  type Checklist,
+  type SyllabusCell,
+} from "@/lib/forum/analysis";
+import { designInput, objectiveDetailSentences } from "@/lib/forum/inputs";
 import { cycleJudgment, exampleChecklist, markedCount, setCell } from "@/lib/forum/state";
 import { CELL_LABEL, cellKey, type CellJudgment, type ForumDataset } from "@/lib/forum/types";
 import { formatDateTime } from "@/lib/format";
 import { useForum } from "@/lib/state/ForumContext";
+import { getSyllabus } from "@/lib/syllabus/registry";
+import { refScopeLabel, syllabusItem } from "@/lib/syllabus/resolve";
+import type { Syllabus } from "@/lib/syllabus/types";
 import { ToolLabel } from "./parts";
 
 const colLabel = (t: string) => (t === COMMON ? "공통" : t);
@@ -58,6 +76,7 @@ function Matrix({
   unsetText: string;
 }) {
   const targets = [...ds.subQuestions.map((q) => q.id), COMMON];
+  const syl = getSyllabus(ds.forum.courseId);
   return (
     <div className="table-wrap">
       <table className="dm-table">
@@ -78,6 +97,7 @@ function Matrix({
               <th scope="row" className="dm-obj">
                 <span className="id">{o.id}</span>
                 <span className="small">{o.text}</span> <span className="badge">{o.kind === "content" ? "내용" : "역량"}</span>
+                <SylRef syl={syl} syllabusId={o.syllabusId} />
               </th>
               {targets.map((t) => {
                 const s = value(o.id, t);
@@ -107,12 +127,31 @@ function Matrix({
   );
 }
 
+/** 목표 행 머리의 계획서 링크. 계획서 목표를 못 찾으면 아무것도 그리지 않는다 */
+function SylRef({ syl, syllabusId }: { syl: Syllabus | null; syllabusId?: string }) {
+  const si = syl && syllabusId ? syllabusItem(syl, syllabusId) : null;
+  if (!syl || !si) return null;
+  return (
+    <span className="dm-syl">
+      {" "}
+      <SyllabusRef courseId={syl.courseId} item={si} />
+    </span>
+  );
+}
+
 export function DesignMap() {
   const { ds, ready, checklist, saveChecklist, checklistStatus, latestDesign, latestDesignAttempt, addDraft } = useForum();
-  const input = useMemo(() => designInput(ds), [ds]);
-  const basis = useMemo(() => forumDesignBasis(input), [input]);
-  const run = useDraftRun(forumDesignTask, { quizId: ds.forum.id, dataVersion: ds.dataVersion, addDraft });
-  const lex = useMemo(() => lexicalDesignMap(ds), [ds]);
+  // v2(계획서 상세 포함)는 기본으로 켠다. Mock이면 v1으로 실행한다(DetailPromptToggle)
+  const [withDetail, setWithDetail] = useState(true);
+  const usesMock = taskUsesMock(useAiSettings(), "forum-design");
+  const v2 = withDetail && !usesMock;
+  const inputV1 = useMemo(() => designInput(ds), [ds]);
+  const inputV2 = useMemo(() => designInput(ds, { withDetail: true }), [ds]);
+  const basisV1 = useMemo(() => forumDesignBasis(inputV1, forumDesignTask), [inputV1]);
+  const basisV2 = useMemo(() => forumDesignBasis(inputV2, forumDesignTaskV2), [inputV2]);
+  const input = v2 ? inputV2 : inputV1;
+  const basis = v2 ? basisV2 : basisV1;
+  const run = useDraftRun(v2 ? forumDesignTaskV2 : forumDesignTask, { quizId: ds.forum.id, dataVersion: ds.dataVersion, addDraft });
   const [reveal, setReveal] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -120,7 +159,8 @@ export function DesignMap() {
   const marked = markedCount(checklist);
   const complete = isComplete(ds, checklist.cells);
   const prof = checklist.cells;
-  const draft = latestDesign && latestDesign.basisHash === basis ? latestDesign : null;
+  // 초안은 자기 프롬프트 버전의 입력과 비교한다(체크박스를 바꿨다고 이전 버전 판정이 낡은 것은 아니다)
+  const draft = latestDesign && latestDesign.basisHash === (latestDesign.promptVersion === forumDesignTaskV2.promptVersion ? basisV2 : basisV1) ? latestDesign : null;
   const lastFailed = latestDesignAttempt && latestDesignAttempt.result.status === "invalid" && latestDesignAttempt.draftId !== draft?.draftId ? latestDesignAttempt : null;
   // 검토 필요 칸은 넣지 않는다(미확정). 공백 계산에서 "아직 모름"으로 남는다
   const tool: Checklist = useMemo(() => {
@@ -134,7 +174,6 @@ export function DesignMap() {
   const cellOf = (key: string): DesignCellResult | undefined => draft?.result.cells.find((c) => cellKey(c.objectiveId, c.target) === key);
   const open = reveal && complete;
   const now = () => new Date().toISOString();
-  const lexMax = Math.max(...lex.cells.map((c) => c.cosine), 0.0001);
 
   return (
     <div className="stack">
@@ -196,12 +235,14 @@ export function DesignMap() {
           </button>
         ) : (
           <>
+            <DetailPromptToggle checked={withDetail} onChange={setWithDetail} usesMock={usesMock} disabled={run.busy} />
             <div className="btn-row">
               <button type="button" className="btn btn-primary" onClick={() => void run.run(input, basis)} disabled={run.busy || !ready}>
                 {draft ? "요구 판정 다시 실행" : "요구 판정 실행"}
               </button>
               <span className="small muted">{run.modelLabel}</span>
               {draft ? <ToolLabel provider={draft.provider} model={draft.responseModel} /> : null}
+              {draft && draft.provider !== "mock" ? <span className="small muted">프롬프트 {draft.promptVersion}</span> : null}
             </div>
             <AiRunStatus busy={run.busy} wait={run.wait} error={run.error} retryable={run.retryable} idleMessage={null} onRetry={() => void run.run(input, basis)} />
             {lastFailed ? (
@@ -238,46 +279,144 @@ export function DesignMap() {
               </>
             ) : null}
 
-            <details style={{ marginTop: "1rem" }}>
-              <summary className="small">어휘 연관도 (TF-IDF) 보기</summary>
-              <p className="small">
-                목표 문장과 하위 논점 문장이 글자 조각을 얼마나 함께 쓰는지(0~1)입니다. <strong>요구 여부가 아닙니다.</strong> 짧은 문장끼리라 대부분 0에 가깝고, 합성 과제 실험(B2)에서 이 값으로 설계 공백을 찾는 규칙은 작동하지 않았습니다.
-              </p>
-              <div className="table-wrap">
-                <table className="dm-table">
-                  <caption className="visually-hidden">어휘 연관도</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">목표</th>
-                      {[...ds.subQuestions.map((q) => q.id), COMMON].map((t) => (
-                        <th key={t} scope="col" className={t === COMMON ? "dm-common" : undefined}>{colLabel(t)}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ds.objectives.map((o) => (
-                      <tr key={o.id}>
-                        <th scope="row">{o.id}</th>
-                        {[...ds.subQuestions.map((q) => q.id), COMMON].map((t) => {
-                          const c = lex.cells.find((x) => x.objectiveId === o.id && x.target === t)!.cosine;
-                          const step = Math.min(4, Math.round((c / lexMax) * 4));
-                          return (
-                            <td key={t} className={t === COMMON ? "dm-common" : undefined}>
-                              <div className="dm-lex" style={{ background: `var(--seq-${step})`, color: step >= 4 ? "#fff" : "var(--text)", display: "grid", placeItems: "center" }}>
-                                {c.toFixed(2)}
-                              </div>
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </details>
+            <LexicalMap ds={ds} />
           </>
         )}
       </section>
+    </div>
+  );
+}
+
+type LexMode = "syllabus" | "b2";
+
+/** 어휘 연관도 (S1, docs/decisions.md U19). 기본은 계획서 상세 문장 포함(문장별 최댓값), 토글로 사전 등록 B2 설정(목표 문장만).
+ *  B2 값(sentenceCosine)은 lexicalDesignMap과 같다(tests/syllabus-ai.test.ts) */
+function LexicalMap({ ds }: { ds: ForumDataset }) {
+  const v = useMemo(() => fitForum(ds), [ds]);
+  const sents = useMemo(() => objectiveDetailSentences(ds), [ds]);
+  const cells = useMemo(() => syllabusDesignMap(ds, sents, v), [ds, sents, v]);
+  const hasDetail = Object.keys(sents).length > 0;
+  const [mode, setMode] = useState<LexMode>(hasDetail ? "syllabus" : "b2");
+  const [selected, setSelected] = useState<string | null>(null);
+  const name = useId();
+  const syl = getSyllabus(ds.forum.courseId);
+  const targets = [...ds.subQuestions.map((q) => q.id), COMMON];
+  const value = (c: SyllabusCell) => (mode === "syllabus" ? c.cosine : c.sentenceCosine);
+  const max = Math.max(...cells.map(value), 0.0001);
+  const raised = cells.filter((c) => c.sourceIndex >= 0).length;
+  const cellAt = (o: string, t: string) => cells.find((c) => c.objectiveId === o && c.target === t)!;
+  const sel = selected ? cells.find((c) => cellKey(c.objectiveId, c.target) === selected) : undefined;
+
+  return (
+    <details style={{ marginTop: "1rem" }}>
+      <summary className="small">어휘 연관도 (TF-IDF) 보기</summary>
+      <p className="dm-lex-warning" role="note">
+        <strong>어휘 연관도 · 요구 여부가 아님</strong> · 계획서 상세는 기존 활동에서 거꾸로 쓴 것이라 독립 검증값이 아님 · 문장이 많을수록 우연히 높아질 수 있음
+      </p>
+      <p className="small">
+        목표 문장(과 계획서 상세 문장)이 하위 논점 문장과 글자 조각을 얼마나 함께 쓰는지(0~1)입니다. 짧은 문장끼리라 대부분 0에 가깝고, 합성 과제 실험(B2)에서 이 값으로 설계 공백을 찾는 규칙은 작동하지 않았습니다.
+      </p>
+      {hasDetail ? (
+        <fieldset className="dm-lex-mode">
+          <legend className="small">비교할 문장</legend>
+          <label className="small">
+            <input type="radio" name={name} checked={mode === "syllabus"} onChange={() => setMode("syllabus")} /> 계획서 상세 포함 (문장별 최댓값)
+          </label>
+          <label className="small">
+            <input type="radio" name={name} checked={mode === "b2"} onChange={() => setMode("b2")} /> 목표 문장만 (사전 등록 B2 설정)
+          </label>
+        </fieldset>
+      ) : null}
+      {mode === "syllabus" ? (
+        <p className="small muted">
+          계획서 상세의 한 문장이 목표 문장보다 가까운 칸({raised}/{cells.length}칸)은 값 아래에 “상세 n”을 붙였습니다. 값은 목표 문장만 쓴 값보다 낮아지지 않습니다.
+        </p>
+      ) : null}
+      <div className="table-wrap">
+        <table className="dm-table">
+          <caption className="visually-hidden">어휘 연관도 ({mode === "syllabus" ? "계획서 상세 포함" : "목표 문장만"})</caption>
+          <thead>
+            <tr>
+              <th scope="col">목표</th>
+              {targets.map((t) => (
+                <th key={t} scope="col" className={t === COMMON ? "dm-common" : undefined}>
+                  {colLabel(t)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {ds.objectives.map((o) => (
+              <tr key={o.id}>
+                <th scope="row">{o.id}</th>
+                {targets.map((t) => {
+                  const c = cellAt(o.id, t);
+                  const val = value(c);
+                  const step = Math.min(4, Math.round((val / max) * 4));
+                  const fromDetail = mode === "syllabus" && c.sourceIndex >= 0;
+                  const key = cellKey(o.id, t);
+                  return (
+                    <td key={t} className={t === COMMON ? "dm-common" : undefined}>
+                      <button
+                        type="button"
+                        className="dm-lex"
+                        style={{ background: `var(--seq-${step})`, color: step >= 4 ? "#fff" : "var(--text)" }}
+                        aria-pressed={selected === key}
+                        aria-label={`${o.id} × ${colLabel(t)}: ${val.toFixed(2)}${fromDetail ? `, 계획서 상세 ${c.sourceIndex + 1}번째 문장` : ""}`}
+                        onClick={() => setSelected(selected === key ? null : key)}
+                      >
+                        <span>{val.toFixed(2)}</span>
+                        {fromDetail ? <span className="dm-lex-src">상세 {c.sourceIndex + 1}</span> : null}
+                      </button>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {sel ? <LexDetail ds={ds} cell={sel} mode={mode} syl={syl} /> : <p className="small muted">칸을 누르면 출처 문장과 계산 조건이 보입니다.</p>}
+    </details>
+  );
+}
+
+function LexDetail({ ds, cell, mode, syl }: { ds: ForumDataset; cell: SyllabusCell; mode: LexMode; syl: Syllabus | null }) {
+  const o = ds.objectives.find((x) => x.id === cell.objectiveId)!;
+  const si = syl && o.syllabusId ? syllabusItem(syl, o.syllabusId) : null;
+  const fromDetail = mode === "syllabus" && cell.sourceIndex >= 0;
+  const target = cell.target === COMMON ? ds.forum.intro : qDocument(ds, cell.target);
+  return (
+    <div className="alert alert-info" style={{ marginTop: "0.75rem" }}>
+      <p style={{ margin: 0 }}>
+        <strong>
+          {o.id} × {colLabel(cell.target)}
+        </strong>
+        {si && syl ? (
+          <>
+            {" "}
+            · 계획서 항목{" "}
+            <SyllabusRef courseId={syl.courseId} item={si}>
+              {si.id}
+            </SyllabusRef>{" "}
+            ({refScopeLabel(si)})
+          </>
+        ) : null}
+      </p>
+      <p className="small" style={{ margin: "0.25rem 0 0" }}>
+        값 {(mode === "syllabus" ? cell.cosine : cell.sentenceCosine).toFixed(3)} · 목표 문장만(B2) {cell.sentenceCosine.toFixed(3)}
+        {fromDetail ? ` · 계획서 상세 ${cell.sourceIndex + 1}번째 문장이 더 가까움(+${(cell.cosine - cell.sentenceCosine).toFixed(3)})` : ""}
+      </p>
+      <p className="small" style={{ margin: "0.25rem 0 0" }}>
+        출처 문장({fromDetail ? `계획서 상세 ${cell.sourceIndex + 1}번째` : "목표 문장"}): “{fromDetail ? cell.sourceText : o.text}”
+      </p>
+      <p className="small muted" style={{ margin: "0.25rem 0 0" }}>
+        비교 대상({cell.target === COMMON ? "안내 글" : "하위 논점 문장 + 토론 주제"}): {target}
+      </p>
+      <p className="small muted" style={{ margin: "0.25rem 0 0" }}>
+        계산: 문자 2–4그램 TF-IDF 코사인. 모델은 사전 등록 말뭉치(목표·하위 논점·주제·안내 글·원본 글)로 적합한 그대로 고정
+        {mode === "syllabus" ? ". 목표 문장과 계획서 상세의 각 문장을 따로 재어 가장 큰 값을 씀(이어 붙이지 않음)." : "."}
+      </p>
     </div>
   );
 }

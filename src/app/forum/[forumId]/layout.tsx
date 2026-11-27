@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ForumSecondaryNav } from "@/components/forum/ForumSecondaryNav";
 import { PageHeader } from "@/components/moodle/PageParts";
+import { courseHomeHref } from "@/lib/syllabus/resolve";
 import { forumIds, getCourseById, getForum } from "@/lib/data";
 import { ForumProvider } from "@/lib/state/ForumContext";
 
@@ -16,7 +17,7 @@ export default async function ForumLayout({ children, params }: { children: Reac
   const ds = getForum(forumId);
   if (!ds) notFound();
   const course = getCourseById(ds.forum.courseId);
-  const home = course?.id === "algo101" ? "/courses/" : `/courses/${course?.id ?? ""}/`;
+  const home = courseHomeHref(course?.id ?? ds.forum.courseId);
   const section = course?.sections.find((s) => s.number === ds.forum.sectionNumber);
   return (
     <div className="page">

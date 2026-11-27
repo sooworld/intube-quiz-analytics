@@ -6,6 +6,7 @@ import "./globals.css";
 import "./charts.css";
 import "./essay.css";
 import "./forum.css";
+import "./syllabus.css";
 
 export const metadata: Metadata = {
   title: { default: "LearnLens 퀴즈 분석 데모", template: "%s | LearnLens" },

@@ -1,5 +1,7 @@
 // B형(논증) 토론 합성 자료 — ALGO101 5주차 토론. 과제·목표·하위 논점·체크표는 docs/forum-claim-map/b0-prereg.md에서 고정했다.
 // 글은 설계자가 쓴 합성 글이다(실패 탐색 전용). 사람 글로 보고하지 않는다. 설계자 라벨은 scripts/forum-bc/gold.ts에 따로 두고 화면에 넣지 않는다.
+import { SYLLABUS_ALGO101 } from "../../syllabus/content/algo101";
+import { forumObjectives } from "../../syllabus/resolve";
 import type { ForumDataset } from "../types";
 
 export const FORUM_F5: ForumDataset = {
@@ -16,13 +18,8 @@ export const FORUM_F5: ForumDataset = {
     opensAt: "2026-10-05T09:00:00+09:00",
     closesAt: "2026-10-12T23:59:00+09:00",
   },
-  objectives: [
-    { id: "O1", kind: "content", text: "그래프 탐색(이웃의 이웃)과 협업 필터링으로 추천 후보를 만드는 원리를 설명한다" },
-    { id: "O2", kind: "content", text: "추천 결과가 다시 학습 데이터가 되는 피드백 루프가 노출 다양성을 줄이는 과정을 설명한다" },
-    { id: "O3", kind: "content", text: "정확도·다양성·참신성 같은 추천 품질 지표가 서로 충돌하는 경우를 구분한다" },
-    { id: "O4", kind: "competency", text: "주장에 이유·근거·보장(조건)을 갖춘 논증을 쓴다" },
-    { id: "O5", kind: "competency", text: "다른 입장의 근거를 정확히 옮기고 그에 응답한다" },
-  ],
+  // 목표는 강의계획서(ALGO101)에서 꺼낸다. 문장은 b0-prereg.md §2에서 고정한 그대로다(tests/syllabus-links.test.ts가 고정)
+  objectives: forumObjectives(SYLLABUS_ALGO101, { O1: "w5-recsys", O2: "w5-loop", O3: "w5-metrics", O4: "g-argue", O5: "g-respond" }),
   subQuestions: [
     { id: "Q1", text: "필터 버블은 실제로 생기는가? 생긴다면 협업 필터링이 후보를 고르는 방식과 클릭이 다시 학습되는 과정 중 어디에서 생기는가?", importance: "상", plannedShare: 0.3 },
     { id: "Q2", text: "규제한다면 어떤 수단이 적절한가? 알고리즘 공개, 추천 끄기 선택권, 다양성 의무 중 무엇을, 왜?", importance: "상", plannedShare: 0.35 },
